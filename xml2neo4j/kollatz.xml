@@ -1,0 +1,985 @@
+<collection>
+    <work id="1">
+        <title>Beʾur millot ha-higgajon</title>
+        <autor>[1] Mose ben Maimon</autor>
+        <autor>[2] Nieto, David ben Pinchas</autor>
+        <kommentator>Mendelssohn, Moses</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="2">
+        <title>Beʾur millot ha-higgajon</title>
+        <autor>Mose ben Maimon</autor>
+        <kommentator>Mendelssohn, Moses</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="3">
+        <title>Beʾur millot ha-higgajon</title>
+        <autor>Mose ben Maimon</autor>
+        <kommentator>Mendelssohn, Moses</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="4">
+        <title>Holekh tamim</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="5">
+        <title>Phaedon huʾ sefer haschʾarat ha-nefesch</title>
+        <autor>Mendelssohn, Moses</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="6">
+        <title>Ruach chen</title>
+        <autor>Jehuda ibn Tibbon</autor>
+        <kommentator>Zamocz, Israel ben Mose Halevi</kommentator>
+        <druckort>Jeßnitz</druckort>
+    </work>
+    <work id="7">
+        <title>More nevukhim</title>
+        <autor>Mose ben Maimon</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="8">
+        <title>More nevukhim [Tl. 1]</title>
+        <autor>Mose ben Maimon</autor>
+        <kommentator>Maimon, Salomon</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="9">
+        <title>More nevukhim [Tl. 2 und 3]</title>
+        <autor>Mose ben Maimon</autor>
+        <kommentator>Satanow, Isaak</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="10">
+        <title>Ha-nefesch</title>
+        <autor>Mendelssohn, Moses</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="11">
+        <title>Ha-kusari</title>
+        <autor>Jehuda ben Saul Halevi</autor>
+        <kommentator>Satanow, Isaak</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="12">
+        <title>Ha-kusari</title>
+        <autor>Jehuda ben Saul Halevi</autor>
+        <kommentator>Zamocz, Israel ben Mose Halevi</kommentator>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="13">
+        <title>Ha-emunot we-ha-deʿot</title>
+        <autor>Saadja ben Josef</autor>
+        <kommentator>Ben Seew, Jehuda Leib</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="14">
+        <title>Megillat qohelet</title>
+        <kommentator>Mendelssohn, Moses</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="15">
+        <title>Or la-netiva</title>
+        <autor>Mendelssohn, Moses</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="16">
+        <title>Netivot ha-schalom</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="17">
+        <title>[1] Sefer netivot ha-schalom [2] Or la-netiva we-huʾ haqdama kolelet le-kol
+            chameschet sefarim [3] Sefer bereʾschit</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="18">
+        <title>[Sefer netivot ha-schalom] Chamischa chumsche tora ʿim tiqqun sofrim we-targum
+            aschkenasi u-veʾur. Zweite Ablieferung, welche Sefer schemot, nebst Haskamot,
+            enthält.</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="19">
+        <title>[Sefer netivot ha-schalom ... chamischa chumsche tora ­ Sefer wa-jiqraʾ]</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="20">
+        <title>[Sefer netivot ha-schalom ... chamischa chumsche tora ­ Sefer be-midbar]</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="21">
+        <title>[Sefer netivot ha-schalom ... chamischa chumsche tora ­ Sefer devarim]</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="22">
+        <title>Haftarot mi-kol ha-schana</title>
+        <kommentator>Euchel, Isaac</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="23">
+        <title>Chamischa chumsche tora ­ nebst einer wörtlichen Übersetzung für Anfänger ... Sefer
+            schemot</title>
+        <druckort>Breslau</druckort>
+    </work>
+    <work id="24">
+        <title>Haftara le-schacharit jom ha-kippurim</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="25">
+        <title>[1] Sefer semirot jisraʾel [2] Sefer tehillim ʿim targum aschkenasi u-veʾur [3] Sefer
+            semirot jisraʾel ­ kolel sefer tehillim [Tl. 1 und 2: Ps 1-72]</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="26">
+        <title>[1] Sefer semirot jisraʾel [2] Sefer tehillim ʿim targum aschkenasi ... u-mevoʾar [4
+            Tle.]</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="27">
+        <title>Jona</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="28">
+        <title>[1] Kitve qodesch ­ nidpasim me-chadasch u-mehudarim be-tosafot rabot [2] Sefer
+            Jeschaʿja ʿim targum aschkenasi ... u-veʾur chadasch ha-niqraʾ be-schem ha-korem ...
+            we-ʿod nosaf la-se perusch Raschi</title>
+        <kommentator>Homberg, Herz</kommentator>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="29">
+        <title>Sefer semirot jisraʾel</title>
+        <druckort>Offenbach</druckort>
+    </work>
+    <work id="30">
+        <title>Chamesch megillot</title>
+        <kommentator>Mendelssohn, Moses</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="31">
+        <title>Sefer pescher davar ­ ʿal miqraʾ Ijov</title>
+        <kommentator>Dessau), Seew Wolf ben Abraham aus Dessau (Wolf</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="32">
+        <title>Sefer Daniʾel</title>
+        <druckort>Dessau</druckort>
+    </work>
+    <work id="33">
+        <title>Mevoʾ el miqraʾe qodesch</title>
+        <autor>Ben Seew, Jehuda Leib</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="34">
+        <title>[1] Kitve qodesch ­ nidpasim me-chadasch u-mehudarim be-tosafot rabot [2] Sefer Ijov
+            ʿim targum aschkenasi u-veʾur ... nilwe min ha-korem</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="35">
+        <title>Chokhmat Jehoschuʿa ben Siraʾ</title>
+        <kommentator>Seew, Jehuda Leib Ben</kommentator>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="36">
+        <title>[1] Qirja neʾemana ­ sefer divre ha-jamim 1 ­ meturgam aschkenasit u-mevoʾar meʾet
+            David Ottensosser [2] ... sefer divre ha-jamim 2 ...</title>
+        <druckort>Fürth</druckort>
+    </work>
+    <work id="37">
+        <title>Qol schachal</title>
+        <autor>Luzzatto, Efraim</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="38">
+        <title>Machberot ʿImmanuʾel</title>
+        <autor>Immanuel ben Salomo ha-Romi</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="39">
+        <title>La-jescharim tehilla</title>
+        <autor>Luzzatto, Mose Chajjim</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="40">
+        <title>Jaldut u-vachrut</title>
+        <autor>Breslau (Brese, Bresselau), Menachem Mendel ben Jehuda Leib</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="41">
+        <title>Schir jedidut</title>
+        <autor>Ansche chevrat schochare ha-tov we-ha-tuschja</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="42">
+        <title>Schire tifʾeret</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="43">
+        <title>Schire tifʾeret</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="44">
+        <title>[1] Schire tifʾeret ­ ... machberet reviʿit [2] Schire tifʾeret ­ ... machberet
+            chamischit </title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>o.O.</druckort>
+    </work>
+    <work id="45">
+        <title>Sefer ­ schire tifʾeret</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="46">
+        <title>Meliza la-purim</title>
+        <autor>Ben Seew, Jehuda Leib</autor>
+        <druckort>Breslau </druckort>
+    </work>
+    <work id="47">
+        <title>Aggadat arbaʿ kosot</title>
+        <autor>Pappenheim, Salomo</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="48">
+        <title>Lahat ha-cherev</title>
+        <autor>Feder, Tuvjahu (Tobias Gutmann)</autor>
+        <druckort>Wilna</druckort>
+    </work>
+    <work id="49">
+        <title>Bechinot ʿolam</title>
+        <autor>Jedaja ben Abraham Penini Bedersi</autor>
+        <kommentator>Wust aus Dessau, Joel ben Josef</kommentator>
+        <druckort>Dessau</druckort>
+    </work>
+    <work id="50">
+        <title>Bechinot ʿolam</title>
+        <autor>Jedaja ben Abraham Penini Bedersi</autor>
+        <kommentator>Ottensosser, David</kommentator>
+        <druckort>Fürth</druckort>
+    </work>
+    <work id="51">
+        <title>Bechinot ʿolam</title>
+        <autor>Jedaja ben Abraham Penini Bedersi</autor>
+        <kommentator>Ottensosser, David</kommentator>
+        <druckort>Fürth</druckort>
+    </work>
+    <work id="52">
+        <title>Schire Mikhal</title>
+        <autor>Lebensohn, Micha Josef Ha-Kohen</autor>
+        <druckort>Tel Aviv</druckort>
+    </work>
+    <work id="53">
+        <title>Tefillot jisraʾel ­ cheleq scheni</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="54">
+        <title>Tefillot jisraʾel ­ cheleq rischon</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="55">
+        <title>Seder haggada ʿal pessach</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="56">
+        <title>Sefer ha-nechmad chaj ben meqiz</title>
+        <autor>[1] Abraham ibn Esra</autor>
+        <autor>[2] Mose ben Nachman</autor>
+        <autor>[3] Anatoli ben Josef</autor>
+        <autor>[4] Mose ben Maimon</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="57">
+        <title>Iggeret eder ha-jeqar</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="58">
+        <title>Imre bina</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="59">
+        <title>Divre rivot</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="60">
+        <title>Mischle Assaf</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="61">
+        <title>Mischle Assaf</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="62">
+        <title>Semirot Assaf</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="63">
+        <title>Nevuʾat ha-jeled</title>
+        <kommentator>Satanow, Isaak</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="64">
+        <title>Minchat biqqurim</title>
+        <autor>Satanow], Salomo Schönemann [Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="65">
+        <title>Cheleq rischon min Sefer ha-middot le-Aristoteles</title>
+        <autor>Aristoteles</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="66">
+        <title>Semirot Assaf</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="67">
+        <title>Sefer ha-middot</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="68">
+        <title>Sefer ha-middot</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="69">
+        <title>[1] Misped ­ ʿal mot ha-melekh ha-gadol ha-adir we-he-chakham ­ Fridrikh ha-scheni
+            [2] Trauerrede ­ über ­ das Ableben des weisesten Monarchen ­ Sr. Königl. Majestät
+            unsers Allerdurchl. Großmächtigsten ­ und Allergnädigsten Fürsten und Herrn ­ Friedrich
+            des Zweiten ­ glorreichen Andenkens</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="70">
+        <title>Divre schalom we-emet</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="71">
+        <title>Rav tuv le-vet jisraʾel ­ Mikhtav scheni </title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="72">
+        <title>ʿEn mischpat ­ Mikhtav schelischi </title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="73">
+        <title>Rechovot ­ Mikhtav reviʿi </title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="74">
+        <title>Mikhtav ... el mechabre Ha-Meʾassef</title>
+        <autor>Herz, Marcus</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="75">
+        <title>Die Erbfolge eines Ehemannes ­ in den Nachlaß seiner ohne Kinder und Testament
+            verstorbenen Ehefrau nach jüdischen Gesetzen beurtheilet</title>
+        <autor>Tychsen, Olof Gerhard</autor>
+        <druckort>Rostock</druckort>
+    </work>
+    <work id="76">
+        <title>Beʾer Mosche</title>
+        <autor>Fränkel, Mose ben Abraham</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="77">
+        <title>Besamim rosch</title>
+        <autor>Berlin], [Saul</autor>
+        <kommentator>Berlin, Saul</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="78">
+        <title>Bet ha-sefer</title>
+        <autor>Ben Seew, Jehuda Leib</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="79">
+        <title>Jesod ʿolam</title>
+        <autor>Isaak Israeli</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="80">
+        <title>Toledot rabenu he-chakham Mosche ben Menachem</title>
+        <autor>Euchel, Isaac</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="81">
+        <title>Avtalijon</title>
+        <autor>Wolfssohn-Halle, Aaron</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="82">
+        <title>[1] Melʾekhet machschevet</title>
+        <autor>Elijahu ben Mose Gerschon aus Pinczow (Elias Gerson)</autor>
+        <druckort>Tl. 2: Berlin</druckort>
+    </work>
+    <work id="83">
+        <title>Naʾava qodesch</title>
+        <autor>Waltsch, Simon ben Nathan Neta</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="84">
+        <title>ʿAmude ha-schamajim</title>
+        <autor>Schick aus Schklow, Baruch ben Jakob</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="85">
+        <title>Sefer ha-gedarim</title>
+        <autor>Bonafos, Menachem ben Abraham aus Perpignan</autor>
+        <kommentator>Satanow, Isaak</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="86">
+        <title>ʿAssara la-meʾa</title>
+        <autor>Zvi Hirsch ben Jehuda Leib aus Wodzislaw</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="87">
+        <title>Meʾor ʿenajim</title>
+        <autor>Rossi, Asarja de</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="88">
+        <title>Reschit limmudim</title>
+        <autor>Lindau, Baruch</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="89">
+        <title>Imre Schefer</title>
+        <autor>Homberg, Herz</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="90">
+        <title>Zohar ha-teva</title>
+        <autor>Hanau, Salomo Salman ben Jehuda Leib Ha-Kohen</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="91">
+        <title>Zohar ha-teva</title>
+        <autor>Hanau, Salomo Salman ben Jehuda Leib Ha-Kohen</autor>
+        <druckort>Rußland oder Polen</druckort>
+    </work>
+    <work id="92">
+        <title>Sekher rav</title>
+        <autor>Mussafia, Benjamin</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="93">
+        <title>Zachut ba-diqduq</title>
+        <autor>Abraham ibn Esra</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="94">
+        <title>Sefer diqduq ... sefer bachur</title>
+        <autor>Levita, Elijahu Halevi Aschkenasi (Elia</autor>
+        <autor>Elijahu ben Ascher ha-Levi Bachur)</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="95">
+        <title>Millim le-eloha</title>
+        <autor>Minden, Jehuda Leib ben Joel</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="96">
+        <title>Sifte renanot ­ Compendium Grammaticae novae Linguae Sanctae ­ Prima eiusdem tradens
+            Principia Firmis superstructa Fundamentis ­ Auctore Isaco Mose</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="97">
+        <title>Safa achat</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="98">
+        <title>Sefer ha-chisajon</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="99">
+        <title>Sefer maslul</title>
+        <autor>Köslin, Chajim ben Naftali Herz</autor>
+        <druckort>Hamburg</druckort>
+    </work>
+    <work id="100">
+        <title>ʿAmude ha-laschon</title>
+        <autor>Löwe, Joel Brill</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="101">
+        <title>Talmud leschon ʿivri</title>
+        <autor>Ben Seew, Jehuda Leib</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="102">
+        <title>Ozar ha-schoraschim</title>
+        <autor>Ben Seew, Jehuda Leib</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="103">
+        <title>Mechqere laschon</title>
+        <autor>Loewisohn, Salomo</autor>
+        <druckort>Wilna</druckort>
+    </work>
+    <work id="104">
+        <title>"Tongeleth". Een Joodsch Letterkundige Kring in den XIXde eeuw</title>
+        <autor>Maarsen, I.</autor>
+        <druckort>Amsterdam</druckort>
+    </work>
+    <work id="105">
+        <title>Aggadat arbaʿ kosot</title>
+        <autor>Pappenheim, Salomo</autor>
+        <druckort>Amsterdam</druckort>
+    </work>
+    <work id="106">
+        <title>Levanon</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Amsterdam</druckort>
+    </work>
+    <work id="107">
+        <title>Bikkure Toʿelet (Tongeleth)</title>
+        <autor>Israel, Samuel</autor>
+        <autor>[2] Loonstein, Mozes</autor>
+        <autor>Tall, Alexander Levie</autor>
+        <autor>Mulder, Dubno, Salomo u.a.</autor>
+        <druckort>Amsterdam</druckort>
+    </work>
+    <work id="108">
+        <title>Peri toʿelet (Tongeleth)</title>
+        <autor>Mulder, Samuel Israel u.a.</autor>
+        <druckort>Amsterdam</druckort>
+    </work>
+    <work id="109">
+        <title>Segulat melakhim ­ ha-niqrʾa ­ Haus bukh odr schaz qamer des menschn nuzlikh
+            qejt</title>
+        <autor>Kroneburg (?), Benjamin Salman</autor>
+        <druckort>Neuwied</druckort>
+    </work>
+    <work id="110">
+        <title>Sefer chokhmat ha-schoraschim</title>
+        <autor>Ullmann, Naftali Herz</autor>
+        <druckort>Haag</druckort>
+    </work>
+    <work id="111">
+        <title>Nachale devasch</title>
+        <autor>Beer ben Schraga aus Pinne (Pniewy), Dov</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="112">
+        <title>Marʾe esch</title>
+        <autor>Asch, Abraham</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="113">
+        <title>Derischat ha-seʾev</title>
+        <autor>Seew Wolf ben Josef aus Berlin</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="114">
+        <title>Liqute Morenu ha-Rav Meir</title>
+        <autor>Meir aus Swarzec (Schwersenz) bei Posen</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="115">
+        <title>Panim meʾirot</title>
+        <autor>Sachs, Michael</autor>
+        <druckort>o.O.</druckort>
+    </work>
+    <work id="116">
+        <title>Tavnit ha-bet ha-schelischi</title>
+        <autor>Elijahu ben Salomo Salman (Gaon von Wilna)</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="117">
+        <title>Masor u-terufa</title>
+        <autor>Stern, Abraham ben Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="118">
+        <title>Maʾamar maʿjan ganim</title>
+        <autor>Eljakim ben Abraham aus London</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="119">
+        <title>Schire tehilla</title>
+        <autor>Buchner, Seew Wolf ben David aus Brody</autor>
+        <kommentator>Buchner, Seew Wolf</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="120">
+        <title>Schire tehillot</title>
+        <autor>Rosenbach), Chevrat dorsche tov le-ʿamam (Aaron</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="121">
+        <title>Machberet derekh emet we-emuna</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="122">
+        <title>Chuqqe chajjim</title>
+        <autor>Ha-Kohen aus Jaroslaw, Jakob Chajjim ben Josua</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="123">
+        <title>Sefer chidduschim ʿal hilkhot jom tov le-ha-Rambam [Bina le-ʿittim]</title>
+        <autor>Eybenschütz, Jonathan</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="124">
+        <title>Bina le-ʿittim</title>
+        <autor>Figo, Asarja ben Efraim</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="125">
+        <title>Mispar zevaʾam</title>
+        <autor>Mireles (Mirls), Zvi Hirsch</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="126">
+        <title>Qinʾute de-Pinchas</title>
+        <autor>Pinchas ben Samuel aus Wysokie Litewskie</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="127">
+        <title>Jemin Mosche</title>
+        <autor>Mose ben Akiva ßronik</autor>
+        <druckort>Breslau</druckort>
+    </work>
+    <work id="128">
+        <title>Meleʾekhet schamajim</title>
+        <autor>Bamberger, Isaak Dov Halevi (Seligmann Baer)</autor>
+        <druckort>Hannover</druckort>
+    </work>
+    <work id="129">
+        <title>Machane levi</title>
+        <druckort>Rödelheim</druckort>
+    </work>
+    <work id="130">
+        <title>Masekhet avot ­ ʿim perusch jen levanon</title>
+        <kommentator>Wessely, Naftali Herz</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="131">
+        <title>Chokhmat Schelomo ruach chen</title>
+        <kommentator>Wessely, Naftali Herz</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="132">
+        <title>Sefer ha-schoraschim [Tl. 1:] Sefat emet [Tl. 2:] Devarim achadim ­
+            Hebräisch-Deutsches Lexicon zum Gebrauch der jüdischen Schulen</title>
+        <autor>Satanow, Isaak</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="133">
+        <title>Mischle ­ ʿim targum aschkenasi u-veʾur</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="134">
+        <title>Kelil ha-cheschbon</title>
+        <autor>Friesenhausen, David</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="135">
+        <title>Ketav joscher</title>
+        <autor>Kohen, Schalom ha-</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="136">
+        <title>Mikhteve ʿivrit</title>
+        <autor>Neumann, Moses Samuel</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="137">
+        <title>Halikhot leschon ha-qodesch</title>
+        <autor>Leeser, H.</autor>
+        <druckort>Coesfeld (Brilon)</druckort>
+    </work>
+    <work id="138">
+        <title>Calender für die Jüdische Gemeinde auf das Schalt-Jahr 55787 (1818) ­ Luach</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="139">
+        <title>Ozar nechmad. Briefe und Abhandlungen jüdische Literatur betreffend, von den
+            bekanntesten jüdischen Gelehrten.</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="140">
+        <title>Ozar ha-chajjim</title>
+        <autor>Kadisch, Serach ben Meir</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="141">
+        <title>Massaʾ ba-ʿarav</title>
+        <autor>Romanelli, Samuel</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="142">
+        <title>Imre schefer ­ Beʾur ʿal sefer bereʾschit [Tl. 2]</title>
+        <autor>Wessely, Naftali Herz</autor>
+        <druckort>Lyck</druckort>
+    </work>
+    <work id="143">
+        <title>Chinnukh leschon ʿivrit</title>
+        <autor>Neumann, Moses Samuel</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="144">
+        <title>Bet neʾeman</title>
+        <autor>Feder, Tuvja ben Zvi Hirsch Gutmann</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="145">
+        <title>Pirqe Rabbi Elijahu</title>
+        <autor>Levita, Elijahu Halevi Aschkenasi (Elia</autor>
+        <autor>Elijahu ben Ascher ha-Levi Bachur)</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="146">
+        <title>Toldot jisraʾel</title>
+        <autor>Beer, Perez (Peter)</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="147">
+        <title>Daveq meʾach</title>
+        <autor>Uri Ries b. Isaak Levi</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="148">
+        <title>Maʿgal jaschar</title>
+        <autor>Neumann, Moses Samuel</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="149">
+        <title>Ha-mischtadel</title>
+        <autor>Luzzatto, Samuel David</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="150">
+        <title>[1] Torat ha-elohim [2] La Legge di Dio ­ Tradotta in Lingua Italiana, Illustrata con
+            un Nuovo Commento</title>
+        <autor>Reggio, Isacco Samuel</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="151">
+        <title>Ha-tora we-ha-filosofija</title>
+        <autor>Reggio, Isacco Samuel</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="152">
+        <title>Maʾamar ʿen ha-qoreʾ</title>
+        <autor>Eljakim ben Abraham aus London</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="153">
+        <title>Maʾamar ʿen mischpat</title>
+        <autor>Eljakim ben Abraham aus London</autor>
+        <druckort>Rödelheim</druckort>
+    </work>
+    <work id="154">
+        <title>Maʾamar maʿjan ganim</title>
+        <autor>Eljakim ben Abraham aus London</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="155">
+        <title>Ha-Meʾassef ­ Der Sammler</title>
+        <druckort>7.1794-1797: Berlin und Breslau</druckort>
+    </work>
+    <work id="156">
+        <title>Ha-Meʾassef ­ Der Sammler</title>
+        <druckort>10. 1810/11: Dessau</druckort>
+    </work>
+    <work id="157">
+        <title>Ha-Meʾassef ­ Der Sammler. Jahrbücher der hebräischen Literaturfreunde in Königsberg.
+            Jahrgang 1784. Zweite vollständige mit neuen Beilagen vermehrte Ausgabe.</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="158">
+        <title>Bikkure ha-ʿittim (Bikure haitim ­ Erste Früchte der Zeiten)</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="159">
+        <title>Mischnah ­ oder der Text des Talmuds ­ Das ist, Sammlung der Aufsäze der Aeltesten,
+            und mündlichen Ueberlieferungen oder Traditionen, als der Grund des heutigen
+            Pharisäischen Judenthums</title>
+        <druckort>Onolzbach (Ansbach)</druckort>
+    </work>
+    <work id="160">
+        <title>Jeremias Klagegesänge</title>
+        <kommentator>Löwe und Aaron Wolfssohn-Halle, Joel Brill</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="161">
+        <title>Mischnajot</title>
+        <kommentator>Feibusch (Phoebus), Senior</kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="162">
+        <title>Mischle Agur</title>
+        <autor>Kohen aus Meseritz, Schalom ben Jakob</autor>
+        <kommentator>Schalom ‎‏בר״יך‏‎, </kommentator>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="163">
+        <title>Nir Dawid </title>
+        <autor>Kohen, Schalom ha-</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="164">
+        <title>Mattaʿe qedem ʿal admat zafon ­ Morgenländische Pflanzen auf nördlichem Boden, eine
+            Sammlung neuer Hebräischer Poesien</title>
+        <autor>Kohen, Salomon Jacob</autor>
+        <druckort>Rödelheim</druckort>
+    </work>
+    <work id="165">
+        <title>Ozar ha-chajjim (Ozer Hachaim) {Schatz des Lebens}</title>
+        <autor>Qadisch aus Prag, Zerach b. Meir</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="166">
+        <title>Modaʿ le-bina</title>
+        <autor>Lev aus Satanov, Mendel Jehuda</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="167">
+        <title>Seh sefer sekher Zadiq</title>
+        <autor>Friedrichsfeld, David b. Zvi Hirsch</autor>
+        <druckort>Amsterdam</druckort>
+    </work>
+    <work id="168">
+        <title>Gesaʿ Jischai ­ (Gesa Jsai Athalie par J. Racine) </title>
+        <autor>Letteris, Meir Halevi (Max)</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="169">
+        <title>‎‏מאמר הייחוד‏‎</title>
+        <autor>Maimonides, Moses</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="170">
+        <title>Sefer bikure ha-ʿittim Bikure Haittim. Eine Sammlung ebräischer Aufsätze, exegesen,
+            philologischen und poetischen Inhalts, zur Förderung des ebräischen
+            Sprachstudius</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="171">
+        <title>Zion</title>
+        <druckort>Frankfurt/M.</druckort>
+    </work>
+    <work id="172">
+        <title>Ha-palit ­ Catalog werthvoller hebräischer Handschriften </title>
+        <autor>Zunz, L.</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="173">
+        <title>Melizat Jeschurun</title>
+        <autor>Loewisohn, Salomo</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="174">
+        <title>Seder ha-ʿavoda ­ Historisch-kritische Darstellung des jüdischen Gottesdienstes, und
+            dessen Modifikationen, von den ältesten Zeiten an, bis auf unsre Tage</title>
+        <autor>Kohen, Salomon Jacob</autor>
+        <druckort>Leipzig</druckort>
+    </work>
+    <work id="175">
+        <title>Sefer mischle</title>
+        <druckort>Karlsruhe</druckort>
+    </work>
+    <work id="176">
+        <title>Jesode ha-dat</title>
+        <autor>Jehuda Leib ben Zeev</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="177">
+        <title>Ha-jaschar we-ha-berit</title>
+        <autor>Neumann, Mosche Schmuel</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="178">
+        <title>Torat laschon ʿivrit</title>
+        <autor>Kohen, Schalom ha-</autor>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="179">
+        <title>‎‏כוכבי יצחק‏‎</title>
+        <druckort>o.O.</druckort>
+    </work>
+    <work id="180">
+        <title>Die Psalmen. Uebersetzt</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="181">
+        <title>Morgenstunden oder Vorlesungen über das Daseyn Gottes; Erster Theil</title>
+        <autor>Mendelssohn, Moses</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="182">
+        <title>Mosaisches Recht, Erster Theil</title>
+        <autor>Michaelis, Johann David</autor>
+        <druckort>Biehl</druckort>
+    </work>
+    <work id="183">
+        <title>Jetedot ohalim</title>
+        <autor>Joel Schönlanke</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="184">
+        <title>Scheʾerit jisraʾel</title>
+        <autor>Israel ben Isaak Izek Ries</autor>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="185">
+        <title>‎‏ספר כרם חמד‏‎</title>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="186">
+        <title>Kerem Chemed Neue Folge</title>
+        <druckort>o.O.</druckort>
+    </work>
+    <work id="187">
+        <title>Selicha</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="188">
+        <title>‎‏עט סופר החדש‏‎</title>
+        <druckort>Wilna</druckort>
+    </work>
+    <work id="189">
+        <title>Mikhteve ʿivrit</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="190">
+        <title>Liqute ha-levi kolel minhage q"q uirzburg</title>
+        <druckort>Berlin</druckort>
+    </work>
+    <work id="191">
+        <title>‎‏חמשה חומשי תורה‏‎</title>
+        <druckort>Wien</druckort>
+    </work>
+    <work id="192">
+        <title>Wer ist nach den Grundsätzen des österreichischen Rechts zur Vornahme einer jüdischen
+            Trauung berechtigt? Mit Rücksicht auf das mosaisch-talmudische Eherecht</title>
+        <autor>Wessely, Wolfgang</autor>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="193">
+        <title>Sifre qodesch </title>
+        <druckort>Prag</druckort>
+    </work>
+    <work id="194">
+        <title>Chovot ha-levavot</title>
+        <autor>Bachai ben Josef Ibn Paquda</autor>
+        <kommentator>Fürstenthal , Rafael</kommentator>
+        <druckort>Breslau</druckort>
+    </work>
+</collection>

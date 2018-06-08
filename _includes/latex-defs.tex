@@ -1,0 +1,61 @@
+\usepackage{calc}
+\usepackage{hhline}
+\usepackage{multirow} 
+\usepackage{colortbl}
+\usepackage{xcolor}
+
+\lowertitleback{© 2009–2016 Lehrstuhl für Religionswissenschaft, Ruhr-Universität Bochum
+
+\bigskip
+unter Mitarbeit von Ann-Kathrin Wolf
+
+\bigskip
+5. Auflage\\
+Stand: \today
+
+\bigskip
+Gesetzt mit Xe\LaTeX
+}
+
+\newlength{\iconwidth}
+\setlength{\iconwidth}{1cm}
+
+\definecolor{boxheadcol}{gray}{.6}
+\definecolor{boxcol}{gray}{.9}
+
+\newenvironment{displaybox}[2]{%
+    \begin{center}
+        \setlength\arrayrulewidth{0.75pt}%
+        \arrayrulecolor{white}%
+        \renewcommand{\arraystretch}{1.3}%
+        \begin{tabular}{p{\iconwidth}p{\linewidth-4\tabcolsep-\iconwidth}}
+            \multirow{2}{*}{#2}&\cellcolor{boxheadcol}\textbf{\sffamily\color{white}#1} \\%
+            \hhline{~-}%
+            &\cellcolor{boxcol}%
+}{%
+            \\
+        \end{tabular}
+        \arrayrulecolor{black}
+    \end{center}
+}
+
+\newenvironment{Tipp}{%
+\begin{displaybox}{Tipp}{\includegraphics[width=\iconwidth]{images/icon-tipp}}}%
+{\end{displaybox}}
+
+\newenvironment{Hinweis}{%
+\begin{displaybox}{Hinweis}{\includegraphics[width=\iconwidth]{images/icon-hinweis}}}%
+{\end{displaybox}}
+
+\newenvironment{Technik}{%
+\begin{displaybox}{Technik}{\includegraphics[width=\iconwidth]{images/icon-technik}}}%
+{\end{displaybox}}
+
+\newenvironment{Merke}{%
+\begin{displaybox}{Merke}{\includegraphics[width=\iconwidth]{images/icon-merke}}}%
+{\end{displaybox}}
+
+\newenvironment{Beispiel}{%
+\begin{displaybox}{Beispiel}{\includegraphics[width=\iconwidth]{images/icon-beispiel}}}%
+{\end{displaybox}}
+
