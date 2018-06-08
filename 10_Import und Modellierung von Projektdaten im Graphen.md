@@ -50,36 +50,36 @@ Sehr gut lässt sich am Tortendiagramm ablesen, dass über die Hälfte unserer N
 
 Im Bereich der historischen Netzwerkanalyse gab es in den letzten Jahren sehr interessante Arbeiten.[^3273] von Seiten der Regesta Imperii bieten sich hier vor allem die Register der Regesta Imperi als sehr interessante Quelle an. Geht man davon aus, dass alle Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben, könnte man auf Grundlage der Registerdaten ein Personennetzwerk erstellen. Über die Qualität der Beziehungen lässt sich nichts sagen und dies schränkt die Aussage der Daten ein. Andererseits stehen wiederum sehr viele Verknüpfungen zur Verfügung.
 
-![Registereinträge im Regest als Grundlage für ein Personennetzwerk.](Bilder/Register-und-Regest-19-189.png)
+![Registereinträge im Regest als Grundlage für ein Personennetzwerk.](/Graphentechnologien/Bilder/Register-und-Regest-19-189.png)
 
 Allein die Einträge in den Registern der Regesten Kaiser Friedrichs III. sind über 143.000 mal in Regesten genannt. Daraus ergeben sich dann über 460.000 1zu1-Beziehungen.[^6155]
 
 
-![Ausschnitt der 1zu1-Beziehungen in Gephi.](Bilder/Gephi-Register.png)
+![Ausschnitt der 1zu1-Beziehungen in Gephi.](/Graphentechnologien/Bilder/Gephi-Register.png)
 
 
 In der folgenden Abbildung sind die den Registern des Regestenbandes von Joseph Chmel gewonnenen 1zu1-Beziehungen mit Gephi visualisiert.[^ce4b]
 
-![Personennetzwerk aus den Registern der Regesten Chmels.](Bilder/Chmelvisualisierung-v2.png)
+![Personennetzwerk aus den Registern der Regesten Chmels.](/Graphentechnologien/Bilder/Chmelvisualisierung-v2.png)
 
 Bei der Analyse ergaben sich aber verschiedene Probleme. Zum einen werden in den Registern auch Kanzleibeamte genannt, die mit der eigentlichen Regestenhandlung garnichts zu tun hatten sondern lediglich später ihr Kürzel auf der Urkunde hinterließen. Dies macht archivgeschichtlich interessant sein, für die Regestenhandlung ist es aber irrelevant. Ein zweites Problem ist der Aufbau des Registers, in dem Orte und Personen in deinem Register zusammengefasst werden. Zum einen handelt es sich hierdurch nicht mehr um ein reines Personennetzwerk sondern um ein gemischtes Personen- und Ortsnetzwerden und zum anderen überragen die über sehr lange Zeit bestehenden Orte die in ihrer Lebensdauer begrenzten natürlichen Personen in den Netzwerkstrukturen.
 
 Aus Historikersicht war der Ansatz also weniger zielführend jedoch ergaben sich aus Modellierungssicht interessante Einblicke. Um die Netzwerke näher analysieren zu können, untersuchten wir kürze Zeitschnitte der Regesten. Hierfür musste das in Java geschriebene Programm zur Erstellung der Netzwerkdaten jedesmal umgeschrieben werden. Mein Kollege Ulli Meybohm, der das Programm damals betreute wies mich nach dem wiederholgen Umschreiben des Programms darauf hin, dass ich für meine Daten besser eine Graphdatenbank verwenden solle, beispielsweise neo4j. Erste Versuche des Imports der Registerdaten in neo4j erwiesen sich aber als sehr komplex, obwohl das Datenmodell *Person kennt Person* eigentlich relativ einfach ist.
 
 
-![Regest und Registereinträge mit `GENANNT_IN`-Kanten und den `KNOWS`-Kanten.](Bilder/1zu1-Beziehungen-Register-Regest.png)
+![Regest und Registereinträge mit `GENANNT_IN`-Kanten und den `KNOWS`-Kanten.](/Graphentechnologien/Bilder/1zu1-Beziehungen-Register-Regest.png)
 
 
 Schließlich ergaben Nachfragen bei neo4j, dass bei Problemen mit dem Datenmodell oft einfach ein Typ von Knoten vergessen worden sein könnte. Und tatsächlich hatten wir die Regestenknoten nicht bedacht. Mit den Regestenknoten im Modell war der Import schließlich mit weniger rechnerischem Aufwand möglich.
 
-![Graphmodell ohne `KNOWS`-Kanten. Diese können bei Bedarf einfach errechnet werden.](Bilder/1zu1-Beziehungen-nur-Regest.png)
+![Graphmodell ohne `KNOWS`-Kanten. Diese können bei Bedarf einfach errechnet werden.](/Graphentechnologien/Bilder/1zu1-Beziehungen-nur-Regest.png)
 
 
 # Wie kommen die Regesten in den Graphen ?
 
 Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Typo3 welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
 
-![Regesten als CSV-Datei](Bilder/RI2Graph/10-ods-regesten.png)
+![Regesten als CSV-Datei](/Graphentechnologien/Bilder/RI2Graph/10-ods-regesten.png)
 
 In der CSV-Datei finden sich die oben erläuterten einzelnen Elemente der Regesten in jeweils eigenen Spalten. Die Spaltenüberschrift gibt Auskunft zum Inhalt der jeweiligen Spalte.
 
@@ -91,16 +91,16 @@ Mit dem Befehl `LOAD CSV` können die CSV-Dateien mit den Regesten in die Graphd
 
 Da viele aber keinen Zugriff auf einen eigenen Webserver haben wird hier auch der Download der CSV-Dateien über Google-Docs erklärt. Zunächst benötigt man hierfür einen Google-Account. Anschließend öffnet man Google-Drive und erstellt dort eine leere Google-Tabellen-Datei in der man dann die CSV-Datei hochladen und öffnen kann.
 
-![Freigabe der Datei zum Ansehen für Dritte!](Bilder/RI2Graph/google-docs-freigeben.png)
+![Freigabe der Datei zum Ansehen für Dritte!](/Graphentechnologien/Bilder/RI2Graph/google-docs-freigeben.png)
 
 Wichtig ist nun, die Datei zur Ansicht freizugeben (Klick auf `Freigeben` oben rechts im Fenster dann Link zum Freigeben abrufen und anschließend bestätigen). Jetzt ist die CSV-Datei in Google-Docs gespeichert und kann von Dritten angesehen werden. Für den Import in die Graphdatenbank benötigen wir aber einen Download im CSV-Format. Diesen findet man unter `Datei/Herunterladen als/Kommagetrennte Werte.csv aktuelles Tabellenblatt`.
 
-![Herunterladen als CSV-DAtei](Bilder/RI2Graph/google-docs-herunterladen-csv.png)
+![Herunterladen als CSV-DAtei](/Graphentechnologien/Bilder/RI2Graph/google-docs-herunterladen-csv.png)
 
 
 Damit lädt man das aktuelle Tabellenblatt als CSV runter. Nach dem Download muss man nun im Browser unter Downloads den Download-Link der Datei suchen und kopieren.
 
-![Download-Link der CSV-Datei](Bilder/RI2Graph/google-docs-link-kopieren.png)
+![Download-Link der CSV-Datei](/Graphentechnologien/Bilder/RI2Graph/google-docs-link-kopieren.png)
 
 ## Die neo4j-Eingabezeile
 
@@ -118,7 +118,7 @@ MERGE (r)-[:HAT_ORT]->(o);
 
 In den Anführungszeichen nach dem Befehl `LOAD CSV WITH HEADERS FROM` wird der Download-Link der CSV-Datei angegeben. Der `LOAD CSV`-Befehl lädt dann bei seiner Auführung die CSV-Datei von der angegebenen URL und gibt sie zeilenweise an die folgenden cyper-Befehle weiter.
 
-![Blick auf die ersten Zeilen der Google-spreadsheets-Tabelle.](Bilder/RI2Graph/CSV-Google-Tabelle.png)
+![Blick auf die ersten Zeilen der Google-spreadsheets-Tabelle.](/Graphentechnologien/Bilder/RI2Graph/CSV-Google-Tabelle.png)
 
 Mit dem `CREATE`-Befehl wird in der Graphdatenbank ein Knoten vom Typ Regestae erzeugt.[^336e] Diesem Knoten werden noch verschiedene Eigenschaften wie der Regestenidentifier, das Regest, die Überlieferung, die Datumsangabe und die Regestennummer mitgegeben. Wie dem Beispiel zu entnehmen ist, sind die Eigenschaften in CamelCase-Notation angegeben (z.B. archivalHistory).[^d219] Dies ist die hier übliche Notation, da Leerzeichen nicht verwendet werden dürfen und der Unterstrich je nach Betriebssystems Probleme verursachen kann. In der folgenden Tabelle sind die einzelnen Eigenschaften nochmal zusammengefasst und beispielhaft für das erste Regest aufgelistet.
 
@@ -134,15 +134,15 @@ Der `CREATE`-Befehl bekommt über das Array line beim ersten Durchlauf die Zelle
 In der folgenden Abbildung sind die Eigenschaften des Regestenknotens dargestellt.
 
 
-![Die Eigenschaften des Regests, registerid, ident, Text regid und Überlieferung.](Bilder/RI2Graph/30-Regestentext.png)
+![Die Eigenschaften des Regests, registerid, ident, Text regid und Überlieferung.](/Graphentechnologien/Bilder/RI2Graph/30-Regestentext.png)
 
 
 In einer Zeile der CSV-Datei finden sich alle Angaben eines Regests. Die in der oben abgebildeten Tabelle angegebenen Werte werden als Eigenschaften des Regestenknotens erstellt.
 
 In der nächsten Abbildung wird das Modell des Regests im Graphen abgebildet.
 
-![ReggF3 Heft 19, Nr. 316.](Bilder/RI2Graph/ReggF3-H19-316.png)
-![Das Regest im Graphen.](Bilder/RI2Graph/26-FIII-Regestengraph.png)
+![ReggF3 Heft 19, Nr. 316.](/Graphentechnologien/Bilder/RI2Graph/ReggF3-H19-316.png)
+![Das Regest im Graphen.](/Graphentechnologien/Bilder/RI2Graph/26-FIII-Regestengraph.png)
 
 Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Mit den folgenden `MERGE`-Befehlen werden anschließend ergänzende Knoten für die Datumsangaben und die Ausstellungsorte erstellt. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird der hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird dann die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
@@ -161,21 +161,21 @@ Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem 
 
 Register spielen für die Erschließung von gedrucktem Wissen eine zentrale Rolle, da dort in alphabetischer Ordnung die im Werk vorkommenden Entitäten (z.B. Personen und Orte) hierarchisch gegliedert aufgeschlüsselt werden. Für die digitale Erschließung der Regesta Imperii sind Register von zentraler Bedeutung, da mit ihnen die in den Regesten vorkommenden Personen und Orte bereits identifiziert vorliegen. Für den Import in die Graphdatenbank wird allerdings eine digitalisierterte Fassung des Registers benötigt. Im Digitalisierungsprojekt Regesta Imperii Online wurden Anfang der 2000er Jahre auch die gedruckt vorliegenden Register digitalisiert. Sie dienen nun als erste Grundlage für die digitale Registererschließung der Regesta Imperii. Im hier gezeigten Beispiel werden die Regesten Kaiser Heinrichs IV. und das dazugehörige Register importiert. Da der letzte Regestenband der Regesten Kaiser Heinrichs IV. mit dem Gesamtregister erst vor kurzem gedruckt wurde, liegen hier aktuelle digitale Fassung von Registern und Regesten vor. Die für den Druck in Word erstellte Registerfassung wird hierfür zunächst in eine hierarchisch gegliederte XML-Fassung konvertiert, damit die Registerhierarchie auch maschinenlesbar abgelegt ist.
 
-![Ausschnitt aus dem XML-Register der Regesten Heinrichs IV.](Bilder/RI2Graph/XML-Register.png)
+![Ausschnitt aus dem XML-Register der Regesten Heinrichs IV.](/Graphentechnologien/Bilder/RI2Graph/XML-Register.png)
 
 In der XML-Fassung sind die inhaltlichen Bereiche und die Abschnitte für die Regestennummern jeweils extra in die Tags `<Inhalt` und `Regestennummer` eingefasst. Innerhalb des Elements `Regestennummer` ist dann nochmal jede einzelne Regestennummer in `<r>`-Tags eingefasst. Die aus dem gedruckten Register übernommenen Verweise sind durch ein leeres `<vw/>`-Element gekennzeichnet.
 
 Die in XML vorliegenden Registerdaten werden anschließend mit Hilfe von TuStep in einzelne CSV-Tabellen zerlegt.
 
-![Ausschnitt der Entitätentabelle des Registers der Regesten Heinrichs IV.](Bilder/RI2Graph/RegisterH4-Tabelle-Entitäten.png)
+![Ausschnitt der Entitätentabelle des Registers der Regesten Heinrichs IV.](/Graphentechnologien/Bilder/RI2Graph/RegisterH4-Tabelle-Entitäten.png)
 
 In einer Tabelle werden alle Entitäten aufgelistet und jeweils mit einer ID versehen.
 
-![Ausschnitt der Verknüpfungstabelle des Registers der Regesten Heinrichs IV.](Bilder/RI2Graph/RegisterH4-GENANNT.png)
+![Ausschnitt der Verknüpfungstabelle des Registers der Regesten Heinrichs IV.](/Graphentechnologien/Bilder/RI2Graph/RegisterH4-GENANNT.png)
 
 In der anderen Tabelle werden die Verknüpfungen zwischen Registereinträgen und den Regesten aufgelistet. Der Registereintrag Adalbero kommt also in mehreren Regesten vor. Da das Register der Regesten Heinrichs IV. nur zwei Hierarchiestufen enthält, in denen beispielsweise verschiedene Amtsphasen ein und derselben Person unterschieden werden, wurden diese beim Import zusammengefasst.[^5979] Damit gibt es pro Person jeweils nur einen Knoten. In anderen Registern der Regesta Imperii sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren können. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
-![Ausschnitt der Entitätentabelle des Registers der Regesten Friedrichs III.](Bilder/RI2Graph/RegisterF3-Hierarchie.png)
+![Ausschnitt der Entitätentabelle des Registers der Regesten Friedrichs III.](/Graphentechnologien/Bilder/RI2Graph/RegisterF3-Hierarchie.png)
 
 Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `nodeID` zugewiesen. Wenn es sich um einen Registereintrag handelt, der kein Hauptlemma ist, wird in der dritten Spalte die `topnodeID` angegeben, die auf das übergeordnete Lemma verweist. Beim Import in die Graphdatenbank wird diese Hierarchie über `OBERBEGRIFF`-Kanten abgebildet, die vom untergeordneten Eintrag auf das übergeordnete Lemma verweisen. Damit ist die komplette Registerhierarchie im Graphen abgebildet. In der Spalte `name1` ist das Lemma angegeben, in der Spalte `name3` zusätzliche zum Lemma noch der gesamte Pfad vom Hauptlemma bis zum Registereintrag, jeweils auch `//` getrennt. Dies ist notwendig, da bei tiefer gestaffelten Registern allein mit der Angabe aus der Spalte `name1` nicht klar ist, zu welchem Oberbegriff beispielsweise die `Meierei` in Zeile 17 gehört. Mit dem kompletten Pfad des Registereintrages in der Spalte `name3` wird dagegen deutlich, dass die Aachener Meierei gemeint ist.
 

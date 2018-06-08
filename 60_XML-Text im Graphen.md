@@ -31,7 +31,7 @@ Prinzipiell können XML-Dateien ohne größere Probleme in einen Graphen importi
 
 Für den Bereich der historisch-kritischen und philologischen Editionen ist es in der Regel ausreichend, beim Import von XML-kodierten Texten in den Graphen jeweils ein Wort in einen Knoten zu importieren, da meist die historische Aussage der Quelle im Vordergrund steht. In anderen Bereichen der digitalen Geisteswissenschaften kann die Entscheidung, welche Einheit für den Import in einen Knoten gewählt wird, durchaus anders ausfallen. So ist für Philologien die Betrachtung auf Buchstabenebene interessant[^736a]. Im Graphmodell ist man im Hinblick auf die Granularität des Datenmodells wesentlich flexibler als z.B. bei XML oder Standoff-Markup. So ist es beispielsweise denkbar, an einen Wortknoten eine weitere Kette von Knoten anzulagern, welche pro Knoten jeweils einen Buchstaben des Wortes und die zugehörigen Annotationen enthalten. Es handelt sich um einen buchstabenbasierten Sub-Graphen, dessen Anfang und Ende mit dem  Wortknoten verbunden ist. Damit können verschiedene Granularitätsstufen in einem Modell und in einer Datenbank abgebildet werden.
 
-![Granularität von Text im Graphen](Bilder/Granularitaet-im-Graphen.png)
+![Granularität von Text im Graphen](/Graphentechnologien/Bilder/Granularitaet-im-Graphen.png)
 
 
 ## Technische Vorbemerkungen
@@ -102,9 +102,9 @@ Tabelle zu den erstellen Kantentypen
 
 Die folgende Abbildung zeigt einen kleinen Ausschnitt aus der TEI-XML-Datei der Patzig-Vorlesungsmitschrift.
 
-![XML-Beispiel aus der TEI-XML-Datei der Patzig-Vorlesungsmitschrift.](Bilder/TEI2Graph/subst-xml-Beispiel.png)
+![XML-Beispiel aus der TEI-XML-Datei der Patzig-Vorlesungsmitschrift.](/Graphentechnologien/Bilder/TEI2Graph/subst-xml-Beispiel.png)
 
-![XML-Beispiel im Graphen.](Bilder/TEI2Graph/xml-importer-datenmodell.png)
+![XML-Beispiel im Graphen.](/Graphentechnologien/Bilder/TEI2Graph/xml-importer-datenmodell.png)
 
 Beim Import der XML-Datei in den Graphen die XML-Element-Knoten in Xml-Tag-Knoten
 In der Abbildung des XML-Ausschnittes sind jene Teile blau markiert, die sich auch in der Graphabbildung befinden. Aus Sicht der XML-Hierarchie befindet sich der XML-Textknoten mit dem Inhalt *gedeckt u.* auf der gleichen Ebene mit dem `<subst>`-Element. Dies wird beim
@@ -120,7 +120,7 @@ MATCH
 RETURN * LIMIT 25
 ~~~
 
-![XML-Hierarchie eines `<add>`-Elements und der von ihm umfassten Wörter im Graphen.](Bilder/TEI2Graph/XML-Hierarchie.png)
+![XML-Hierarchie eines `<add>`-Elements und der von ihm umfassten Wörter im Graphen.](/Graphentechnologien/Bilder/TEI2Graph/XML-Hierarchie.png)
 
 In einem zweiten Schritt kann der so entstandene Graph mit Hilfe von cypher-Querys weiter bearbeitet werden. Die Grahdatenbank neo4j ist schemafrei und somit können nun über die importieren XML-Strukturen weitere Erschließungsstrukturen gelegt werden, ohne dass ein XML-Parser sich über das nicht mehr wohlgeformte XML beschwert. Zu beachten ist bei jedem Schritt, ob wieder der Schritt zurück nach XML getätigt werden soll. Sicherlich ist es kein größeres Problem, eine in eine Graphdatenbank importierte XML-Datei wieder als solche zu exportieren. Ist der Graph aber mit weiteren Informationen angereichert, so muss geklärt werden, ob, und wenn ja wie, diese zusätzlichen Informationen in wohlgeformtes XML transferiert werden können.
 
@@ -144,7 +144,7 @@ dem Himalaja Gebirge. ...
 
 Im Graphen sieht die Stelle wie folgt aus:
 
-![`<lb/>`-Element im Graphen](Bilder/TEI2Graph/lb-im-Graph2.png)
+![`<lb/>`-Element im Graphen](/Graphentechnologien/Bilder/TEI2Graph/lb-im-Graph2.png)
 
 Das leere `<lb/>`-Element steht für die Markierung eines Zeilenanfangs (*line begins*). Der Graph soll nun so umgebaut werden, dass die Zeile durch einen `line`-Knoten gekennzeichnet wird, von dem aus eine `FIRST_CHILD_OF`-Kante mit dem ersten Wort der Zeile und eine `LAST_CHILD_OF`-Kante mit dem letzten Wort der Zeile verbunden ist.
 
@@ -172,7 +172,7 @@ RETURN * LIMIT 20;
 
 Im Graphen sieht die Stelle wie folgt aus:
 
-![`<lb/>`-Element im Graphen](Bilder/TEI2Graph/lb-to-line.png)
+![`<lb/>`-Element im Graphen](/Graphentechnologien/Bilder/TEI2Graph/lb-to-line.png)
 
 ### Zeilenwechsel mit Worttrennungen
 
@@ -186,7 +186,7 @@ auf ...
 
 Im Graphen sieht die Stelle wie folgt aus:
 
-![`<lb/>`-Element im Graphen](Bilder/TEI2Graph/lb mit Worttrennung im Graphen.png)
+![`<lb/>`-Element im Graphen](/Graphentechnologien/Bilder/TEI2Graph/lb mit Worttrennung im Graphen.png)
 
 Mit dem folgenden cypher-query kommt man den auf der Abbildung sichtbaren Supgraphen:
 
@@ -222,7 +222,7 @@ RETURN * LIMIT 20;
 
 Im Graphen ergibt sich anschließend folgendes Bild:
 
-![`<lb/>`-Element im Graphen herausgenommen, Wortknoten zusammengefasst](Bilder/TEI2Graph/lb-Trennung-rausgenommen2.png)
+![`<lb/>`-Element im Graphen herausgenommen, Wortknoten zusammengefasst](/Graphentechnologien/Bilder/TEI2Graph/lb-Trennung-rausgenommen2.png)
 
 Am unteren Bereich der Abbildung sind in der Legende die Propertys des Wortknotens *Kentniß* hervorgehoben. Dort erkennt man die vorher vorhandenen Wortbestandteile und den neuen Wert der Property *text*.
 
@@ -278,7 +278,7 @@ RETURN * LIMIT 20;
 
 Im Graphen ergibt sich folgendes Bild:
 
-![Der Pfad vom `<pb/>`-Element zum ersten Wort der Seite *befreundet*.](Bilder/TEI2Graph/pb6-Bestand.png)
+![Der Pfad vom `<pb/>`-Element zum ersten Wort der Seite *befreundet*.](/Graphentechnologien/Bilder/TEI2Graph/pb6-Bestand.png)
 
 Markiert ist das `<pb/>`-Element der Seite 6. Im Fuß der Abbildung werden die Propertys des Elements angezeigt. Der Textfluss wird durch den Wortknoten `befreun-` unterbrochen, der eine Kustode darstellt. Diese soll aus dem Textfluss herausgelöst und direkt mit dem letzten Wortknoten `Volke` über die neu eingeführte `catch_words`-Kante verbunden werden. Der `<fw>`, und der `<lb/>`-Knoten werden gelöscht und der letzte Wortknoten der Seite über eine neue `NEXT`-Kante mit dem `<pb/>`-Knoten verknüpft.
 
@@ -307,7 +307,7 @@ RETURN * LIMIT 20;
 
 Im Graphen ergibt sich folgendes Bild:
 
-![Die Kustode *befreun-* wird aus der `NEXT_WORD`-Textkette herausgenommen und über eine `CATCH_WORDS`-Kante mit dem Wortknoten *Volke* verknüpft.](Bilder/TEI2Graph/fw-catch-words.png)
+![Die Kustode *befreun-* wird aus der `NEXT_WORD`-Textkette herausgenommen und über eine `CATCH_WORDS`-Kante mit dem Wortknoten *Volke* verknüpft.](/Graphentechnologien/Bilder/TEI2Graph/fw-catch-words.png)
 
 Die Kustode ist nun  nicht mehr über `NEXT_WORD`-Kanten mit dem Fließtext verknüpft, bleibt aber über die `CATCH_WORDS`-Kante mit dem letzten Wort der Seite verbunden. In einem zweiten Schritt müssen nun die beiden `<pb/>`-Elementknoten zu einem neu einzuführenden `page`-Knoten zusammengeführt werden. Hierfür lassen wir uns im nächsten cypher-Query alle `<pb/>`-Knoten mit einer DtaID kleiner als 875 anzeigen, da diese vor dem `<pb/>`-Knoten der Seite 6 mit der DtaID 874 liegen:
 
@@ -317,7 +317,7 @@ WHERE n.DtaID < 875
 RETURN n;
 ~~~
 
-![Tabellenansicht aller `<pb/>`-Knoten mit einer DtaID kleiner als 875.](Bilder/TEI2Graph/pb-Element-Tabelle.png)
+![Tabellenansicht aller `<pb/>`-Knoten mit einer DtaID kleiner als 875.](/Graphentechnologien/Bilder/TEI2Graph/pb-Element-Tabelle.png)
 
 Aus der Tabellenansicht ist zu entnehmen, dass Seite 5 von den `<pb/>`-Elementen mit der DtaID 562 und 874 eingefasst wird.
 
@@ -332,18 +332,18 @@ MERGE
 RETURN pb1, w1, pb2, w2, page;
 ~~~
 
-![Die Seite wird modelliert mit dem `page`-Knoten #0005 der mit dem ersten Wort über eine `FIRST_CHILD_OF`- und mit dem letzten Wort der Seite über eine `LAST_CHILD_OF`-Kante verknüpft ist.[^f777]](Bilder/TEI2Graph/page-f0005.png)
+![Die Seite wird modelliert mit dem `page`-Knoten #0005 der mit dem ersten Wort über eine `FIRST_CHILD_OF`- und mit dem letzten Wort der Seite über eine `LAST_CHILD_OF`-Kante verknüpft ist.[^f777]](/Graphentechnologien/Bilder/TEI2Graph/page-f0005.png)
 
 
 ### Absätze
 
 Absätze werden im DTA-Basisformat mit dem `<p>`-Element eingefasst. Im Manusskript von Patzig finden sich insgesamt 238 mit dem `<p>`-Element eingefasste Textabschnitte[^0f28].
 
-![XML-Auszug aus Patzig mit einem Absatz als Beispiel.](Bilder/TEI2Graph/p-xml-Beispiel.png)
+![XML-Auszug aus Patzig mit einem Absatz als Beispiel.](/Graphentechnologien/Bilder/TEI2Graph/p-xml-Beispiel.png)
 
 Da das `<p>`-Element im Unterschied zu den leeren Elementen wie `pb` oder `lb` ein öffnendes und schließendes Tag hat, wird beim Import der TEI-Xml-Datei durch den Importer schon ein `p`-Knoten erstellt, der mit einer `FIRST_CHILD_OF`-Kante mit dem ersten Wort des Absatzes und mit einer `LAST_CHILD_OF`-Kante mit dem letzten Wort des Absatzes verknüpft ist.
 
-![Ein Teil des gleichen Absatzes aus Patzig im Graphen. ](Bilder/TEI2Graph/p-graph-Beispiel.png)
+![Ein Teil des gleichen Absatzes aus Patzig im Graphen. ](/Graphentechnologien/Bilder/TEI2Graph/p-graph-Beispiel.png)
 
 Alle Wörter eines Absatzes sind darüber hinaus über `NEXT_SIBLING`-Kanten in der Textreihenfolge verknüpft.
 
@@ -377,7 +377,7 @@ p2 = shortestPath(
 RETURN p1,p2 LIMIT 20;
 ~~~
 
-![Struktur der ersten Kapitel mit dem jeweils ersten und letzten Wort. ](Bilder/TEI2Graph/div-Struktur-XmlWord.png)
+![Struktur der ersten Kapitel mit dem jeweils ersten und letzten Wort. ](/Graphentechnologien/Bilder/TEI2Graph/div-Struktur-XmlWord.png)
 
 Mit dem folgenden cypher-Query wird das erste Wort des Kapitels über eine `FIRST_CHILD_OF`-Kante und das letzte Wort des Absatzes über eine `LAST_CHILD_OF`-Kante mit dem `div`-Knoten verbunden. Um die neu erstellen Kanten von den vom Importer erstellen zu unterscheiden erhalten diese die Proptery *type* mit dem Wert *graph*. Um die `div`-Knoten von den anderen `XmlTag`-Knoten unterscheiden zu können erhalten sie das zusätzliche Label *Session*.
 
@@ -461,7 +461,7 @@ ORDER BY Anzahl DESC;
 
 Der Umbau wird an einem Beispieltext der Seite 32 des Patzig-Manuskripts durchgeführt[^148e].
 
-![<subst>-Beispiel in der XML-Ansicht. ](Bilder/TEI2Graph/subst-xml-Beispiel.png)
+![<subst>-Beispiel in der XML-Ansicht. ](/Graphentechnologien/Bilder/TEI2Graph/subst-xml-Beispiel.png)
 
 Im Graphen findet man die entsprechende Stelle mit folgendem cypher-Query.
 
@@ -480,7 +480,7 @@ RETURN *;
 
 Der Query gruppiert sich um den `s`-Knoten, der das `subst`-Element darstellt und es über die DtaID identifiziert. Vom `s`-Knoten ausgehend, folgt der Pfad einerseits über `FIRST_CHILD_OF`-Kanten zum `n3`-Knoten (add-Element) und zum `n2`-Knoten, der schließlich das Wort *seine* darstellt. Über die `LAST_CHILD_OF`-Kante geht es zum `n4`-Knoten (del-Element) zum  `n5`-Wortknoten, der das Wort *diese* darstellt. Im zweiten Teil des MATCH-Befehls wird der Pfad zwischen dem Wort *seine* und *diese* ermittelt und schließlich alles ausgegeben.
 
-![<subst>-Beispiel in der Graph-Ansicht. ](Bilder/TEI2Graph/subst-graph-1.png)
+![<subst>-Beispiel in der Graph-Ansicht. ](/Graphentechnologien/Bilder/TEI2Graph/subst-graph-1.png)
 
 cyper-Query für den umgebaut
 
@@ -517,7 +517,7 @@ MATCH
 (w2)-[r7:NEXT_WORD]->(w3)-[r8:NEXT_WORD]->(w4)
 ~~~
 
-![\<subst>-Beispiel nach dem Graph-Umbau. ](Bilder/TEI2Graph/subst-add-del-bearbeitet.png)
+![\<subst>-Beispiel nach dem Graph-Umbau. ](/Graphentechnologien/Bilder/TEI2Graph/subst-add-del-bearbeitet.png)
 
 
 ### `<choice>`-Element
