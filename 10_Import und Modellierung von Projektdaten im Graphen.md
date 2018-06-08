@@ -38,7 +38,7 @@ Im Rahmen eines von der DFG geförderten Projekts wurden die Regesta Imperii gem
 
 Ende 2013 stellten Torsten Schrade und ich auf der Digital-Diplomatics-Konferenz in Paris eine Untersuchung vor, in der wir das Suchverhalten der Nutzer der Online-Regestensuche untersucht haben.[^595c] Ein interessantes Ergebnis war die Häufigkeitsverteilung der Treffermengen pro Suchanfrage.
 
-![Treffermengen pro Suchanfragen im Jahr 2013.](Bilder/2012-Nutzungsformen_der_RI.png)
+![Treffermengen pro Suchanfragen im Jahr 2013.](/Bilder/2012-Nutzungsformen_der_RI.png)
 
 Im Tortendiagramm ist die Treffermenge in Zehnerschritten angegeben. die hellgraue Gruppe oben rechts hat keine Treffen, die dunkelgraue Gruppe einen bis zehn Treffer, die gelbe Gruppe 11 bis 20 usw. Die lila Gruppe hat mehr als hundert Treffer. Was uns im Projekt überrascht hat, war die große Gruppe mit über 100 Treffern. Hinzu kam, dass über 68% der Nutzer nur ein Suchwort in die Suchmaske eingegeben haben, wobei das beliebteste Suchwort *Heinrich* Ende 2013 über 18.000 Treffer erzielte. Auf der Ergebnisseite hieß es dann lapidar: "Sie suchten nach *Heinrich*. Ihre Suche erzielte 18884 Treffer [...] Sie sehen die Treffer 1 bis 20."
 
