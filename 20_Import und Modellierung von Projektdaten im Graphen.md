@@ -5,7 +5,7 @@ order: 20
 contents: true
 ---
 
-# Contents
+# Inhalt
 {:.no_toc}
 
 * Will be replaced with the ToC, excluding the "Contents" header
