@@ -9,6 +9,11 @@ PDF-Dokument erstellen:
 pandoc Graphbasierte\ Editionen\ in\ den\ digitalen\ Geisteswissenschaften-v16.md --latex-engine=xelatex --toc --bibliography=Graph-Buch.json -o 16.pdf
 
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
 
 # Textmodelle im Graphen
 
