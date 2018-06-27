@@ -19,7 +19,7 @@ In der Regel ist es von Vorteil, zunächst das CSV-Feld als eine Propery zu impo
 
 Angenommen wir haben Personen importiert, die in der Property `abschluss` eine kommaseparierte Liste von verschiedenen beruflichen Abschlüssen haben, wie z.B. Lehre, BA-Abschluss, MA-Abschluss, Promotion.
 
-In der Property abschluss steht zum Beispiel drin:
+In der Property `abschluss` steht zum Beispiel drin:
 
 `lic. theol., mag. art., dr. theol., bacc. art., bacc. bibl. theol.`
 
