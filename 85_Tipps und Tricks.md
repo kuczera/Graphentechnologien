@@ -70,6 +70,17 @@ WHERE NOT
 RETURN reg;
 ~~~
 
+# Häufigkeit von Wortketten
+
+Am Beispiel des [DTA-Imports](http://134.176.70.65:10220/browser/) von Berg Ostasien wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
+
+~~~cypher
+MATCH p=(n1:Token)-[:NEXT_TOKEN]->(n2:Token)-[:NEXT_TOKEN]->(n3:Token)
+WITH n1.text as text1, n2.text as text2, n3.text as text3, count(*) as count
+WHERE count > 1 // evtl höherer Wert hier
+RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
+~~~
+
 # Der `WITH`-Befehl
 
 Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
