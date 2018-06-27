@@ -19,6 +19,10 @@ In der Regel ist es von Vorteil, zunächst das CSV-Feld als eine Propery zu impo
 
 Angenommen wir haben Personen importiert, die in der Property `abschluss` eine kommaseparierte Liste von verschiedenen beruflichen Abschlüssen haben, wie z.B. Lehre, BA-Abschluss, MA-Abschluss, Promotion.
 
+In der Property abschluss steht zum Beispiel drin:
+
+`lic. theol., mag. art., dr. theol., bacc. art., bacc. bibl. theol.`
+
 Der Befehl hierzu sieht wie folgt auch:
 
 ~~~cypher
@@ -29,7 +33,8 @@ MERGE (t)<-[:ABSCHLUSS]-(p)
 );
 ~~~
 
-Zu beachten ist, dass die im CSV-Feld gemeinsam genannten Begriffe keine konsistent benannt sein müssen.
+Der Query nimmt die Liste von Abschlüssen jeweils beim Komma auseinander, erstellt mit dem `MERGE`-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten.
+Zu beachten ist, dass die im CSV-Feld gemeinsam genannten Begriffe konsistent benannt sein müssen.
 
 # `MERGE` schlägt fehl da eine Property NULL ist
 
@@ -56,7 +61,7 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 # Knoten hat bestimmte Kante nicht
 
-Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://134.176.70.65:10210/browser/) der Regesten Kaiser Friedrichs III. wird mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
+Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://134.176.70.65:10210/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
 
 ~~~cypher
 MATCH (reg:Regesta)
@@ -64,7 +69,6 @@ WHERE NOT
 (reg)-[:PLACE_OF_ISSUE]->(:Place)
 RETURN reg;
 ~~~
-
 
 # Der `WITH`-Befehl
 
