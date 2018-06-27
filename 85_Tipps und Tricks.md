@@ -54,6 +54,18 @@ MERGE (o:Ort {ortsname:line.Herkunft})
 MERGE (p)-[:HERKUNFT]->(o);
 ~~~
 
+# Knoten hat bestimmte Kante nicht
+
+Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://134.176.70.65:10210/browser/) der Regesten Kaiser Friedrichs III. wird mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
+
+~~~cypher
+MATCH (reg:Regesta)
+WHERE NOT
+(reg)-[:PLACE_OF_ISSUE]->(:Place)
+RETURN reg;
+~~~
+
+
 # Der `WITH`-Befehl
 
 Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
