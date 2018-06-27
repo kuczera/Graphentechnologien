@@ -72,7 +72,7 @@ RETURN reg;
 
 # Häufigkeit von Wortketten
 
-Am Beispiel des [DTA-Imports](http://134.176.70.65:10220/browser/) von Berg Ostasien wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
+Am Beispiel des [DTA-Imports](http://134.176.70.65:10220/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
 
 ~~~cypher
 MATCH p=(n1:Token)-[:NEXT_TOKEN]->(n2:Token)-[:NEXT_TOKEN]->(n3:Token)
