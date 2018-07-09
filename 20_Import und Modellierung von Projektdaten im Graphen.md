@@ -44,12 +44,15 @@ Nachdem die Download-URL der CSV-Datei nun ermittelt ist, kann der `LOAD CSV`-Be
 
 ~~~cypher
 // Regesten aus Google-Docs in die Graphdatenbank importieren
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1h6zXTWQySyu6dOrl-cE_nWY4aywwWacJTWLWTWey0rI/export?format=csv&id=1h6zXTWQySyu6dOrl-cE_nWY4aywwWacJTWLWTWey0rI&gid=1704663795" AS line
-CREATE (r:Regest {regid:line.persistent_identifier, Text:line.summary, Überlieferung:line.archival_history,ident:line.identifier})
-MERGE (d:Datum {startdate:line.start_date, enddate:line.end_date})
-MERGE (o:Ort {ort:line.name, latitude:toFloat(line.latitude), longitude:toFloat(line.longitude)})
-MERGE (r)-[:HAT_DATUM]->(d)
-MERGE (r)-[:HAT_ORT]->(o);
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1VCr1lSvVrcM-sFG0fLzNMawnBOd_WfqTq6eczMyNTQk/export?format=csv&id=1VCr1lSvVrcM-sFG0fLzNMawnBOd_WfqTq6eczMyNTQk&gid=1560491889" AS line
+CREATE (r:Regesta {regId:line.persistent_identifier,
+  text:line.summary, archivalHistory:line.archival_history,
+  ident:line.identifier, origPlaceOfIssue:line.locality_string,
+  startDate:line.start_date, endDate:line.end_date})
+MERGE (d:Date {startDate:line.start_date,
+  endDate:line.end_date})
+MERGE (r)-[:HAS_DATE]->(d)
+;
 ~~~
 
 In den Anführungszeichen nach dem Befehl `LOAD CSV WITH HEADERS FROM` wird der Download-Link der CSV-Datei angegeben. Der `LOAD CSV`-Befehl lädt dann bei seiner Auführung die CSV-Datei von der angegebenen URL und gibt sie zeilenweise an die folgenden cyper-Befehle weiter.
@@ -95,7 +98,7 @@ Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem 
 
 ## Vorbereitung der Registerdaten
 
-Register spielen für die Erschließung von gedrucktem Wissen eine zentrale Rolle, da dort in alphabetischer Ordnung die im Werk vorkommenden Entitäten (z.B. Personen und Orte) hierarchisch gegliedert aufgeschlüsselt werden. Für die digitale Erschließung der Regesta Imperii sind Register von zentraler Bedeutung, da mit ihnen die in den Regesten vorkommenden Personen und Orte bereits identifiziert vorliegen. Für den Import in die Graphdatenbank wird allerdings eine digitalisierterte Fassung des Registers benötigt. Im Digitalisierungsprojekt Regesta Imperii Online wurden Anfang der 2000er Jahre auch die gedruckt vorliegenden Register digitalisiert. Sie dienen nun als erste Grundlage für die digitale Registererschließung der Regesta Imperii. Im hier gezeigten Beispiel werden die Regesten Kaiser Heinrichs IV. und das dazugehörige Register importiert. Da der letzte Regestenband der Regesten Kaiser Heinrichs IV. mit dem Gesamtregister erst vor kurzem gedruckt wurde, liegen hier aktuelle digitale Fassung von Registern und Regesten vor. Die für den Druck in Word erstellte Registerfassung wird hierfür zunächst in eine hierarchisch gegliederte XML-Fassung konvertiert, damit die Registerhierarchie auch maschinenlesbar abgelegt ist.
+Register spielen für die Erschließung von gedrucktem Wissen eine zentrale Rolle, da dort in alphabetischer Ordnung die im Werk vorkommenden Entitäten (z.B. Personen und Orte) hierarchisch gegliedert aufgeschlüsselt werden. Für die digitale Erschließung der Regesta Imperii sind Register von zentraler Bedeutung, da mit ihnen die in den Regesten vorkommenden Personen und Orte bereits identifiziert vorliegen. Für den Import in die Graphdatenbank wird allerdings eine digitalisierterte Fassung des Registers benötigt. Im Digitalisierungsprojekt Regesta Imperii Online wurden Anfang der 2000er Jahre auch die gedruckt vorliegenden Register digitalisiert. Sie dienen nun als Grundlage für die digitale Registererschließung der Regesta Imperii. Im hier gezeigten Beispiel werden die Regesten Kaiser Heinrichs IV. und das dazugehörige Register importiert. Da der letzte Regestenband der Regesten Kaiser Heinrichs IV. mit dem Gesamtregister erst vor kurzem gedruckt wurde, liegen hier aktuelle digitale Fassung von Registern und Regesten vor. Die für den Druck in Word erstellte Registerfassung wird hierfür zunächst in eine hierarchisch gegliederte XML-Fassung konvertiert, damit die Registerhierarchie auch maschinenlesbar abgelegt ist.
 
 ![Ausschnitt aus dem XML-Register der Regesten Heinrichs IV.](/Graphentechnologien/Bilder/RI2Graph/XML-Register.png)
 
@@ -120,35 +123,34 @@ Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `node
 Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Diese werden mit den folgenden cypher-Befehlen in die Graphdatenbank eingespielt.
 
 ~~~cypher
-/ Registereinträge Personen erstellen
+// Registereinträge Personen erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=1167029283"
 AS line
-CREATE (:RegisterPerson {registerid:line.ID, name1:line.name1});
+CREATE (:IndexPerson {registerId:line.ID, name1:line.name1});
 ~~~
 
 ~~~cypher
-// Registereinträge Orte erstellen
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2049106817"
+OAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2049106817"
 AS line
-CREATE (:RegisterOrt {registerid:line.ID, name1:line.name1});
+CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
 ~~~
 
 Die beiden Befehle greifen auf verschiedene Tabellenblätter des gleichen Google-Tabellendokuments zu, laden es als CSV-Daten und übergeben die Daten zeilenweise an die `CREATE`-Befehle.
 Im nächsten Schritt werden nun die Verknüpfungen zwischen den Registereinträgen und den Regesten erstellt.
 
 ~~~cypher
-// GENANNT_IN-Kanten für Orte erstellen
+// PLACE_IN-Kanten für Orte erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2147130316"
 AS line
-MATCH (from:RegisterOrt {registerid:line.ID}), (to:Regest {regnum:line.regnum2})
-CREATE (from)-[:ORT_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
+MATCH (from:IndexPlace {registerId:line.ID}), (to:Regesta {regnum:line.regnum2})
+CREATE (from)-[:PLACE_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
 ~~~cypher
-// GENANNT_IN-Kanten für Person erstellen
+// PERSON_IN-Kanten für Person erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2147130316"
 AS line
-MATCH (from:RegisterPerson {registerid:line.ID}), (to:Regest {regnum:line.regnum2})
+MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2})
 CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
