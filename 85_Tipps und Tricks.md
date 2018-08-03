@@ -1,7 +1,7 @@
 ---
 title: Tipps und Tricks
 layout: default
-order: 45
+order: 85
 contents: true
 ---
 
