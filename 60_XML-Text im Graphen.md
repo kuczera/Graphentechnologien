@@ -1,7 +1,7 @@
 ---
 title: XML-Text im Graphen
 layout: default
-order: 10
+order: 60
 contents: true
 ---
 
