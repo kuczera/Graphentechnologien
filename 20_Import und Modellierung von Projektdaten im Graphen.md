@@ -98,6 +98,7 @@ Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem 
 
 ## Vorbereitung der Registerdaten
 
+### Das Register des Regesten Kaiser Heinrichs IV.
 Register spielen für die Erschließung von gedrucktem Wissen eine zentrale Rolle, da dort in alphabetischer Ordnung die im Werk vorkommenden Entitäten (z.B. Personen und Orte) hierarchisch gegliedert aufgeschlüsselt werden. Für die digitale Erschließung der Regesta Imperii sind Register von zentraler Bedeutung, da mit ihnen die in den Regesten vorkommenden Personen und Orte bereits identifiziert vorliegen. Für den Import in die Graphdatenbank wird allerdings eine digitalisierterte Fassung des Registers benötigt. Im Digitalisierungsprojekt Regesta Imperii Online wurden Anfang der 2000er Jahre auch die gedruckt vorliegenden Register digitalisiert. Sie dienen nun als Grundlage für die digitale Registererschließung der Regesta Imperii. Im hier gezeigten Beispiel werden die Regesten Kaiser Heinrichs IV. und das dazugehörige Register importiert. Da der letzte Regestenband der Regesten Kaiser Heinrichs IV. mit dem Gesamtregister erst vor kurzem gedruckt wurde, liegen hier aktuelle digitale Fassung von Registern und Regesten vor. Die für den Druck in Word erstellte Registerfassung wird hierfür zunächst in eine hierarchisch gegliederte XML-Fassung konvertiert, damit die Registerhierarchie auch maschinenlesbar abgelegt ist.
 
 ![Ausschnitt aus dem XML-Register der Regesten Heinrichs IV.](/Graphentechnologien/Bilder/RI2Graph/XML-Register.png)
@@ -112,15 +113,18 @@ In einer Tabelle werden alle Entitäten aufgelistet und jeweils mit einer ID ver
 
 ![Ausschnitt der Verknüpfungstabelle des Registers der Regesten Heinrichs IV.](/Graphentechnologien/Bilder/RI2Graph/RegisterH4-GENANNT.png)
 
-In der anderen Tabelle werden die Verknüpfungen zwischen Registereinträgen und den Regesten aufgelistet. Der Registereintrag Adalbero kommt also in mehreren Regesten vor. Da das Register der Regesten Heinrichs IV. nur zwei Hierarchiestufen enthält, in denen beispielsweise verschiedene Amtsphasen ein und derselben Person unterschieden werden, wurden diese beim Import zusammengefasst.[^5979] Damit gibt es pro Person jeweils nur einen Knoten. In anderen Registern der Regesta Imperii sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren können. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
+In der anderen Tabelle werden die Verknüpfungen zwischen Registereinträgen und den Regesten aufgelistet. Der Registereintrag Adalbero kommt also in mehreren Regesten vor. Da das Register der Regesten Heinrichs IV. nur zwei Hierarchiestufen enthält, in denen beispielsweise verschiedene Amtsphasen ein und derselben Person unterschieden werden, wurden diese beim Import zusammengefasst.[^5979] Damit gibt es pro Person jeweils nur einen Knoten.
+
+### Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
+In anderen Registern der Regesta Imperii sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren können. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
 ![Ausschnitt der Entitätentabelle des Registers der Regesten Friedrichs III.](/Graphentechnologien/Bilder/RI2Graph/RegisterF3-Hierarchie.png)
 
 Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `nodeID` zugewiesen. Wenn es sich um einen Registereintrag handelt, der kein Hauptlemma ist, wird in der dritten Spalte die `topnodeID` angegeben, die auf das übergeordnete Lemma verweist. Beim Import in die Graphdatenbank wird diese Hierarchie über `OBERBEGRIFF`-Kanten abgebildet, die vom untergeordneten Eintrag auf das übergeordnete Lemma verweisen. Damit ist die komplette Registerhierarchie im Graphen abgebildet. In der Spalte `name1` ist das Lemma angegeben, in der Spalte `name3` zusätzliche zum Lemma noch der gesamte Pfad vom Hauptlemma bis zum Registereintrag, jeweils auch `//` getrennt. Dies ist notwendig, da bei tiefer gestaffelten Registern allein mit der Angabe aus der Spalte `name1` nicht klar ist, zu welchem Oberbegriff beispielsweise die `Meierei` in Zeile 17 gehört. Mit dem kompletten Pfad des Registereintrages in der Spalte `name3` wird dagegen deutlich, dass die Aachener Meierei gemeint ist.
 
-## Import in die Graphdatenbank
+## Import der Registerdaten in die Graphdatenbank
 
-Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Diese werden mit den folgenden cypher-Befehlen in die Graphdatenbank eingespielt.
+Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Die Registerdaten können [hier](https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/edit?usp=sharing) eingesehen werden. In dem Tabellendokument befinden sich insgesamt vier Tabellen. In der Tabelle Personen sind die Einträge des Personenregisters aufgelistet. In der Tabelle Orte befindet sich die Liste aller Einträge des Ortsregisters und in der Tabelle Personen und Orte sind ist alles zusammengefasst.[^7a43] Schließlich enthält die Tabelle GENANNT_IN Information dazu, welche Personen oder Orte in welchen Regesten genannt sind. Die Tabellen werden mit den folgenden cypher-Befehlen in die Graphdatenbank eingespielt.
 
 ~~~cypher
 // Registereinträge Personen erstellen
@@ -135,8 +139,8 @@ AS line
 CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
 ~~~
 
-Die beiden Befehle greifen auf verschiedene Tabellenblätter des gleichen Google-Tabellendokuments zu, laden es als CSV-Daten und übergeben die Daten zeilenweise an die `CREATE`-Befehle.
-Im nächsten Schritt werden nun die Verknüpfungen zwischen den Registereinträgen und den Regesten erstellt.
+Die beiden Befehle greifen auf verschiedene Tabellenblätter des gleichen Google-Tabellendokuments zu, laden es als CSV-Daten und übergeben die Daten zeilenweise an die weiteren Befehle (Hier an den `MATCH`- und den `CREATE`-Befehl).
+Im nächsten Schritt werden nun die Verknüpfungen zwischen den Registereinträgen und den Regesten erstellt. Hier werden
 
 ~~~cypher
 // PLACE_IN-Kanten für Orte erstellen
@@ -153,6 +157,7 @@ AS line
 MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2})
 CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
+
 
 
 [^5147]: Verwendet wird die Graphdatenbank neo4j. Die Open-Source-Version ist kostenlos erhältlich unter [https://www.neo4j.com](https://www.neo4j.com).
@@ -176,3 +181,5 @@ Marten Düring, Ulrich Eumann, Martin Stark und Linda von Keyserlingk. Berlin 20
 [^6155]: Der cypher-Befehl zur Erstellung der 1zu1-Beziehungen lautet: *MATCH (n1:Registereintrag)-[:GENANNT_IN]->(r:Regest)<-[:GENANNT_IN]-(n2:Registereintrag)
 MERGE (n1)-[:KNOWS]->(n2);* Dabei werden die gerichteten `KNOWS`-Kanten jeweils in beide Richtungen erstellt.
 Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOWS]->() RETURN count(p);* Für die Bestimmung der 1zu1-Beziehungen muss der Wert noch durch 2 geteilt werden.
+
+[^7a43]: Letztgenannte Tabelle existiert nur aus historischen Gründen und wird beim Import nicht mehr berücksichtigt.
