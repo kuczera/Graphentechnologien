@@ -15,7 +15,7 @@ contents: true
 
 Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Typo3 welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
 
-![Regesten als CSV-Datei](/Graphentechnologien/Bilder/RI2Graph/10-ods-regesten.png)
+![Regesten als CSV-Datei](/Graphentechnologien/Bilder/RI2Graph/ReggH4-Regestentabelle.png)
 
 In der CSV-Datei finden sich die oben erläuterten einzelnen Elemente der Regesten in jeweils eigenen Spalten. Die Spaltenüberschrift gibt Auskunft zum Inhalt der jeweiligen Spalte.
 
@@ -43,18 +43,15 @@ Damit lädt man das aktuelle Tabellenblatt als CSV runter. Nach dem Download mus
 Nachdem die Download-URL der CSV-Datei nun ermittelt ist, kann der `LOAD CSV`-Befehl angepasst und ausgeführt werden.
 
 ~~~cypher
-// Regesten aus Google-Docs in die Graphdatenbank importieren
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1VCr1lSvVrcM-sFG0fLzNMawnBOd_WfqTq6eczMyNTQk/export?format=csv&id=1VCr1lSvVrcM-sFG0fLzNMawnBOd_WfqTq6eczMyNTQk&gid=1560491889" AS line
-CREATE (r:Regesta {regId:line.persistent_identifier,
-  text:line.summary, archivalHistory:line.archival_history,
-  ident:line.identifier, origPlaceOfIssue:line.locality_string,
-  startDate:line.start_date, endDate:line.end_date})
-MERGE (d:Date {startDate:line.start_date,
-  endDate:line.end_date})
-MERGE (r)-[:HAS_DATE]->(d)
+// ReggH4-Regesten und Datumsangaben aus Google-Docs importieren
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
+CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history,date:line.date_string,ident:line.identifier,regnum:line.regnum,origPlaceOfIssue:line.locality_string, startDate:line.start_date, endDate:line.end_date})
+MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
+MERGE (r)-[:DATE]->(d)  
 ;
 ~~~
 
+Der `LOAD CSV`-Befehl kann noch um die Angabe `WITH HEADERS FROM` ergänzt werden. Dann werden die Angaben in der ersten Zeile für die Identifizierung der Spalten verwendet.
 In den Anführungszeichen nach dem Befehl `LOAD CSV WITH HEADERS FROM` wird der Download-Link der CSV-Datei angegeben. Der `LOAD CSV`-Befehl lädt dann bei seiner Auführung die CSV-Datei von der angegebenen URL und gibt sie zeilenweise an die folgenden cyper-Befehle weiter.
 
 ![Blick auf die ersten Zeilen der Google-spreadsheets-Tabelle.](/Graphentechnologien/Bilder/RI2Graph/CSV-Google-Tabelle.png)
@@ -86,13 +83,98 @@ In der nächsten Abbildung wird das Modell des Regests im Graphen abgebildet.
 Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Mit den folgenden `MERGE`-Befehlen werden anschließend ergänzende Knoten für die Datumsangaben und die Ausstellungsorte erstellt. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird der hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird dann die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
 |Befehl|Variablen|Bemerkungen|
-|:--------|----------------|:----------------|
+|:--------|------|:-------|
 |`LOAD CSV WITH HEADERS FROM` "https://docs.google.com/ ..." AS line|line|Import der CSV-Dateien. Es wird jeweils eine Zeile an die Variable line weitergegeben|
 |`CREATE` (r:Regest {regid:line.persistent_identifier, Text:line.summary, Überlieferung:line.archival_history,ident:line.identifier})|line.persistent_identifier, line.summary etc. |Erstellung des Regestenknotens. Für die weiteren Befehlt steht der neu erstellt Regestenknoten unter der Variable r zur Verfügung.|
 |`MERGE` (d:Datum {startdate:line.start_date, enddate:line.end_date})|line.start_date und line.end_date|Es wird geprüft, ob ein Datumsknoten mit der Datumsangabe schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Datumsknoten unter der Variable d zur Verfügung.|
 |`MERGE` (o:Ort {ort:line.name, latitude:toFloat(line.latitude), longitude:toFloat(line.longitude)})|line.name ist der Ortsname, die anderen Angaben sind die Geodaten des Ortes|Es wird geprüft, ob ein Ortsknoten schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Ortsknoten unter der Variable o zur Verfügung.|
 |`MERGE` (r)-[:HAT_DATUM]->(d)|`(r)` ist der Regestenknoten, `(d)` ist der Datumsknoten|Zwischen Regestenknoten und Datumsknoten wird eine `HAT_DATUM`-Kante erstellt.|
 |`MERGE` (r)-[:HAT_ORT]->(o);|`(r)` ist der Regestenknoten, `(o)` ist der Ortsknoten|Zwischen Regestenknoten und Ortsknoten wird eine `HAT_ORT`-Kante erstellt.|
+
+# Erstellen der Ausstellungsorte
+
+In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun bei der Erstellung der Regestendatenbank im Graphen berücksichtigt werden können. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich teilweise aber auch auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit den 1.000 häufigsten Ortsangaben konnten schon die Ausstellungsorte der Mehrzahl der Regesten georeferenziert werden.
+
+Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
+
+~~~cypher
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw/export?format=csv&id=13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw&gid=420547059" AS line
+WITH line
+WHERE line.Lat IS NOT NULL
+AND line.normalisiertDeutsch IS NOT NULL
+MATCH (r:Regesta {origPlaceOfIssue:line.Original})
+MERGE (p:Place {normalizedGerman:line.normalisiertDeutsch, longitude:line.Long, latitude:line.Lat})
+WITH r, p, line
+MERGE (r)-[:PLACE_OF_ISSUE]->(p)
+SET p.wikidataId = line.wikidataId
+SET p.name = line.name
+SET p.gettyId = line.GettyId
+SET p.geonamesId = line.GeonamesId
+RETURN count(p)
+;
+~~~
+
+Da Import-Query ist etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind, wir beim Import aber nur die Ortsknoten erstellen, die für die Regesten Kaiser Heinrichs IV. relevant sind. Sind die genannten Bedingungen erfüllt, wird mit dem `MERGE`-Befehl der `Place`-Knoten erstellt und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten ergänzt.
+
+Mit dem folgenden Query werden die `PLACE_OF_ISSUE`-Kanten noch mit weiteren Informationen
+
+~~~cypher
+// Relationen verknüpfte Ausstellungorte
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw/export?format=csv&id=13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw&gid=420547059" AS line
+WITH line
+MATCH (p:Place {normalizedGerman:line.normalisiertDeutsch})<-[rel:PLACE_OF_ISSUE]-(reg:Regesta {origPlaceOfIssue:line.Original})
+SET rel.original = line.Original
+SET rel.alternativeName = line.Alternativname
+SET rel.commentary = line.Kommentar
+SET rel.allocation = line.Zuordnung
+SET rel.state = line.Lage
+SET rel.certainty = line.Sicherheit
+SET rel.institutionInCity = line.InstInDerStadt
+RETURN count(rel)
+;
+~~~
+
+~~~cypher
+// Regesten und Ausstellungsorte mit Koordinaten der Ausstellungsorte versehen
+MATCH (r:Regesta)-[:PLACE_OF_ISSUE]->(o:Place)
+SET r.latLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
+SET o.latLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
+SET r.placeOfIssue = o.normalizedGerman
+SET r.latitude = o.latitude
+SET r.longitude = o.longitude
+;
+~~~
+
+~~~cypher
+// Date in Isodatum umwandeln
+MATCH (n:Regesta)
+SET n.isoStartDate = date(n.startDate);
+MATCH (n:Regesta)
+SET n.isoEndDate = date(n.endDate);
+MATCH (d:Date)
+SET d.isoStartDate = date(d.startDate);
+MATCH (d:Date)
+SET d.isoEndDate = date(d.endDate);
+~~~
+
+~~~cypher
+// ReggH4-Herrscherhandeln
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/export?format=csv&id=1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY&gid=267441060"
+AS line FIELDTERMINATOR ','
+MATCH (r:Regesta{ident:line.regid})
+MERGE (l:Lemma{lemma:line.Lemma})
+MERGE (r)-[:ACTION]->(l);
+~~~
+
+~~~cypher
+// ReggH4-Literaturnetzwerk erstellen
+MATCH (reg:Regesta)
+WHERE reg.archivalHistory CONTAINS "link"
+UNWIND apoc.text.regexGroups(reg.archivalHistory, "<link (\\S+)>(\\S+)</link>") as link
+MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
+MERGE (reg)-[:REFERENCES]->(ref);
+~~~
+
 
 # Import der Registerdaten in die Graphdatenbank
 
@@ -116,15 +198,15 @@ In einer Tabelle werden alle Entitäten aufgelistet und jeweils mit einer ID ver
 In der anderen Tabelle werden die Verknüpfungen zwischen Registereinträgen und den Regesten aufgelistet. Der Registereintrag Adalbero kommt also in mehreren Regesten vor. Da das Register der Regesten Heinrichs IV. nur zwei Hierarchiestufen enthält, in denen beispielsweise verschiedene Amtsphasen ein und derselben Person unterschieden werden, wurden diese beim Import zusammengefasst.[^5979] Damit gibt es pro Person jeweils nur einen Knoten.
 
 ### Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
-In anderen Registern der Regesta Imperii sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren können. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
+In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III. sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren können. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
 ![Ausschnitt der Entitätentabelle des Registers der Regesten Friedrichs III.](/Graphentechnologien/Bilder/RI2Graph/RegisterF3-Hierarchie.png)
 
-Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `nodeID` zugewiesen. Wenn es sich um einen Registereintrag handelt, der kein Hauptlemma ist, wird in der dritten Spalte die `topnodeID` angegeben, die auf das übergeordnete Lemma verweist. Beim Import in die Graphdatenbank wird diese Hierarchie über `OBERBEGRIFF`-Kanten abgebildet, die vom untergeordneten Eintrag auf das übergeordnete Lemma verweisen. Damit ist die komplette Registerhierarchie im Graphen abgebildet. In der Spalte `name1` ist das Lemma angegeben, in der Spalte `name3` zusätzliche zum Lemma noch der gesamte Pfad vom Hauptlemma bis zum Registereintrag, jeweils auch `//` getrennt. Dies ist notwendig, da bei tiefer gestaffelten Registern allein mit der Angabe aus der Spalte `name1` nicht klar ist, zu welchem Oberbegriff beispielsweise die `Meierei` in Zeile 17 gehört. Mit dem kompletten Pfad des Registereintrages in der Spalte `name3` wird dagegen deutlich, dass die Aachener Meierei gemeint ist.
+Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `nodeID` als eindeutige Kennung zugewiesen. Bei Registereinträgen, die kein Hauptlemma sind, enthält die dritte Spalte `topnodeID` den Verweis auf die eindeutige Kennung `nodeID` des übergeordneten Eintrages. Beim Import in die Graphdatenbank wird diese Hierarchie über `CHILD_OF`-Kanten abgebildet, die vom untergeordneten Eintrag auf das übergeordnete Lemma verweisen. Damit ist die komplette Registerhierarchie im Graphen abgebildet. In der Spalte `name1` ist das Lemma angegeben, in der Spalte `name3` zusätzliche zum Lemma noch der gesamte Pfad vom Hauptlemma bis zum Registereintrag, jeweils mit Doppelslahes (`//`) getrennt. Bei tiefer gestaffelten Registern ist teilweise ohne Kenntnis der übergeordneten Einträge eine eindeutige Identifizierung eines Eintrages nicht möglich. So wird in Zeile 17 der o.a. Abbildung allein mit der Angabe aus der Spalte `name1` nicht klar ist, um welche `Meierei` es sich handelt. Mit dem kompletten Pfad des Registereintrages in der Spalte `name3` wird dagegen deutlich, dass die Aachener `Meierei` gemeint ist.
 
 ## Import der Registerdaten in die Graphdatenbank
 
-Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Die Registerdaten können [hier](https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/edit?usp=sharing) eingesehen werden. In dem Tabellendokument befinden sich insgesamt vier Tabellen. In der Tabelle Personen sind die Einträge des Personenregisters aufgelistet. In der Tabelle Orte befindet sich die Liste aller Einträge des Ortsregisters und in der Tabelle Personen und Orte sind ist alles zusammengefasst.[^7a43] Schließlich enthält die Tabelle GENANNT_IN Information dazu, welche Personen oder Orte in welchen Regesten genannt sind. Die Tabellen werden mit den folgenden cypher-Befehlen in die Graphdatenbank eingespielt.
+Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Die digitalisierten Registerdaten können [hier](https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/edit?usp=sharing) eingesehen werden. In dem Tabellendokument befinden sich insgesamt drei Tabellen. In der Tabelle Personen sind die Einträge des Personenregisters aufgelistet und in der Tabelle Orte befindet sich die Liste aller Einträge des Ortsregisters. Schließlich enthält die Tabelle `APPEARS_IN` Information dazu, welche Personen oder Orte in welchen Regesten genannt sind. Der folgende cypher-Query importiert die Einträge der Personentabelle in die Graphdatenbank und erstellt für jeden Eintrag einen Knoten vom Typ `:IndexPerson`:
 
 ~~~cypher
 // Registereinträge Personen erstellen
@@ -133,22 +215,28 @@ AS line
 CREATE (:IndexPerson {registerId:line.ID, name1:line.name1});
 ~~~
 
+Mit dem folgenden cypher-Query werden nach dem gleichen Muster aus der Tabelle `Orte` die Ortseinträge in die Graphdatenbank importiert.
+
 ~~~cypher
 OAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2049106817"
 AS line
 CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
 ~~~
 
-Die beiden Befehle greifen auf verschiedene Tabellenblätter des gleichen Google-Tabellendokuments zu, laden es als CSV-Daten und übergeben die Daten zeilenweise an die weiteren Befehle (Hier an den `MATCH`- und den `CREATE`-Befehl).
-Im nächsten Schritt werden nun die Verknüpfungen zwischen den Registereinträgen und den Regesten erstellt. Hier werden
+Die beiden Befehle greifen also auf verschiedene Tabellenblätter des gleichen Google-Tabellendokuments zu, laden es als CSV-Daten und übergeben die Daten zeilenweise an die weiteren Befehle (Hier an den `MATCH`- und den `CREATE`-Befehl).
+Im nächsten Schritt werden nun mit den Daten der `APPEARS_IN`-Tabelle die Verknüpfungen zwischen den Registereinträgen und den Regesten erstellt.
 
 ~~~cypher
 // PLACE_IN-Kanten für Orte erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2147130316"
 AS line
-MATCH (from:IndexPlace {registerId:line.ID}), (to:Regesta {regnum:line.regnum2})
+MATCH (from:IndexPlace {registerId:line.ID})
+MATCH (to:Regesta {regnum:line.regnum2})
 CREATE (from)-[:PLACE_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
+
+Dabei werden zunächst mit den beiden `MATCH`-Befehlen jeweils das Regest und der Registereintrag aufgerufen und schließend mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` mitbekommt.
+Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten angelegt:
 
 ~~~cypher
 // PERSON_IN-Kanten für Person erstellen
@@ -178,7 +266,7 @@ Marten Düring, Ulrich Eumann, Martin Stark und Linda von Keyserlingk. Berlin 20
 
 [^ce4b]: Regesta chronologico-diplomatica Friderici III. Romanorum imperatoris (regis IV.) : Auszug aus den im K.K. Geheimen Haus-, Hof- und Staats-Archive zu Wien sich befindenden Registraturbüchern vom Jahre 1440 - 1493 ; nebst Auszügen aus Original-Urkunden, Manuscripten und Büchern / von Joseph Chmel, Wien 1838 und 1840.
 
-[^6155]: Der cypher-Befehl zur Erstellung der 1zu1-Beziehungen lautet: *MATCH (n1:Registereintrag)-[:GENANNT_IN]->(r:Regest)<-[:GENANNT_IN]-(n2:Registereintrag)
+[^6155]: Der cypher-Befehl zur Erstellung der 1zu1-Beziehungen lautet: *MATCH (n1:Registereintrag)-[:APPEARS_IN]->(r:Regest)<-[:APPEARS_IN]-(n2:Registereintrag)
 MERGE (n1)-[:KNOWS]->(n2);* Dabei werden die gerichteten `KNOWS`-Kanten jeweils in beide Richtungen erstellt.
 Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOWS]->() RETURN count(p);* Für die Bestimmung der 1zu1-Beziehungen muss der Wert noch durch 2 geteilt werden.
 

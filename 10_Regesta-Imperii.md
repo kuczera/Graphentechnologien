@@ -11,7 +11,7 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# Die Regesta Imperii
+# Das Projekt Regesta Imperii oder “Wie suchen Onlinenutzer Regesten”
 
 ## Das Projekt Regesta Imperii
 
