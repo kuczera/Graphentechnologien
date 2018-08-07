@@ -196,7 +196,7 @@ In der XML-Fassung sind die inhaltlichen Bereiche und die Abschnitte für die Re
 
 Die in XML vorliegenden Registerdaten werden anschließend mit Hilfe von TuStep in einzelne CSV-Tabellen zerlegt.
 
-![Ausschnitt der Entitätentabelle des Registers der Regesten Heinrichs IV.](Bilder/RI2Graph/RegisterH4-Tabelle-Entitäten.png)
+![Ausschnitt der Entitätentabelle des Registers der Regesten Heinrichs IV.](Bilder/RI2Graph/RegisterH4-Tabelle-Entitaeten.png)
 
 In einer Tabelle werden alle Entitäten aufgelistet und jeweils mit einer ID versehen.
 
