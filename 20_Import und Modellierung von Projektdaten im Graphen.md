@@ -255,7 +255,7 @@ Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `node
 
 # Auswertungsperspektiven
 
-## Personennetzwerke in den Registers
+## Personennetzwerke in den Registern
 
 ### Graf Robert II. von Flandern in seinem Netzwerk
 
@@ -305,35 +305,87 @@ RETURN *;
 
 
 ~~~cypher
-
+// Robert II. von Flandern und Herzog Heinrich von Niederlothringen mit Netzwerk
+MATCH
+(n:IndexPerson)-[:PERSON_IN]->
+(r:Regesta)<-[:PERSON_IN]-(m:IndexPerson)
+WHERE n.registerId = 'H4P01822'
+AND m.registerId = 'H4P00926'
+RETURN *;
 ~~~
 
 ~~~cypher
-
+// Rausrechnen der dazwischenliegenden Knoten
+MATCH
+(startPerson:IndexPerson)-[:PERSON_IN]->
+(regest:Regesta)<-[:PERSON_IN]-(endPerson:IndexPerson)
+WHERE startPerson.registerId in ['H4P01822', 'H4P00926']
+WITH startPerson, endPerson, count(regest) as anzahl,
+collect(regest.ident) as idents
+CALL apoc.create.vRelationship(startPerson, "KNOWS",
+{anzahl:anzahl, regesten:idents}, endPerson) YIELD rel
+RETURN startPerson, endPerson, rel
 ~~~
 
 ~~~cypher
-
+// Liste der Regesten als Ergebnis
+MATCH
+(startPerson:IndexPerson)-[:PERSON_IN]->
+(regest1:Regesta)<-[:PERSON_IN]-(middlePerson:IndexPerson)
+-[:PERSON_IN]->(regest2:Regesta)
+<-[:PERSON_IN]-(endPerson:IndexPerson)
+WHERE startPerson.registerId in ['H4P00926']
+AND endPerson.registerId in ['H4P01822']
+RETURN DISTINCT startPerson.name1, regest1.ident, regest1.text,
+middlePerson.name1, regest2.ident, regest2.text, endPerson.name1;
 ~~~
 
-~~~cypher
+## Herrscherhandeln ausgezählt
 
+~~~cypher
+// Herrscherhandeln ausgezählt
+MATCH (n:Lemma)<-[h:ACTION]-(m:Regesta)
+RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 25;
 ~~~
 
-~~~cypher
+## Herrscherhandeln pro Ausstellungsort ausgezählt
 
+~~~cypher
+// Herrscherhandeln pro Ausstellungsort
+MATCH (n:Lemma)<-[h:ACTION]-(:Regesta)-[:PLACE_OF_ISSUE]->(p:Place)
+WHERE p.name <> '–' AND
+p.name <> '‒'
+RETURN p.name, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 25;
 ~~~
 
-~~~cypher
+## Welche Literatur wird am meisten zitiert
 
+~~~cypher
+MATCH (n:Reference)<-[r:REFERENCES]-(m:Regesta)
+RETURN n.title, count(r) as ANZAHL ORDER BY ANZAHL desc LIMIT 25;
 ~~~
 
-~~~cypher
+## Herrscherhandeln und Anwesenheit
 
+~~~cypher
+MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Lemma)
+RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 ~~~
 
-~~~cypher
+## Regesten 200 km rund um Augsburg
 
+~~~cypher
+// Entfernungen von Orten berechnen lassen
+MATCH (n:Place)
+WHERE n.normalizedGerman = 'Augsburg'
+WITH n.latLong as point
+MATCH (r:Regesta)
+WHERE distance(r.latLong, point) < 200000
+AND r.placeOfIssue IS NOT NULL
+AND r.placeOfIssue <> 'Augsburg'
+RETURN r.ident, r.placeOfIssue,
+distance(r.latLong, point) AS Entfernung
+ORDER BY Entfernung;
 ~~~
 
 
