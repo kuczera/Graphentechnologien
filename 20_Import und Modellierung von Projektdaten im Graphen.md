@@ -255,8 +255,86 @@ Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `node
 
 # Auswertungsperspektiven
 
+## Personennetzwerke in den Registers
+
+### Graf Robert II. von Flandern in seinem Netzwerk
+
+Nach dem Import können nun die Online-Regesten und die Informationen aus dem Registern der Regesten Kaiser Heinrichs IV. in einer Graphdatenbank aus einer Vernetzungsperspektive abgefragt werden.[^f663]
+
+Ausgangspunkt ist der Registereintrag von Graf Robert II. von Flandern. Diesen Knoten finden wir mit folgendem Query.
+
+~~~cypher
+// Robert II. von Flandern
+MATCH (n:IndexPerson) WHERE n.registerId = 'H4P01822'
+RETURN *;
+~~~
+
+Mit einem Doppelklick auf den `IndexPerson`-Knoten öffnen sich alle `Regesta`-Knoten, in denen Robert genannt ist. Klickt man nun wiederum alle Regestenknoten doppelt, sieht man alle Personen und Orte, mit denen Robert gemeinsam in den Regesten genannt ist.
+
+Dies kann auch in einem cypher-Query zusammengefasst werden.
+
+~~~cypher
+// Robert II. von Flandern mit Netzwerk
+MATCH (n:IndexPerson)-[:PERSON_IN]->
+(r:Regesta)<-[:PERSON_IN]-
+(m:IndexPerson)
+WHERE n.registerId = 'H4P01822'
+RETURN *;
+~~~
+
+In der folgenden Abb. wird das Ergebnis dargestellt.
+
+![Robert mit den Personen, mit denen er gemeinsam in Regesten genannt wird.](/Graphentechnologien/Bilder/RI2Graph/RobertVonFlandernMitRegesten.png)
+
+Hier wird der `MATCH`-Befehl um einen Pfad über `PERSON_IN`-Kanten zu `Regesta`-Knoten ergänzt, von denen dann wiederum eine `PERSON_IN`-Kante zu den anderen, in den Regesten genannten `IndexPerson`-Knoten führt.
+
+Nimmt man noch eine weitere Ebene hinzu, wächst die Ergebnismenge start an.
+
+~~~cypher
+// Robert II. von Flandern mit Netzwerk und Herrscherhandeln (viel)
+MATCH
+(n1:IndexPerson)-[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-
+(n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)<-[:PERSON_IN]-
+(n3:IndexPerson)
+WHERE n1.registerId = 'H4P01822'
+RETURN *;
+~~~
+
+![Robert mit den Regesten, in denen der genannt wird.](/Graphentechnologien/Bilder/RI2Graph/RobertVonFlandernMitRegesten.png)
 
 
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
+
+~~~cypher
+
+~~~
 
 
 
@@ -283,3 +361,5 @@ MERGE (n1)-[:KNOWS]->(n2);* Dabei werden die gerichteten `KNOWS`-Kanten jeweils 
 Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOWS]->() RETURN count(p);* Für die Bestimmung der 1zu1-Beziehungen muss der Wert noch durch 2 geteilt werden.
 
 [^7a43]: Letztgenannte Tabelle existiert nur aus historischen Gründen und wird beim Import nicht mehr berücksichtigt.
+
+[^f663]: Die nun folgenden Abfragen sind zum Teil einer Präsentation entnommen, die für die Summerschool der [Digitalen Akademie](https://www.digitale-akademie.de) im Rahmen des [Mainzed](https://www.mainzed.org/de) entwickelt wurden. Die Präsentation findet sich unter der URL [https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html](https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html).
