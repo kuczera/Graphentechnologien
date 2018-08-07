@@ -11,7 +11,7 @@ title: Graphentechnologien in den Digitalen Geisteswissenschaften
 description: > # this means to ignore newlines until "baseurl:"
   Eine Einführung in Graphentechnolgien in den Digitalen Geisteswissenschaften. 
   Entstanden an der Digitalen Akademie der Akademie der Wissenschaften und der Literatur, Mainz.
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/Graphentechnologien" # the subpath of your site, e.g. /blog
 url: "http://kuczera.github.io" # the base hostname & protocol for your site
 twitter_username: andreaskuczera
 github_username: kuczera
