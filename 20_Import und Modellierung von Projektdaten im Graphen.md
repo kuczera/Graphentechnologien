@@ -300,7 +300,7 @@ WHERE n1.registerId = 'H4P01822'
 RETURN *;
 ~~~
 
-![Robert mit den Regesten, in denen der genannt wird.](/Graphentechnologien/Bilder/RI2Graph/RobertVonFlandernMitRegesten.png)
+![Robert mit Personen, die wiederum mit Personen gemeinsam in Regesten genannt sind.](/Graphentechnologien/Bilder/RI2Graph/Robert-viel.png)
 
 
 
