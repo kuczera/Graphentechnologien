@@ -181,7 +181,7 @@ MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 ~~~
 
-Da dies mit dem `MERGE`-Befehl geschieht, wird in der Graphdatenbank jeder Literaturtitel nur einmal angelegt. Anschließend werden die `Reference`-Knoten mit den Regesten über `REFERNCES`-Kanten verbunden. Zu den Auswertungsmöglichkeiten vgl. unten den Abschnitt zu den [Auswertungsperspektiven](#-Auswertungsperspektiven).
+Da dies mit dem `MERGE`-Befehl geschieht, wird in der Graphdatenbank jeder Literaturtitel nur einmal angelegt. Anschließend werden die `Reference`-Knoten mit den Regesten über `REFERNCES`-Kanten verbunden. Zu den Auswertungsmöglichkeiten vgl. unten den Abschnitt zu den [Auswertungsperspektiven](#Auswertungsperspektiven).
 
 
 # Import der Registerdaten in die Graphdatenbank
