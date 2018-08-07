@@ -44,19 +44,19 @@ Nach den Knotentypen sind nun die Kantentypen festzulegen. Sie geben an, in welc
 
 Mit der `GEDRUCKT_IN`-Kante werden ein Werk und ein Ort verbunden und damit angegeben, dass dieses Buch in jenem Ort gedruckt worden ist.
 
-![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](/Graphentechnologien/Bilder/Werk-Ort.png)
+![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](Bilder/Werk-Ort.png)
 
 Die `AUTOR_VON`-Kante verbindet einen Personenknoten mit einem Werkknoten und ordnet damit den Autor dem von ihm geschriebenen Buch zu.
 
-![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](/Graphentechnologien/Bilder/Werk-Autor.png)
+![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](Bilder/Werk-Autor.png)
 
 Mit der `KOMMENTIERT_VON`-Kante wird auch ein Personenknoten einem Werkknoten zugeordnet, diesmal nimmt die Person aber die Rolle des Kommentierenden ein.
 
-![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](/Graphentechnologien/Bilder/Werk-Kommentator.png)
+![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](Bilder/Werk-Kommentator.png)
 
 Im der folgenden Abbildung werden alle Knoten und Kanten des Beispiels gemeinsam dargestellt.
 
-![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](/Graphentechnologien/Bilder/Werk-gesamt.png)
+![Verbindung zwischen einem `Werk`- und einem `Ort`-Knoten (Quelle: Kuczera).](Bilder/Werk-gesamt.png)
 
 Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Import.
 

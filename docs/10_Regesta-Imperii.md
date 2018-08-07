@@ -36,7 +36,7 @@ Im Rahmen eines von der DFG geförderten Projekts wurden die Regesta Imperii gem
 
 Ende 2013 stellten Torsten Schrade und ich auf der Digital-Diplomatics-Konferenz in Paris eine Untersuchung vor, in der wir das Suchverhalten der Nutzer der Online-Regestensuche untersucht haben.[^595c] Ein interessantes Ergebnis war die Häufigkeitsverteilung der Treffermengen pro Suchanfrage.
 
-![Treffermengen pro Suchanfragen im Jahr 2013.](/Graphentechnologien/Bilder/2012-Nutzungsformen_der_RI.png)
+![Treffermengen pro Suchanfragen im Jahr 2013.](Bilder/2012-Nutzungsformen_der_RI.png)
 
 Im Tortendiagramm ist die Treffermenge in Zehnerschritten angegeben. die hellgraue Gruppe oben rechts hat keine Treffen, die dunkelgraue Gruppe einen bis zehn Treffer, die gelbe Gruppe 11 bis 20 usw. Die lila Gruppe hat mehr als hundert Treffer. Was uns im Projekt überrascht hat, war die große Gruppe mit über 100 Treffern. Hinzu kam, dass über 68% der Nutzer nur ein Suchwort in die Suchmaske eingegeben haben, wobei das beliebteste Suchwort *Heinrich* Ende 2013 über 18.000 Treffer erzielte. Auf der Ergebnisseite hieß es dann lapidar: "Sie suchten nach *Heinrich*. Ihre Suche erzielte 18884 Treffer [...] Sie sehen die Treffer 1 bis 20."
 
@@ -48,29 +48,29 @@ Sehr gut lässt sich am Tortendiagramm ablesen, dass über die Hälfte unserer N
 
 Im Bereich der historischen Netzwerkanalyse gab es in den letzten Jahren sehr interessante Arbeiten.[^3273] von Seiten der Regesta Imperii bieten sich hier vor allem die Register der Regesta Imperi als sehr interessante Quelle an. Geht man davon aus, dass alle Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben, könnte man auf Grundlage der Registerdaten ein Personennetzwerk erstellen. Über die Qualität der Beziehungen lässt sich nichts sagen und dies schränkt die Aussage der Daten ein. Andererseits stehen wiederum sehr viele Verknüpfungen zur Verfügung.
 
-![Registereinträge im Regest als Grundlage für ein Personennetzwerk.](/Graphentechnologien/Bilder/Register-und-Regest-19-189.png)
+![Registereinträge im Regest als Grundlage für ein Personennetzwerk.](Bilder/Register-und-Regest-19-189.png)
 
 Allein die Einträge in den Registern der Regesten Kaiser Friedrichs III. sind über 143.000 mal in Regesten genannt. Daraus ergeben sich dann über 460.000 1zu1-Beziehungen.[^6155]
 
 
-![Ausschnitt der 1zu1-Beziehungen in Gephi.](/Graphentechnologien/Bilder/Gephi-Register.png)
+![Ausschnitt der 1zu1-Beziehungen in Gephi.](Bilder/Gephi-Register.png)
 
 
 In der folgenden Abbildung sind die den Registern des Regestenbandes von Joseph Chmel gewonnenen 1zu1-Beziehungen mit Gephi visualisiert.[^ce4b]
 
-![Personennetzwerk aus den Registern der Regesten Chmels.](/Graphentechnologien/Bilder/Chmelvisualisierung-v2.png)
+![Personennetzwerk aus den Registern der Regesten Chmels.](Bilder/Chmelvisualisierung-v2.png)
 
 Bei der Analyse ergaben sich aber verschiedene Probleme. Zum einen werden in den Registern auch Kanzleibeamte genannt, die mit der eigentlichen Regestenhandlung garnichts zu tun hatten sondern lediglich später ihr Kürzel auf der Urkunde hinterließen. Dies macht archivgeschichtlich interessant sein, für die Regestenhandlung ist es aber irrelevant. Ein zweites Problem ist der Aufbau des Registers, in dem Orte und Personen in deinem Register zusammengefasst werden. Zum einen handelt es sich hierdurch nicht mehr um ein reines Personennetzwerk sondern um ein gemischtes Personen- und Ortsnetzwerden und zum anderen überragen die über sehr lange Zeit bestehenden Orte die in ihrer Lebensdauer begrenzten natürlichen Personen in den Netzwerkstrukturen.
 
 Aus Historikersicht war der Ansatz also weniger zielführend jedoch ergaben sich aus Modellierungssicht interessante Einblicke. Um die Netzwerke näher analysieren zu können, untersuchten wir kürze Zeitschnitte der Regesten. Hierfür musste das in Java geschriebene Programm zur Erstellung der Netzwerkdaten jedesmal umgeschrieben werden. Mein Kollege Ulli Meybohm, der das Programm damals betreute wies mich nach dem wiederholgen Umschreiben des Programms darauf hin, dass ich für meine Daten besser eine Graphdatenbank verwenden solle, beispielsweise neo4j. Erste Versuche des Imports der Registerdaten in neo4j erwiesen sich aber als sehr komplex, obwohl das Datenmodell *Person kennt Person* eigentlich relativ einfach ist.
 
 
-![Regest und Registereinträge mit `GENANNT_IN`-Kanten und den `KNOWS`-Kanten.](/Graphentechnologien/Bilder/1zu1-Beziehungen-Register-Regest.png)
+![Regest und Registereinträge mit `GENANNT_IN`-Kanten und den `KNOWS`-Kanten.](Bilder/1zu1-Beziehungen-Register-Regest.png)
 
 
 Schließlich ergaben Nachfragen bei neo4j, dass bei Problemen mit dem Datenmodell oft einfach ein Typ von Knoten vergessen worden sein könnte. Und tatsächlich hatten wir die Regestenknoten nicht bedacht. Mit den Regestenknoten im Modell war der Import schließlich mit weniger rechnerischem Aufwand möglich.
 
-![Graphmodell ohne `KNOWS`-Kanten. Diese können bei Bedarf einfach errechnet werden.](/Graphentechnologien/Bilder/1zu1-Beziehungen-nur-Regest.png)
+![Graphmodell ohne `KNOWS`-Kanten. Diese können bei Bedarf einfach errechnet werden.](Bilder/1zu1-Beziehungen-nur-Regest.png)
 
 
 
