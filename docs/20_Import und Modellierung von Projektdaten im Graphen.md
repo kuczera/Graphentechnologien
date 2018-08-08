@@ -413,7 +413,7 @@ RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMI
 ~~~
 
 |p.normalizedGerman|n.lemma|ANZAHL|
-|----|----|----|
+|----|----:|----:|
 |Mainz|begehen|15|
 |Mainz|schenken|14|
 |Goslar|schenken|13|
@@ -436,6 +436,8 @@ Im nächsten Beispiel werden in einem Regest genannten Personen in die Auswertun
 MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Lemma)
 RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 ~~~
+
+
 |p.name1|l.lemma|Anzahl|
 |:---|---:|---:|
 | ... | ... | ... |
