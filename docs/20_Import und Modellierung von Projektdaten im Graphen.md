@@ -412,18 +412,18 @@ WHERE p.normalizedGerman IS NOT NULL
 RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
-|p.normalizedGerman|n.lemma|ANZAHL
-|----|----|----
-|Mainz|begehen|15
-|Mainz|schenken|14
-|Goslar|schenken|13
-|Rom|werden|12
-|Regensburg|schenken|12
-|Goslar|begehen|11
-|Speyer|schenken|10
-|Worms|begehen|8
-|Regensburg|bestätigen|7
-|Regensburg|werden|7
+|p.normalizedGerman|n.lemma|ANZAHL|
+|----|----|----|
+|Mainz|begehen|15|
+|Mainz|schenken|14|
+|Goslar|schenken|13|
+|Rom|werden|12|
+|Regensburg|schenken|12|
+|Goslar|begehen|11|
+|Speyer|schenken|10|
+|Worms|begehen|8|
+|Regensburg|bestätigen|7|
+|Regensburg|werden|7|
 
 In der ersten Spalte befindet sich der Ortsname, der aus der Property `normalizedGerman` des `Place`-Knotens stammt. In der zweiten Spalte wird das Lemma angegeben und in der dritten Spalte schließlich die Anzahl der jeweiligen Regesten. Interessant wäre hier auch noch die Ergänzung der zeitlichen Dimension, mit der dann der zeitliche Verlauf in die Auswertung miteinbezogen werden könnte.
 
@@ -436,21 +436,21 @@ Im nächsten Beispiel werden in einem Regest genannten Personen in die Auswertun
 MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Lemma)
 RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 ~~~
-|p.name1|l.lemma|Anzahl
-|:---|---:|---:
-| ... | ... | ...
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|schenken|21
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|bestätigen|9
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|verleihen|4
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|erlassen|2
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|übertragen|2
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|ermäßigen|2
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|gestatten|2
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|vollziehen|1
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|nehmen|1
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|mindern|1
-|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|setzen|1
-| ... | ... | ...
+|p.name1|l.lemma|Anzahl|
+|:---|---:|---:|
+| ... | ... | ... |
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|schenken|21|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|bestätigen|9|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|verleihen|4|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|erlassen|2|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|übertragen|2|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|ermäßigen|2|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|gestatten|2|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|vollziehen|1|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|nehmen|1|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|mindern|1|
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|setzen|1|
+| ... | ... | ... |
 
 Die Ergebnistabelle zeigt den Abschnitt zu Adalbero, einem Metzer Domkanoniker mit den mit der Häufigkeit des jeweiligen Herrscherhandeln-Lemmas.
 
