@@ -261,7 +261,7 @@ Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `node
 
 Nach dem Import können nun die Online-Regesten und die Informationen aus dem Registern der Regesten Kaiser Heinrichs IV. in einer Graphdatenbank aus einer Vernetzungsperspektive abgefragt werden.[^f663]
 
-Ausgangspunkt ist der Registereintrag von Graf Robert II. von Flandern. Diesen Knoten finden wir mit folgendem Query.
+Ausgangspunkt ist der Registereintrag von [Graf Robert II. von Flandern](https://de.wikipedia.org/wiki/Robert_II._(Flandern)). Diesen Knoten finden wir mit folgendem Query.
 
 ~~~cypher
 // Robert II. von Flandern
@@ -288,7 +288,7 @@ In der folgenden Abb. wird das Ergebnis dargestellt.
 
 Hier wird der `MATCH`-Befehl um einen Pfad über `PERSON_IN`-Kanten zu `Regesta`-Knoten ergänzt, von denen dann wiederum eine `PERSON_IN`-Kante zu den anderen, in den Regesten genannten `IndexPerson`-Knoten führt.
 
-Nimmt man noch eine weitere Ebene hinzu, wächst die Ergebnismenge start an.
+Nimmt man noch eine weitere Ebene hinzu, wächst die Ergebnismenge stark an.
 
 ~~~cypher
 // Robert II. von Flandern mit Netzwerk und Herrscherhandeln (viel)
@@ -302,7 +302,9 @@ RETURN *;
 
 ![Robert mit Personen, die wiederum mit Personen gemeinsam in Regesten genannt sind.](Bilder/RI2Graph/Robert-viel.png)
 
+### Graf Robert II. von Flandern und Herzog Heinrich von Niederlothringen
 
+In der Graphdatenbank ist es über die Exploration der Beziehungen einer Person hinaus möglich explizit die Verbindungen von zwei Personen abzufragen. In unserem nächsten Beispiel suchen wir jene Regesten, in denen [Graf Robert II. von Flandern](https://de.wikipedia.org/wiki/Robert_II._(Flandern)) und [Herzog Heinrich von Niederlothringen](https://de.wikipedia.org/wiki/Heinrich_I._(Limburg)) gemeinsam genannt sind.
 
 ~~~cypher
 // Robert II. von Flandern und Herzog Heinrich von Niederlothringen mit Netzwerk
@@ -313,6 +315,30 @@ WHERE n.registerId = 'H4P01822'
 AND m.registerId = 'H4P00926'
 RETURN *;
 ~~~
+
+Es zeigt sich, dass Robert und Heinrich in einem Regest gemeinsam genannt sind.
+
+![Robert und Heinrich sind in einem Regest gemeinsam genannt.](Bilder/RI2Graph/RobertundHeinrich.png)
+
+Und dieses [Regest](http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa) berichtet ausgerechnet über die Unterwerfung Roberts und Heinrich IV.[^cbec]
+
+> Heinrich feiert das Fest der Apostel, wobei sich Graf Robert von Flandern im Beisein mehrerer Fürsten unterwirft, namentlich der Erzbischöfe Friedrich von Köln und Bruno von Trier, der Bischöfe Otbert von Lüttich, Burchard von Münster, Burchard von Utrecht, Herzog Heinrich von Niederlothringen sowie mehrerer Grafen.
+
+Möglicherweise haben beide aber gemeinsame Bekannte, also Personen mit denen sowohl Heinrich als auch Robert in unterschiedlichen Regesten gemeinsam genannt sind. Hierfür wird der cypher-Query um eine Ebende erweitert.
+
+
+```
+// Robert und Heinrich mit allen gemeinsamen Personen und Regesten
+MATCH (n1:IndexPerson)-[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-(n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)
+<-[:PERSON_IN]-(n3:IndexPerson)
+WHERE n1.registerId = 'H4P00926'
+AND n3.registerId = 'H4P01822'
+RETURN *;
+```
+![Robert und Heinrich mit den gemeinsamen Bekanntschaften.](Bilder/RI2Graph/RobertundHeinrichMitBrokern.png)
+
+Ein erster Blick auf das Ergebnis zeigt, dass Heinrich allgemein besser vernetzt ist. Für die weitere Analyse ihres Verhältnisses ist nun die Lektüre der angegebenen Regesten notwendig.
+Hierfür lässt sich das Ergebnis noch etwas weiter aufbereiten, indem die zwischen den Personen liegenden Regesten in `KNOWS`-Kanten umgewandelt werden, die als zusätzliche Information die Angaben zu den Regesten enthalten.
 
 ~~~cypher
 // Rausrechnen der dazwischenliegenden Knoten
@@ -327,6 +353,12 @@ CALL apoc.create.vRelationship(startPerson, "KNOWS",
 RETURN startPerson, endPerson, rel
 ~~~
 
+![Robert und Heinrich mit den gemeinsamen Bekanntschaften.](Bilder/RI2Graph/RobertUndHeinrichApoc.png)
+
+In der Abbildung sind die zwei Ego-Netzwerke von Heinrich (links) und Robert (rechts) mit den dazwischen liegenden gemeinsamen Bekanntschaften dargestellt. Es zeigt sich, dass Heinrich stärker sowohl mit Geistlichen als auch Weltlichen vernetzt war, während Robert insgesamt weniger Kontakte aber mit einem Schwerpunkt in der Geistlichkeit hatte.
+
+Für den Historiker ist aber vor allem interessant, was in den Regesten steht, die Robert und Heinrich über die Mittelsmänner verbinden. Hierfür wird der cypher-Query angepasst und sowohl Personen und die Regestentexte ausgegeben.
+
 ~~~cypher
 // Liste der Regesten als Ergebnis
 MATCH
@@ -340,39 +372,91 @@ RETURN DISTINCT startPerson.name1, regest1.ident, regest1.text,
 middlePerson.name1, regest2.ident, regest2.text, endPerson.name1;
 ~~~
 
+In der Abbildung wird ein Ausschnitt der Ergebnistabelle gezeigt. In der ersten Spalte der Tabelle finden sich Robert, anschließend die Angaben zum Regest, mit dem er mit der mitteleren Person (middlePerson.name1) verknüpft ist. Dem folgen schließlich die Angaben zum Regest, mit den die mittlere Person mit Robert in der letzten Spalte verbunden ist. Die Tabelle bietet einen Überblick zur Überlieferungssituation aus der Perspektive der Regesta Imperii.
+
+![Robert und Heinrich mit den gemeinsamen Bekanntschaften.](Bilder/RI2Graph/RobertHeinrichApocTabelle.png)
+
 ## Herrscherhandeln ausgezählt
+
+Wie bereits oben erwähnt wurde in einem ersten Test jeweils das erste Verb des Regestentextes extrahiert, lemmatisiert und in die Graphdatenbank eingespielt. Im folgenden werden nun einige cypher-Querys vorgestellt, die dies beispielhaft auswerten.
 
 ~~~cypher
 // Herrscherhandeln ausgezählt
 MATCH (n:Lemma)<-[h:ACTION]-(m:Regesta)
-RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 25;
+RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
+|n.lemma|ANZAHL|
+|---|---|
+|werden|145|
+|schenken|133|
+|bestätigen|109|
+|begehen|95|
+|verleihen|48|
+|ernennen|36|
+|nehmen|35|
+|treffen|34|
+|empfangen|29|
+|erhalten|26|
+
+Die Ergebnisliste zeigt gleich die Einschränkungen, da das Hilfsverb werden aus dem textuellen Zusammenhang gerissen ist. Andererseits ergeben sich aber auch interessante Erkenntnisse zur Häufigkeitsverteilung von Herrscherhandeln in Regestentexten. Die Anwendung des Verfahrens auf Regestentexte ist dabei auf der einen Seite positiv, da bei der Erstellung der Regesten sehr stark auf formale Kriterien geachtet wird und so die Zusammenhänge generalisiert gut zu erfassen sind. Auf der anderen Seite ist die Auswertung aber wiederum einen weiteren Schritt von der ursprünglichen Quelle entfernt.
+
 ## Herrscherhandeln pro Ausstellungsort ausgezählt
+
+Im folgenden Query kommt eine räumliche Komponente zur Abfrage hinzu, da das Lemma hier jeweils abhängig vom Ausstellungsort der Urkunde abgefragt wird.
 
 ~~~cypher
 // Herrscherhandeln pro Ausstellungsort
 MATCH (n:Lemma)<-[h:ACTION]-(:Regesta)-[:PLACE_OF_ISSUE]->(p:Place)
-WHERE p.name <> '–' AND
-p.name <> '‒'
-RETURN p.name, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 25;
+WHERE p.normalizedGerman IS NOT NULL
+RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
-## Welche Literatur wird am meisten zitiert
+|p.normalizedGerman|n.lemma|ANZAHL
+|----|----|----
+|Mainz|begehen|15
+|Mainz|schenken|14
+|Goslar|schenken|13
+|Rom|werden|12
+|Regensburg|schenken|12
+|Goslar|begehen|11
+|Speyer|schenken|10
+|Worms|begehen|8
+|Regensburg|bestätigen|7
+|Regensburg|werden|7
 
-~~~cypher
-MATCH (n:Reference)<-[r:REFERENCES]-(m:Regesta)
-RETURN n.title, count(r) as ANZAHL ORDER BY ANZAHL desc LIMIT 25;
-~~~
+In der ersten Spalte befindet sich der Ortsname, der aus der Property `normalizedGerman` des `Place`-Knotens stammt. In der zweiten Spalte wird das Lemma angegeben und in der dritten Spalte schließlich die Anzahl der jeweiligen Regesten. Interessant wäre hier auch noch die Ergänzung der zeitlichen Dimension, mit der dann der zeitliche Verlauf in die Auswertung miteinbezogen werden könnte.
+
 
 ## Herrscherhandeln und Anwesenheit
+
+Im nächsten Beispiel werden in einem Regest genannten Personen in die Auswertung des Herrscherhandelns mit einbezogen.
 
 ~~~cypher
 MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Lemma)
 RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 ~~~
+|p.name1|l.lemma|Anzahl
+|:---|---:|---:
+| ... | ... | ...
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|schenken|21
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|bestätigen|9
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|verleihen|4
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|erlassen|2
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|übertragen|2
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|ermäßigen|2
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|gestatten|2
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|vollziehen|1
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|nehmen|1
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|mindern|1
+|Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|setzen|1
+| ... | ... | ...
+
+Die Ergebnistabelle zeigt den Abschnitt zu Adalbero, einem Metzer Domkanoniker mit den mit der Häufigkeit des jeweiligen Herrscherhandeln-Lemmas.
 
 ## Regesten 200 km rund um Augsburg
+
+In den Propertys der Knoten lassen sich auch ex
 
 ~~~cypher
 // Entfernungen von Orten berechnen lassen
@@ -389,6 +473,32 @@ ORDER BY Entfernung;
 ~~~
 
 
+## Welche Literatur wird am meisten zitiert
+
+Wie bereits oben erwähnt, werden beim Import der Regesten in die Graphdatenbank die mit dem RI-Opac verlinkten Literaturtitel als eigenständige `Reference`-Knoten angelegt und jeweils mit dem `Regesta`-Knoten verknüpft. Diese Verknüpfung wird mit dem folgenden Query abgefragt, ausgezählt und aufgelistet.
+
+~~~cypher
+MATCH (n:Reference)<-[r:REFERENCES]-(m:Regesta)
+RETURN n.title, count(r) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
+~~~
+
+|n.title|ANZAHL
+|:---|---:
+|Stumpf|215
+|Böhmer|201
+|Ldl|101
+|Jaffé|60
+|Schmale|56
+|Buchholz|51
+|Scheffer-Boichorst|50
+|Wauters|39
+|Dobenecker|33
+|Remling|28
+
+
+# Zusammenfassung
+
+Den cypher-Code für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Google-Docs-Dokument](https://docs.google.com/document/d/1u7xDZOOz9dc3cI0vm87N8Mw4FmC_GUGBi3WritNzfpE/edit?usp=sharing) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Nach dem Start der Graphdatenbank kann dann im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sanbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden. Dort müssen die Befehle dann einzeln in die Browserzeile kopiert werden.
 
 [^5147]: Verwendet wird die Graphdatenbank neo4j. Die Community-Edition ist kostenlos erhältlich unter [https://www.neo4j.com](https://www.neo4j.com).
 [^892b]: Dies ist das Tabellenkalkulationsformat von Libreoffice und Openoffice. Vgl.  [https://de.libreoffice.org](https://de.libreoffice.org).
@@ -415,3 +525,6 @@ Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOW
 [^7a43]: Letztgenannte Tabelle existiert nur aus historischen Gründen und wird beim Import nicht mehr berücksichtigt.
 
 [^f663]: Die nun folgenden Abfragen sind zum Teil einer Präsentation entnommen, die für die Summerschool der [Digitalen Akademie](https://www.digitale-akademie.de) im Rahmen des [Mainzed](https://www.mainzed.org/de) entwickelt wurden. Die Präsentation findet sich unter der URL [https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html](https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html).
+
+
+[^cbec]: Vgl. RI III,2,3 n. 1487.
