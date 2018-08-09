@@ -346,7 +346,7 @@ In der XML-Fassung sind die inhaltlichen Bereiche und die Abschnitte für die Re
 
 Die in XML vorliegenden Registerdaten werden anschließend mit Hilfe von TuStep in einzelne CSV-Tabellen zerlegt.
 
-![Ausschnitt der Entitätentabelle des Registers der Regesten Heinrichs IV.](Bilder/RI2Graph/RegisterH4-Tabelle-Entitäten.png)
+![Ausschnitt der Entitätentabelle des Registers der Regesten Heinrichs IV.](Bilder/RI2Graph/RegisterH4-Tabelle-Entitaeten.png)
 
 In einer Tabelle werden alle Entitäten aufgelistet und jeweils mit einer ID versehen.
 
@@ -1657,10 +1657,6 @@ In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) d
 [^5cb9]: Vgl. https://guides.neo4j.com/apoc (zuletzt aufgerufen am 11.04.2018).
 
 [^03a5]: Hierzu vgl. https://de.wikipedia.org/wiki/Deklarative_Programmierung zuletzt abgerufen am 12.6.2018.
-# Graphentechnologien
-Digitale Geisteswissenschaften rund um Graphentechnologien
-
-https://kuczera.github.io/Graphentechnologien/ 
 ---
 title: Inhalt
 layout: default
@@ -1719,3 +1715,7 @@ Die Slides der Lehreinheit stehen unter CC-BY-Lizenz und sind erreichbar unter:
 [https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/#/step-1](https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/#/step-1)
 
 Weitere Informationen zu Graphentechnologien in den Digitalen Geistes- und Sozialwissenschaften finden Sie auf den Seiten der AG-Graphen des Dhd-Verbandes: [https://graphentechnologien.hypotheses.org/](https://graphentechnologien.hypotheses.org/).
+# Graphentechnologien
+Digitale Geisteswissenschaften rund um Graphentechnologien
+
+https://kuczera.github.io/Graphentechnologien/ 

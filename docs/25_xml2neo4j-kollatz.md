@@ -13,7 +13,7 @@ contents: true
 
 # Import von strukturierten XML-Daten in neo4j
 
-In diesem Kapitel wird der Import von strukturierten XML-Daten in die Graphdatenbank neo4j beschrieben. Strukturiert meint hierbei, dass es sich nicht um Text handelt, der beispielsweise in TEI-XML ausgezeichnet ist, sondern um Daten in einer datenbank-ähnlichen Struktur. Die Daten stammen aus einem Projekt meines Kollegen Thomas Kollatz, der sie mir freundlicherweise zur Verfügung gestellt hat. Ziel des Kapitels ist es, die Struktur der XML-Daten im Graphen nachzubilden und anschließend den Import durchzuführen.
+In diesem Kapitel wird der Import von strukturierten XML-Daten in die Graphdatenbank neo4j beschrieben. Strukturiert meint hierbei, dass es sich nicht um mixed-content handelt, beim dem Text und Auszeichnung gemischt vorliegen können, sondern um Daten in einer datenbank-ähnlichen Struktur. Die Daten stammen aus einem Projekt meines Kollegen Thomas Kollatz, der sie mir freundlicherweise zur Verfügung gestellt hat. Ziel des Kapitels ist es, zunächst die Struktur der XML-Daten im Graphen zu analysieren, dann ein Graphmodell zu entwickeln und anschließend den Import durchzuführen.
 
 ## Das XML-Beispiel
 
@@ -21,18 +21,16 @@ In der folgenden Abbildung wird ein Auszug aus den Daten gezeigt.
 
 ![Auszug aus dem XML-Beispiel (Quelle: Kuczera)](./Bilder/kollatz-xml-Beispiel.png)
 
-Das root-Element der XML-Datei ist `<collection>`. Innerhalb der `collection` finden sich Angaben zu verschiedenen Büchern. Zu jedem Buch werden folgende Angaben gemacht:
+Das root-Element in den XML-Beispiel ist <collection>. Innerhalb der collection finden sich Angaben zu verschiedenen Büchern, die jeweils wieder mit einem <work>-Element zusammengefasst sind. Zu jedem Buch werden folgende Angaben gemacht:
 
-* Titel des Buches
-* Autor(en) des Buches
-* Kommentator des Buches
-* Druckort des Buches
+* Titel des Buches im <title>-Element
+* Autor(en) des Buches um <autor>-Element, ggf. durchnummeriert mit Zahlen in eckigen Klammern (z.B. [1])
+* Kommentator des Buches im <kommentator>-Element
+* Druckort des Buches im <druckort>-Element
 
 ## Knotentypen
 
-Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Knotentypen festgelegt werden. Als erstes scheint es sinnvoll einen Knoten vom Typ `Werk` anzulegen, wie es auch im XML über das `<work>`-Element modelliert ist. Die dem `<work>`-Element untergeordneten Elemente `<title>` `<autor>`, `<kommentator>` und `<druckort>` können dann als Properties des `<work>`-Knotens angelegt werden. Damit wären alle Informationen des XMLs auch im Graphen gespeichert.
-
-Die Graphmodellierung geht hier jedoch einen Schritt weiter. In einem ersten Schritt sind die in den Daten vorhandenen Entitäten zu identifizieren. Neben dem oben schon genannten Knoten vom Typ `Werk` ergeben sich noch Knoten vom Typ `Person` und `Ort`. In den `Ort`-Knoten werden die Druckorte abgelegt, die Angaben zu Autoren und Kommentatoren werden in den `Person`-Knoten gespeichert, da es sich ja um Personen handelt, die aber je nach Situation verschiedene Rollen einnehmen können.
+Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ `Werk` anzulegen, wie es auch im XML über das <work>-Element im XML modelliert ist. Die dem <work>-Element untergeordneten Elemente <title>, <autor>, <kommentator> und <druckort> sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem `Titel`-Knoten ablegen, den Druckort in einem `Ortsknoten` und Autoren sowie Kommentatoren werden in `Personen`-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in allgemein gehaltenen Kategorien wie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
 
 ## Kantentypen
 
@@ -60,9 +58,9 @@ Im der folgenden Abbildung werden alle Knoten und Kanten des Beispiels gemeinsam
 
 Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Import.
 
-## Der Import mit apoc.load.xmlSimple
+## Der Import mit apoc.load.xml
 
-Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.xmlSimple zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
+Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
 
 ~~~cypher
 CALL apoc.load.xmlSimple("https://docs.google.com/
@@ -83,3 +81,9 @@ UNWIND value._work as wdata
 		 MERGE (o1:Ort{name:druckort})
 		 MERGE (w1)-[:GEDRUCKT_IN]->(o1));
 ~~~
+
+Für den Import wird die apoc-Funktion apoc.load.xml verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable __value__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl.  der die Variable value, verbunden mit einem XQUERY auf die Ebene des work-Elements 
+
+
+
+[^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen zur Installation und die Dokumentation findet sich unter: [https://neo4j-contrib.github.io/neo4j-apoc-procedures/](https://neo4j-contrib.github.io/neo4j-apoc-procedures/). Die Dokumentation zu apoc.load.xml ist erreichbar unter [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml).
