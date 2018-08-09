@@ -29,7 +29,7 @@ Beispiel aus der XML-Datei
 
 # Vorbereitungen
 
-Als Vorbereitung müssen einige Constraints eingerichtet werden.
+Als Vorbereitung müssen einige Constraints eingerichtet werden.[^0235]
 
 ~~~cypher
 create constraint on (t:Token) assert t.id is unique;
@@ -115,3 +115,5 @@ Abildung mit Gestalt.
 
 # Zusammenfassung
 Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden.
+
+[^0235]: Zu __constraints__ vgl. [https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/](https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/)
