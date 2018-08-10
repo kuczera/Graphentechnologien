@@ -497,11 +497,13 @@ RETURN n.title, count(r) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 |Dobenecker|33
 |Remling|28
 
+# Der Import zusammengefasst
+
+Den cypher-Code für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Google-Docs-Dokument](https://docs.google.com/document/d/1u7xDZOOz9dc3cI0vm87N8Mw4FmC_GUGBi3WritNzfpE/edit?usp=sharing) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Nach dem Start der Graphdatenbank kann dann im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sanbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden. Zu beachten ist, dass dort nur der neo4j-Browser für die Eingabe der cypher-Querys zur Verfügung steht und jeder Query (also alle cypher-Befehle, die mit einem Semikolon abgeschlossen sind) einzeln in die Eingabezeile kopiert werden müssen.
 
 # Zusammenfassung
 
 In diesem Kapitel wurden die Schritte zum Import der Regesten Kaiser Heinrichs IV. in die Graphdatenbank neo4j erläutert und schließlich noch Auswertungsbeispiele gezeigt.
-Den cypher-Code für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Google-Docs-Dokument](https://docs.google.com/document/d/1u7xDZOOz9dc3cI0vm87N8Mw4FmC_GUGBi3WritNzfpE/edit?usp=sharing) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Nach dem Start der Graphdatenbank kann dann im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sanbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden. Dort müssen die Befehle dann einzeln in die Browserzeile kopiert werden.
 
 [^5147]: Verwendet wird die Graphdatenbank neo4j. Die Community-Edition ist kostenlos erhältlich unter [https://www.neo4j.com](https://www.neo4j.com).
 [^892b]: Dies ist das Tabellenkalkulationsformat von Libreoffice und Openoffice. Vgl.  [https://de.libreoffice.org](https://de.libreoffice.org).
