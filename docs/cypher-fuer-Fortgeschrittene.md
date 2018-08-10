@@ -1,5 +1,5 @@
 ---
-title: Tipps und Tricks
+title: Cypher für Fortgeschrittene
 layout: default
 order: 85
 contents: true
