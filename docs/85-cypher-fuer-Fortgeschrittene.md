@@ -124,6 +124,21 @@ Wenn eine Liste mit Funktionen ausgegeben wird, war die Installation erfolgreich
 
 In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) der apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
 
+# apoc.load.xml
+
+Mit dem Befehl apoc.load.xml ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5]
+
+
+|Kantentyp|Beschreibung|
+|---------|------------|
+|:IS_CHILD_OF|Verweis auf eingeschachteltes Xml-Element|
+|:FIRST_CHILD_OF|Verweis auf das erste untergeordnete Element|
+|:NEXT_SIBLING|Verweis auf das nächste Xml-Element auf der gleichen Ebene|
+|:NEXT|Erzeugt eine lineare Kette durch das gesamte XML-Dokument und gibt so die Serialität des XMLs wieder|
+|:NEXT_WORD|Verbindet Wortknoten zu einer Kette von Wortknoten. Wird nur erzeugt, wenn createNextWordRelationships:true gesetzt wird|
+
 [^5cb9]: Vgl. https://guides.neo4j.com/apoc (zuletzt aufgerufen am 11.04.2018).
 
 [^03a5]: Hierzu vgl. https://de.wikipedia.org/wiki/Deklarative_Programmierung zuletzt abgerufen am 12.6.2018.
+
+[^81c5]: Zu diesem Abschnitt vgl. [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly). Die Tabelle ist direkt übernommen und übersetzt worden.

@@ -62,15 +62,13 @@ Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Impor
 
 Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
 
+
 ~~~cypher
-CALL apoc.load.xmlSimple("https://docs.google.com/
-document/u/0/export?format=txt&id=1Ujx9cdequEvuXx6
-DxK7xfxbuS63Aq9n_xpLOAcjU_xc&token=AC4w5Vj0yTkdPLo
-b1lo1ajkaG75fynNZ0Q%3A1490694667158") yield value
-UNWIND value._work as wdata
+CALL apoc.load.xmlSimple("https://docs.google.com/document/u/0/export?format=txt&id=1Ujx9cdequEvuXx6DxK7xfxbuS63Aq9n_xpLOAcjU_xc&token=AC4w5Vj0yTkdPLob1lo1ajkaG75fynNZ0Q3A1490694667158") yield value as xmlFile
+UNWIND xmlFile._work as wdata
 	MERGE (w1:Werk{eid:wdata.id})
 	set w1.name=wdata._title._text
-	FOREACH (name in wdata._autor |
+    FOREACH (name in wdata._autor |
 		MERGE (p1:Person {Name:name._text})
 		MERGE (p1)-[:AUTOR_VON]->(w1) )
 	FOREACH (name in wdata._kommentator |
@@ -82,7 +80,7 @@ UNWIND value._work as wdata
 		 MERGE (w1)-[:GEDRUCKT_IN]->(o1));
 ~~~
 
-Für den Import wird die apoc-Funktion apoc.load.xml verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable __value__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl.  der die Variable value, verbunden mit einem XQUERY auf die Ebene des work-Elements 
+Für den Import wird die apoc-Funktion apoc.load.xml verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der die Variable value, verbunden mit einem XQUERY auf die Ebene des work-Elements
 
 
 

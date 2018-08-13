@@ -51,7 +51,7 @@ Das Ergebnis zeigt, dass Berchar tatsächlich mit Karl dem Großen verwandt ist.
 
 ## Zusammenfassung
 
-Mit diesem kleinen Beispiel sind die interessanten Erschließungs- und Modellierungsperspektiven für die digitale Genealogie nur angedeutet. Mit Graphentechnologien lässt sich intuitive Datenmodellierung mit sehr flexiblen Erschließungs- und Abfragemöglichkeiten kombinieren. 
+Mit diesem Beispiel sind die interessanten Erschließungs- und Modellierungsperspektiven für die digitale Genealogie nur angedeutet. Mit Graphentechnologien lässt sich intuitive Datenmodellierung mit sehr flexiblen Erschließungs- und Abfragemöglichkeiten kombinieren. 
 
 
 [^a768]: Dieses Kapitel geht in großen Teilen zurück auf meinem Aufsatz Graphentechnologien in den Digitalen Geisteswissenschaften, in: ABI Technik 2017; 37(3): 179–196, [https://doi.org/10.1515/abitech-2017-0042](https://doi.org/10.1515/abitech-2017-0042). URL: [https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf](https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf), insbesondere die Seiten 179 bis 182 und wurde nur geringfügig ergänzt.

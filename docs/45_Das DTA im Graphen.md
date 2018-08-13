@@ -17,15 +17,46 @@ Das Deutsche Textarchiv (DTA) stellt einen Disziplinen übergreifenden Grundbest
 
 # Die Downloadformate des DTA
 
-Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download an.
+Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download an. Als Beispiel wird hier [Goethes Faust](http://deutschestextarchiv.de/book/show/goethe_faust01_1808) in der ersten Auflage von 1808 importiert.
 
-+ [TEI-P5](http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828)
-+ [TCF](http://www.deutschestextarchiv.de/book/download_fulltcf/30962)
-+ [Plain-Text](http://www.deutschestextarchiv.de/book/download_txt/patzig_msgermfol841842_1828)
++ [TEI-P5](http://deutschestextarchiv.de/book/download_xml/goethe_faust01_1808) bietet die textkritische Fassung des Faust
++ [TCF](http://deutschestextarchiv.de/book/download_fulltcf/16181) bietet die tokenisierte, serialisierte, lemmatisierte und normalisierte Fassung, textkritische Informationen fehlen jedoch.
++ [Plain-Text](http://deutschestextarchiv.de/book/download_txt/goethe_faust01_1808) bietet einen einfachen Text mit Seiten- und Zeilenfall ohne weitere Zusatzinformationen
 
 Für den Import in eine Graphdatenbanken bietet sich das TCF-Format an, da es den Text tokenisiert, serialisiert, lemmatisiert und normalisiert bietet. In diesem Format lässt er sich mit cypher-Befehlen in die Graphdatenbank importieren. Im Beispiel wird Goethes Faust in der TCF-Fassung in die Graphdatenbank importiert.
 
-Beispiel aus der XML-Datei
+Hier wird ein Ausschnitt aus der TCF-Datei[^f332] gezeigt
+
+~~~xml
+<token ID="w5b">Ihr</token>
+<token ID="w5c">bringt</token>
+<token ID="w5d">mit</token>
+<token ID="w5e">euch</token>
+<token ID="w5f">die</token>
+<token ID="w60">Bilder</token>
+<token ID="w61">froher</token>
+<token ID="w62">Tage</token>
+<token ID="w63">,</token>
+<token ID="w64">Und</token>
+<token ID="w65">manche</token>
+<token ID="w66">liebe</token>
+<token ID="w67">Schatten</token>
+~~~
+
+und im Anschluss im Vergleich das Original (links) und der Lesetext (rechts).
+
+![Eine Beispielzeile aus dem Faust](Bilder/Faust-S11-Faks.png)
+
+Vergleicht man das TCF-Xml mit der gleiche Stelle im TEIP5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
+
+~~~xml
+<lb/>
+  <lg n="2">
+      <l>Ihr bringt mit euch die Bilder froher Tage,</l><lb/>
+      <l>Und manche liebe Schatten &#x017F;teigen auf;</l><lb/>
+~~~
+
+Die Downloadformate sind also für verschiedene Nutzungsszenarien optimiert. Für den Import in eine Graphdatenbank bietet sich das TCF-Format an.
 
 # Vorbereitungen
 
@@ -39,14 +70,14 @@ create constraint on (l:Lemma) assert l.text is unique;
 
 Mit den Befehlen wird sichergestellt, dass die im nächsten Schritt importierten Knoten eindeutige IDs haben.
 
-# Import
+# Import des TCF-Formats
 
 ## Tokenimport
 
 Nun folgt der Import-Befehl mit der apoc-procedure *apoc.load.xmlSimple*.
 
 ~~~cypher
-call apoc.load.xmlSimple('http://deutschestextarchiv.de/book/download_fulltcf/16181') yield value as doc
+call apoc.load.xml('http://deutschestextarchiv.de/book/download_fulltcf/16181') yield value as doc
 unwind doc._TextCorpus._tokens._token as token
 create (t:Token{id:token.ID, text:token._text})
 with collect(t) as tokens
@@ -97,23 +128,52 @@ match (t:Token{id:lemma.tokenIDs}) set t.Lemma = lemma._text;
 
 Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den cypher-Querys für den gesamten Artikel herunterzuladen).
 
-## Neo4j-Browser
-
-Der neo4j-Graphbrowser bietet einen ersten Überblick zu den in der Datenbank vorhandenen Knoten- und Kantentypen. In Abbildung 3 ist der Wortknoten Tragödie ausgewählt, so dass in der Fußleiste der Graphvisualisierung die verschiedenen Eigenschaften des Knotens angezeigt werden. Der Knoten hat beispielsweise die <id> "45414", die Eigenschaft Lemma hat den Wert "Tragödie" während die Eigenschaft text das Originalwort enthält.
-
 ## Beispielabfrage
 
-Bei Cypher-Abfragen können alle Eigenschaften von Knoten und Kanten miteinbezogen werden.
+Bei Cypher-Abfragen können alle Eigenschaften von Knoten und Kanten miteinbezogen werden. Der Query fragt nach einem `Token`-Knoten mit dem Lemma **Bild**, gefolgt von einem `Token`-Knoten mit dem Lemma **froh** und dazu die drei vorhergehenden und die drei nachfolgenen `Token`-Knoten.
 
 ~~~cypher
-match w=()-[:NEXT_TOKEN*5]->(a:Token{Lemma:'Gestalt'})-[:NEXT_TOKEN*5]->() return *;
+MATCH
+w=()-[:NEXT_TOKEN*5]->(a:Token{Lemma:'Bild'})
+-[:NEXT_TOKEN]->(b:Token{Lemma:'froh'})
+-[:NEXT_TOKEN*5]->()
+RETURN *;
 ~~~
 
-Die folgende Abbildung zeigt das Ergebnis der Abfrage nach allen Vorkommen von Wörtern mit dem Lemma Gestalt im Faust mit den jeweils vorhergehenden und anschließenden drei Wörtern.
+Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen
 
-Abildung mit Gestalt.
+![Eine Beispielzeile aus dem Faust](Bilder/TEI2Graph/BilderFroherTage.png)
+
+
+# Import der TEIP5-Fassung
+
+Im nächsten Schritt wird die TEIP5-Fassung von Goethes Faust importiert
+
+~~~cypher
+call
+apoc.xml.import("http://deutschestextarchiv.de/book/download_xml/goethe_faust01_1808",{createNextWordRelationships:
+true})
+yield node
+return node;
+~~~
+
+und mit dem folgenden Query auch jene **Bilder froher Tage**-Stelle im Text aufgerufen.
+
+~~~cypher
+MATCH
+w=(:XmlWord)-[:NEXT_WORD*3]->
+(a:XmlWord {text:'Bilder'})-[:NEXT_WORD]->
+(:XmlWord {text:'froher'})-[:NEXT_WORD*3]->(:XmlWord)
+RETURN *;
+~~~
+
+Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen, da hier u.a. auch der Zeilenfall annotiert ist.
+
+![Eine Beispielzeile aus dem Faust](Bilder/TEI2Graph/BilderFroherTageP5.png)
 
 # Zusammenfassung
 Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden.
 
 [^0235]: Zu __constraints__ vgl. [https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/](https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/)
+
+[^f332]: Vgl. zu diesem Beispiel [http://deutschestextarchiv.de/book/view/goethe_faust01_1808?p=11](http://deutschestextarchiv.de/book/view/goethe_faust01_1808?p=11).
