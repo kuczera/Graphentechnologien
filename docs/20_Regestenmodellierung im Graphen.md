@@ -38,50 +38,14 @@ Damit lädt man das aktuelle Tabellenblatt als CSV runter. Nach dem Download mus
 
 ![Download-Link der CSV-Datei](Bilder/RI2Graph/google-docs-link-kopieren.png)
 
-## Import der Regesten mit `LOAD_CSV`
-
-Nachdem die Download-URL der CSV-Datei nun ermittelt ist, kann der `LOAD CSV`-Befehl angepasst und ausgeführt werden.
-
-~~~cypher
-// ReggH4-Regesten und Datumsangaben aus Google-Docs importieren
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
-CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history,date:line.date_string,ident:line.identifier,regnum:line.regnum,origPlaceOfIssue:line.locality_string, startDate:line.start_date, endDate:line.end_date})
-MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
-MERGE (r)-[:DATE]->(d)  
-;
-~~~
-
-Der `LOAD CSV`-Befehl kann noch um die Angabe `WITH HEADERS FROM` ergänzt werden. Dann werden die Angaben in der ersten Zeile für die Identifizierung der Spalten verwendet.
-In den Anführungszeichen nach dem Befehl `LOAD CSV WITH HEADERS FROM` wird der Download-Link der CSV-Datei angegeben. Der `LOAD CSV`-Befehl lädt dann bei seiner Auführung die CSV-Datei von der angegebenen URL und gibt sie zeilenweise an die folgenden cyper-Befehle weiter.
-
-![Blick auf die ersten Zeilen der Google-spreadsheets-Tabelle.](Bilder/RI2Graph/CSV-Google-Tabelle.png)
-
-Mit dem `CREATE`-Befehl wird in der Graphdatenbank ein Knoten vom Typ Regestae erzeugt.[^336e] Diesem Knoten werden noch verschiedene Eigenschaften wie der Regestenidentifier, das Regest, die Überlieferung, die Datumsangabe und die Regestennummer mitgegeben. Wie dem Beispiel zu entnehmen ist, sind die Eigenschaften in CamelCase-Notation angegeben (z.B. archivalHistory).[^d219] Dies ist die hier übliche Notation, da Leerzeichen nicht verwendet werden dürfen und der Unterstrich je nach Betriebssystems Probleme verursachen kann. In der folgenden Tabelle sind die einzelnen Eigenschaften nochmal zusammengefasst und beispielhaft für das erste Regest aufgelistet.
-
-|Eigenschaft|Spaltenüberschrift|Bedeutung|Wert
-|:---------|--------|--------|:--------|
-|`regid`|persistent_identifier|Ident des Regests|1050-11-11_1_0_3_2_3_1_1
-|`text`|summary|Regestentext|Heinrich wird als viertes Kind Kaiser ...
-|`archivalHistory`|archival_history|Überlieferung|Herim. Aug. 1050 ...
-|`date`|date_string|Datumsangabe des Regests|1050 November 11
-|`regnum`|regnum|Regestennummer innerhalb des Bandes|1
-
-Der `CREATE`-Befehl bekommt über das Array line beim ersten Durchlauf die Zellen der ersten Zeile der CSV-Datei. Über line.regid kann dann auf den Wert der Spalte regid zugegriffen und dieser dann für die Erstellung der Eigenschaft regid verwendet werden. Auf die gleiche Weise werden dann auch die weiteren Eigenschaften des Regestenknotens erstellt.
-In der folgenden Abbildung sind die Eigenschaften des Regestenknotens dargestellt.
-
-
-![Die Eigenschaften des Regests, registerid, ident, Text regid und Überlieferung.](Bilder/RI2Graph/30-Regestentext.png)
-
-
-In einer Zeile der CSV-Datei finden sich alle Angaben eines Regests. Die in der oben abgebildeten Tabelle angegebenen Werte werden als Eigenschaften des Regestenknotens erstellt.
-
 ## Regestenmodellierung im Graphen
 
 Nachdem mit dem `LOAD CSV`-Befehl ein erster Schritt des Import erfolgreich abgeschlossen ist, wird nun erst mal das Modell der Regesten im Graphen vorgestellt.
 In der nächsten Abbildung wird das Modell des Regests im Graphen abgebildet.
 
-![ReggF3 Heft 19, Nr. 316.](Bilder/RI2Graph/ReggF3-H19-316.png)
-![Das Regest im Graphen.](Bilder/RI2Graph/26-FIII-Regestengraph.png)
+![RI III,2,3 n. 1487, in: Regesta Imperii Online,
+URI: http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa.](Bilder/RI2Graph/ReggH4-Nr-1487.png)
+![Das Regest im Graphen.](Bilder/RI2Graph/ReggH4-Nr-1487imGraph.png)
 
 Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Mit den folgenden `MERGE`-Befehlen werden anschließend ergänzende Knoten für die Datumsangaben und die Ausstellungsorte erstellt. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird der hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird dann die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
