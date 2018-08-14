@@ -64,7 +64,7 @@ Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.
 
 
 ~~~cypher
-CALL apoc.load.xmlSimple("https://docs.google.com/document/u/0/export?format=txt&id=1Ujx9cdequEvuXx6DxK7xfxbuS63Aq9n_xpLOAcjU_xc&token=AC4w5Vj0yTkdPLob1lo1ajkaG75fynNZ0Q3A1490694667158") yield value as xmlFile
+CALL apoc.load.xmlSimple("https://raw.githubusercontent.com/kuczera/Graphentechnologien/master/docs/data/kollatz.xml") yield value as xmlFile
 UNWIND xmlFile._work as wdata
 	MERGE (w1:Werk{eid:wdata.id})
 	set w1.name=wdata._title._text
@@ -80,8 +80,9 @@ UNWIND xmlFile._work as wdata
 		 MERGE (w1)-[:GEDRUCKT_IN]->(o1));
 ~~~
 
-Für den Import wird die apoc-Funktion apoc.load.xml verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der die Variable value, verbunden mit einem XQUERY auf die Ebene des work-Elements
+Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der jeweils ein Werk (das ist der Inhalt des *work*-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle *work*-Elemente der XML-Datei abgearbeitet sind.
 
+Nach dem `UNWIND`-Befehl folgt als eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk`, für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind.
 
 
 [^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen zur Installation und die Dokumentation findet sich unter: [https://neo4j-contrib.github.io/neo4j-apoc-procedures/](https://neo4j-contrib.github.io/neo4j-apoc-procedures/). Die Dokumentation zu apoc.load.xml ist erreichbar unter [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml).

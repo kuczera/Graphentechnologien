@@ -38,7 +38,7 @@ Damit lädt man das aktuelle Tabellenblatt als CSV runter. Nach dem Download mus
 
 ![Download-Link der CSV-Datei](Bilder/RI2Graph/google-docs-link-kopieren.png)
 
-## Die neo4j-Eingabezeile
+## Import der Regesten mit `LOAD_CSV`
 
 Nachdem die Download-URL der CSV-Datei nun ermittelt ist, kann der `LOAD CSV`-Befehl angepasst und ausgeführt werden.
 
@@ -75,6 +75,9 @@ In der folgenden Abbildung sind die Eigenschaften des Regestenknotens dargestell
 
 In einer Zeile der CSV-Datei finden sich alle Angaben eines Regests. Die in der oben abgebildeten Tabelle angegebenen Werte werden als Eigenschaften des Regestenknotens erstellt.
 
+## Regestenmodellierung im Graphen
+
+Nachdem mit dem `LOAD CSV`-Befehl ein erster Schritt des Import erfolgreich abgeschlossen ist, wird nun erst mal das Modell der Regesten im Graphen vorgestellt.
 In der nächsten Abbildung wird das Modell des Regests im Graphen abgebildet.
 
 ![ReggF3 Heft 19, Nr. 316.](Bilder/RI2Graph/ReggF3-H19-316.png)
