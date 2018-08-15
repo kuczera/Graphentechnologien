@@ -442,7 +442,7 @@ Die mit dem `<del>`-Element gekennzeichneten Tilgungen können mit dem \@renditi
 |:---------|--------|:--------|
 |`<del>`|#ow|Tilgung durch Überschreibung des ursprünglichen Textes
 |`<del>`|#s|Tilgung durch Streichung
-|`<del>`|#erased|Tilgung durch Radieren, Auskratzen o. ä.
+|`<del>`|#erased|Tilgung durch Radieren, Auskratzen
 
 Mit folgenden cypher-Query erhält man die Verteilung der Attributwerte.
 
