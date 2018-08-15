@@ -72,7 +72,9 @@ Schließlich ergaben Nachfragen bei neo4j, dass bei Problemen mit dem Datenmodel
 
 ![Graphmodell ohne `KNOWS`-Kanten. Diese können bei Bedarf einfach errechnet werden.](Bilder/1zu1-Beziehungen-nur-Regest.png)
 
+## Zusammenfassung
 
+In diesem Kapitel wurde zunächst das Akademieprojekt Regesta Imperii vorgestellt. Anfang der 2000er Jahre digitalisiert stehen die Regesten seitdem unter [www.regesta-imperii.de](www.regesta-imperii.de) frei im Internet zur Nutzung zur Verfügung. Für die Auswertung gibt ein eine einfache Suchmaske und eine erweiterte Suche. Im Jahr wurde die Suchstrategien der Nutzer in der Online-Regestensuche untersucht und es zeigte sich, dass sich zwei Nutzungsszenarien unterscheiden lassen, von denen aber nur eines von den aktuellen Suchmasken der Regesta Imperii Online optimal bedient wird. Im zweiten Teil des Kapitels wurde die Visualisierung von Registernetzwerken und die anschließende Modellierung in Graphdatenbanken dargestellt und Nutzungs- und Auswertungsszenarien diskutiert. Im folgenden Kapitel wird die Modellierung von Regesten im Graphen detailliert erklärt.
 
 [^5147]: Verwendet wird die Graphdatenbank neo4j. Die Open-Source-Version ist kostenlos erhältlich unter [https://www.neo4j.com](https://www.neo4j.com).
 [^892b]: Dies ist das Tabellenkalkulationsformat von Libreoffice und Openoffice. Vgl.  [https://de.libreoffice.org](https://de.libreoffice.org).
