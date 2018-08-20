@@ -9,11 +9,17 @@ order: 5
 Verantwortlich:
 
 Dr. Andreas Kuczera
+
 Regesta Imperii
+
 Justus-Liebig Universität Gießen
+
 Historisches Institut, Mittelalter
+
 Otto-Behaghel-Str. 10
+
 D-35394 Gießen
+
 Haus C Raum 244a
 
 <mailto:andreas.kuczera@adwmainz.de>
