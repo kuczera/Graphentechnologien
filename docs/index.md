@@ -22,4 +22,4 @@ Die Slides der Lehreinheit stehen unter CC-BY-Lizenz und sind erreichbar unter:
 
 Weitere Informationen zu Graphentechnologien in den Digitalen Geistes- und Sozialwissenschaften finden Sie auf den Seiten der AG-Graphentechnologien des Dhd-Verbandes: [https://graphentechnologien.hypotheses.org/](https://graphentechnologien.hypotheses.org/).
 
-[^2753]: Mit offenem Buchprojekt ist gemeint, dass auf Github der Arbeitsprozess mit allen Änderungen für alle transparent nachvollziehbar ist.
+[^2753]: Mit offenem Buchprojekt ist gemeint, dass auf Github der Arbeitsprozess mit allen Änderungen transparent nachvollziehbar ist.
