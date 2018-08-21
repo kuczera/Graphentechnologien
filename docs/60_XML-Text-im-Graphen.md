@@ -43,7 +43,7 @@ Technische Grundlage der im Rahmen dieses Werkes vorgestellten Beispiel ist die 
 
 ### Der neo4j-XML-Importer
 
-Für den Import der Texte wurde der neo4j-XML-Importer von Stefan Armbruster verwendet[^ed8a]. Der Importer nimmt TEI-XML-Dateien entgegen und importiert sie in die Graphdatenbank.
+Für den Import der Texte wurde die Procedure apoc.xml.import aus der apoc-Bibliothek von neo4j verwendet[^ed8a]. Die Procedure  nimmt XML-Dateien entgegen und importiert sie in die Graphdatenbank.
 
 #### Import
 
@@ -52,12 +52,14 @@ Befehl für den Import der Patzig-XML-Datei[^8a2a]:
 ~~~cypher
 CALL apoc.xml.import('http://www.deutschestextarchiv.de/
 	book/download_xml/patzig_msgermfol841842_1828',
-	{createNextWorkRelationships: true}) 	
+	{createNextWordRelationships: true}) 	
 	yield node return node;
 ~~~
 
 
-Dabei werden die XML-Knoten in Graphknoten umgewandelt und verschiedene Arten von Kanten erstellt, die einerseits die Baum-Hierarchie des XMLs im Graphen abbilden und andererseits die im XML vorhandenen Textknoten miteinerander verknüpfen[^4da1]. Dabei werden die  Wörter innerhalb der XML-Textknoten werden in Ketten von Wortknoten umgewandelt. Zur Abbildung des Wurzelelement der importieren XML-Datei wird ein Knoten vom Typ `XmlDocument` angelegt. Dieser erhält die Propertys `_xmlEncoding` zur Darstellung des Encodings, `_xmlVersion` für die Xml-Version und `url` für die URL des importierten XML-Dokuments.
+Dabei werden die XML-Knoten in Graphknoten umgewandelt und verschiedene Arten von Kanten erstellt, die einerseits die Baum-Hierarchie des XMLs im Graphen abbilden. Mit der Option  `createNextWorkRelationships: true` wird darüber hinaus festgelegt, dass die im XML vorhandenen Textknoten über `NEXT_WORD`-Kanten miteinerander verknüpft werden. Zu beachten ist hierbei, dass es in TEI-XML zwei verschiedene Arten von Elementen gibt. Die eine Klasse dient der Klassifizierung von Text, die zweite Art bringt Varianten und zusätzlichen Text mit, der beim Import in seiner Serialität eingelesen und mit `NEXT_WORD`-Kanten verbunden wird. Dies kann dann zur Sinnentstellung des Textes führen.[^4da1] 
+
+Zur Abbildung des Wurzelelement der importieren XML-Datei wird ein Knoten vom Typ `XmlDocument` angelegt. Dieser erhält die Propertys `_xmlEncoding` zur Darstellung des Encodings, `_xmlVersion` für die Xml-Version und `url` für die URL des importierten XML-Dokuments.
 
 Mit einem weiteren cypher-Query erhalten alle der importierten Knoten die Eigenschaft `url` mit der URL des importierten XML-Dokuments. Damit lassen sich Knoten in einer Graphdatenbank mit mehreren importierten XML-Dokumenten auseinanderhalten.
 
@@ -733,9 +735,8 @@ Im Patzig-Manusskript wird am Ende jeder Seite das erste Wort der folgenden Seit
 
 [^b20c]: Vgl. www.neo4j.com (abgerufen am 7.8.2017).
 [^dff9]: Die Graphdatenbank orientdb (http://orientdb.com/) bietet ein für Historiker sehr interessantes Feature, da sie als Datentyp für die Propertys von Knoten auch Datumsangaben im ISO-Format zulässt. Vgl. https://orientdb.com/docs/2.2/Managing-Dates.html (abgerufen am 7.8.2017).
-[^ed8a]: Der generische XML-Import wird momentan von Stefan Armbruster entwickelt (https://github.com/sarmbruster/ abgerufen am 23.11.2017). Es ist geplant, den Importer in die apoc-Bibliothek zu integrieren. (https://github.com/neo4j-contrib/neo4j-apoc-procedures abgerufen am 23.11.2017).
-[^4da1]: In TEI-XML gibt es zwei verschiedene Arten von Elementen. Die eine Klasse dient der Klassifizierung von Text, die zweite Art bringt Varianten und zusätzlichen Text mit!!! Literaturhinweis ergänzen, Hans-Werner Bartz fragen.
-
+[^ed8a]: Wie die apoc-Bibliothek installiert und die Funktionen und Procedures verwendet werden können wird im [Kapitel für Fortgeschrittene](85-cypher-fuer-Fortgeschrittene.md) erklärt.
+[^4da1]: !!! Literaturhinweis ergänzen, Hans-Werner Bartz fragen.
 [^32a2]: Vgl. @DekkerHaentjensItmorejust2017.
 [^b141]: @SchmidtInteroperableDigitalScholarly2014, 4.1 Annotations.
 [^3af6]: URL des Beispieltextes: http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=Himalaja&p=39 abgerufen am 02.01.2018.
