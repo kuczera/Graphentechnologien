@@ -11,9 +11,9 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# Wie kommen die Regesten in den Graphen ?
+# Wie kommen die Regesten in den Graphen
 
-Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Typo3 welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
+Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Typo3, welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
 
 ![Regesten als CSV-Datei](Bilder/RI2Graph/ReggH4-Regestentabelle.png)
 
@@ -21,46 +21,47 @@ In der CSV-Datei finden sich die oben erläuterten einzelnen Elemente der Regest
 
 ## Import mit dem `LOAD CSV`-Befehl
 
-Mit dem Befehl `LOAD CSV` können die CSV-Dateien mit den Regesten in die Graphdatenbank importiert werden.[^5147] Hierfür muss die Datenbank aber Zugriff auf die CSV-Daten haben. Dies ist einerseits über den im Datenbankverzeichnis vorhandene Ordner `import`  oder über eine URL auf die CSV-Datei möglich. Da sich die einzelnen Zugriffswege auf den `import`-Ordner von Betriebssystem zu Betriebssystem unterscheiden wird hier beispielhaft der Import mit einer URL vorgestellt. Hierfür wird ein Webserver benötigt, auf den man die CSV-Datei hochlädt und sich anschließend die Webadresse für den Download der Datei notiert.
+Mit dem Befehl `LOAD CSV` können die CSV-Dateien mit den Regesten in die Graphdatenbank importiert werden.[^5147] Hierfür muss die Datenbank aber Zugriff auf die CSV-Daten haben. Dies ist einerseits über den im Datenbankverzeichnis vorhandene Ordner `import`  oder über eine URL, unter der die CSV-Datei abrufbar ist, möglich. Da sich die einzelnen Zugriffswege auf den `import`-Ordner von Betriebssystem zu Betriebssystem unterscheiden, wird hier beispielhaft der Import über eine URL vorgestellt. Hierfür wird ein Webserver benötigt, auf den man die CSV-Datei hochlädt und sich anschließend die Webadresse für den Download der Datei notiert.
 
 ## Google-Docs für den CSV-Download
 
-Da viele aber keinen Zugriff auf einen eigenen Webserver haben wird hier auch der Download der CSV-Dateien über Google-Docs erklärt. Zunächst benötigt man hierfür einen Google-Account. Anschließend öffnet man Google-Drive und erstellt dort eine leere Google-Tabellen-Datei in der man dann die CSV-Datei hochladen und öffnen kann.
+Es ist aber auch möglich, CSV-Daten in Google-spreadsheets zu speichern und dort eine URL für den Download der Daten zu erstellen. Zunächst benötigt man hierfür einen Google-Account. Anschließend öffnet man Google-Drive und erstellt dort eine leere Google-Tabellen-Datei in der man dann die CSV-Datei hochladen und öffnen kann.
 
 ![Freigabe der Datei zum Ansehen für Dritte!](Bilder/RI2Graph/google-docs-freigeben.png)
 
-Wichtig ist nun, die Datei zur Ansicht freizugeben (Klick auf `Freigeben` oben rechts im Fenster dann Link zum Freigeben abrufen und anschließend bestätigen). Jetzt ist die CSV-Datei in Google-Docs gespeichert und kann von Dritten angesehen werden. Für den Import in die Graphdatenbank benötigen wir aber einen Download im CSV-Format. Diesen findet man unter `Datei/Herunterladen als/Kommagetrennte Werte.csv aktuelles Tabellenblatt`.
+Wichtig ist nun, die Datei zur Ansicht freizugeben (Klick auf `Freigeben` oben rechts im Fenster dann `Link zum Freigeben` abrufen und anschließend `Fertig` bestätigen). Jetzt ist die CSV-Datei in Google-Docs gespeichert und kann von Dritten angesehen werden. Für den Import in die Graphdatenbank benötigen wir aber einen Download im CSV-Format. Diesen findet man unter `Datei/Herunterladen als/Kommagetrennte Werte.csv aktuelles Tabellenblatt`.
 
 ![Herunterladen als CSV-DAtei](Bilder/RI2Graph/google-docs-herunterladen-csv.png)
 
 
-Damit lädt man das aktuelle Tabellenblatt als CSV runter. Nach dem Download muss man nun im Browser unter Downloads den Download-Link der Datei suchen und kopieren.
+Damit erhält man das aktuelle Tabellenblatt als CSV-Download. Anschließend muss nun im Browser unter Downloads der Download-Link der Datei gesucht und kopiert werden.
 
 ![Download-Link der CSV-Datei](Bilder/RI2Graph/google-docs-link-kopieren.png)
 
 ## Regestenmodellierung im Graphen
 
-Nachdem mit dem `LOAD CSV`-Befehl ein erster Schritt des Import erfolgreich abgeschlossen ist, wird nun erst mal das Modell der Regesten im Graphen vorgestellt.
-In der nächsten Abbildung wird das Modell des Regests im Graphen abgebildet.
+Mit dem `LOAD CSV`-Befehl stehen die Informationen der Regestentabelle nun für die weitere Verarbeitung zur Verfügung. Nun muss festgelegt werden, wie diese Informationen im Graphen modelliert werden sollen. Daher wird im nächsten Schritt das Modell der Regesten im Graphen vorgestellt (siehe Abbildung).
 
 ![RI III,2,3 n. 1487, in: Regesta Imperii Online,
 URI: http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa.](Bilder/RI2Graph/ReggH4-Nr-1487.png)
 ![Das Regest im Graphen.](Bilder/RI2Graph/ReggH4-Nr-1487imGraph.png)
 
-Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Mit den folgenden `MERGE`-Befehlen werden anschließend ergänzende Knoten für die Datumsangaben und die Ausstellungsorte erstellt. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird der hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird dann die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
+In den Abbildungen finden sich beispielhaft das Regest RI III,2,3 Nr. 1487, einmal in der Ansicht der Onlineregesten und in der zweiten Abbildung als Modell im Graphen (neben anderen Regesten).
+
+Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Die `MERGE`-Befehle erzeugen ergänzende Knoten für die Datumsangaben und die Ausstellungsorte. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher, ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt, wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
 |Befehl|Variablen|Bemerkungen|
 |:--------|------|:-------|
 |`LOAD CSV WITH HEADERS FROM` "https://docs.google.com/ ..." AS line|line|Import der CSV-Dateien. Es wird jeweils eine Zeile an die Variable line weitergegeben|
-|`CREATE` (r:Regest {regid: line.persistent_identifier, Text:line.summary, Überlieferung: line.archival_history, ident:line.identifier})|line.persistent_identifier, line.summary etc. |Erstellung des Regestenknotens. Für die weiteren Befehlt steht der neu erstellt Regestenknoten unter der Variable r zur Verfügung.|
+|`CREATE` (r:Regest {regid: line.persistent_identifier, Text:line.summary, Überlieferung: line.archival_history, ident:line.identifier})|line.persistent_identifier, line.summary etc. |Erstellung des Regestenknotens. Für die weiteren Befehle steht der neu erstellt Regestenknoten unter der Variable `r` zur Verfügung.|
 |`MERGE` (d:Datum {startdate: line.start_date, enddate:line.end_date})|line.start_date und line.end_date|Es wird geprüft, ob ein Datumsknoten mit der Datumsangabe schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Datumsknoten unter der Variable d zur Verfügung.|
 |`MERGE` (o:Ort {ort:line.name, latitude:toFloat(line.latitude), longitude:toFloat(line.longitude)})|line.name ist der Ortsname, die anderen Angaben sind die Geodaten des Ortes|Es wird geprüft, ob ein Ortsknoten schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Ortsknoten unter der Variable o zur Verfügung.|
 |`MERGE` (r)-[:HAT_DATUM]->(d)|`(r)` ist der Regestenknoten, `(d)` ist der Datumsknoten|Zwischen Regestenknoten und Datumsknoten wird eine `HAT_DATUM`-Kante erstellt.|
 |`MERGE` (r)-[:HAT_ORT]->(o);|`(r)` ist der Regestenknoten, `(o)` ist der Ortsknoten|Zwischen Regestenknoten und Ortsknoten wird eine `HAT_ORT`-Kante erstellt.|
 
-# Erstellen der Ausstellungsorte
+## Erstellen der Ausstellungsorte
 
-In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun bei der Erstellung der Regestendatenbank im Graphen berücksichtigt werden können. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich teilweise aber auch auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit den 1.000 häufigsten Ortsangaben konnten schon die Ausstellungsorte der Mehrzahl der Regesten georeferenziert werden.
+In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun bei der Erstellung der Regestendatenbank im Graphen berücksichtigt werden können. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich aber auch teilweise auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit den 1.000 häufigsten Ortsangaben konnten schon die Ausstellungsorte der Mehrzahl der Regesten georeferenziert werden.
 
 Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
 
@@ -89,9 +90,9 @@ RETURN count(p)
 ;
 ~~~
 
-Da Import-Query ist etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind, wir beim Import aber nur die Ortsknoten erstellen, die für die Regesten Kaiser Heinrichs IV. relevant sind. Sind die genannten Bedingungen erfüllt, wird mit dem `MERGE`-Befehl der `Place`-Knoten erstellt und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten und in den `PLACE_OF_ISSUE`-Kanten ergänzt.
+Da Import-Query etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind. Für diesen Import sollen aber nur jene angelegt werden, die für die Regesten Kaiser Heinrichs IV. relevant sind. Mit dem `MERGE`-Befehl wird der `Place`-Knoten erstellt und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten und in den `PLACE_OF_ISSUE`-Kanten ergänzt.
 
-Mit dem folgenden Query werden die Koordinatenangaben zu Höhen- und Breitengraden der Ausstellungsorte (`Place`-Knoten), die in den Propertys Lat und Long abgespeichert sind in der neuen Property LatLong zusammengefasst und in `point`-Werte umgewandelt. Seit Version 3 kann neo4j mit diesen Werten Abstandsberechnungen durchführen (Mehr dazu siehe unten bei den Auswertungen).
+Mit dem folgenden Query werden die Koordinatenangaben zu Höhen- und Breitengraden der Ausstellungsorte (`Place`-Knoten), die in den Propertys Lat und Long abgespeichert sind, in der neuen Property LatLong zusammengefasst und in `point`-Werte umgewandelt. Seit Version 3 kann neo4j mit diesen Werten Abstandsberechnungen durchführen (Mehr dazu siehe unten bei den Auswertungen).
 
 ~~~cypher
 // Regesten und Ausstellungsorte mit Koordinaten der Ausstellungsorte versehen
@@ -122,7 +123,7 @@ Zunächst werden mit dem `MATCH`-Befehl alle Regestenknoten aufgerufen. Anschlie
 
 ### Herrscherhandeln in den Regesta Imperii
 
-Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Verb im Regest das Herrscherhandeln beschrieben. Um dies auch digital auswerten zu können haben wir in einem kleinen Testprojekt mit Hilfe des Stuttgart-München Treetaggers aus jedem Regest das erste Verb extrahiert und normalisiert. Die Ergebnisse sind in folgender [Tabelle](https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/edit?usp=sharing) einsehbar. Diese Tabelle wird mit dem folgenden cypher-Query in die Graphdatenbank eingelesen.
+Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Verb im Regest das Herrscherhandeln beschrieben. Um dies auch digital auswerten zu können, haben wir in einem kleinen Testprojekt mit Hilfe des Stuttgart-München Treetaggers aus jedem Regest das erste Verb extrahiert und normalisiert. Die Ergebnisse sind in folgender [Tabelle](https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/edit?usp=sharing) einsehbar. Diese Tabelle wird mit dem folgenden cypher-Query in die Graphdatenbank eingelesen.
 
 ~~~cypher
 // ReggH4-Herrscherhandeln
@@ -133,22 +134,25 @@ MERGE (l:Lemma{lemma:line.Lemma})
 MERGE (r)-[:ACTION]->(l);
 ~~~
 
-Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Lemma`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-knoten mit dem `Lemma`-Knoten übder eine `ACTION`-Kante verbunden. Auswertungsperspektiven finden Sie hier ####
+Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Lemma`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-knoten mit dem `Lemma`-Knoten über eine `ACTION`-Kante verbunden.
 
 ### Zitationsnetzwerke in den Regesta Imperii
 
-In vielen Online-Regesten ist die zitierte Literatur mit dem [Regesta-Imperii-Opac](http://opac.regesta-imperii.de/lang_de/) verlinkt. Da es sich um URLs handelt, sind diese Verweise eindeutig andererseits lassen sie sich mit regulären Ausdrücken aus den Regesten extrahieren. Mit folgendem Query werden aus den Überlieferungsteilen der Regesten die mit dem Opac verlinkten Literaturangaben extrahiert und jede Literaturangabe als `Refernce`-Knoten angelegt.
+In vielen Online-Regesten ist die zitierte Literatur mit dem [Regesta-Imperii-Opac](http://opac.regesta-imperii.de/lang_de/) verlinkt. Da es sich um URLs handelt, sind diese Verweise eindeutig.
+Andererseits lassen sie sich mit regulären Ausdrücken aus den Regesten extrahieren. Mit folgendem Query werden aus den Überlieferungsteilen der Regesten die mit dem Opac verlinkten Literaturangaben extrahiert und jede Literaturangabe als `Refernce`-Knoten angelegt.
 
 ~~~cypher
 // ReggH4-Literaturnetzwerk erstellen
 MATCH (reg:Regesta)
 WHERE reg.archivalHistory CONTAINS "link"
-UNWIND apoc.text.regexGroups(reg.archivalHistory, "<link (\\S+)>(\\S+)</link>") as link
-MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
+UNWIND apoc.text.regexGroups(reg.archivalHistory,
+"<link (\\S+)>(\\S+)</link>") as link
+MERGE (ref:Reference {url:link[1]})
+ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 ~~~
 
-Da dies mit dem `MERGE`-Befehl geschieht, wird in der Graphdatenbank jeder Literaturtitel nur einmal angelegt. Anschließend werden die `Reference`-Knoten mit den Regesten über `REFERNCES`-Kanten verbunden. Zu den Auswertungsmöglichkeiten vgl. unten den Abschnitt zu den [Auswertungsperspektiven](#Auswertungsperspektiven).
+Da dies mit dem `MERGE`-Befehl geschieht, wird in der Graphdatenbank jeder Literaturtitel nur einmal angelegt. Anschließend werden die `Reference`-Knoten mit den Regesten über `REFERNCES`-Kanten verbunden. Zu den Auswertungsmöglichkeiten vgl. unten den Abschnitt zu den [Auswertungsperspektiven](##Auswertungsperspektiven).
 
 
 # Import der Registerdaten in die Graphdatenbank
@@ -185,7 +189,7 @@ CREATE (:IndexPerson {registerId:line.ID, name1:line.name1});
 Mit dem folgenden cypher-Query werden nach dem gleichen Muster aus der Tabelle `Orte` die Ortseinträge in die Graphdatenbank importiert.
 
 ~~~cypher
-OAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2049106817"
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2049106817"
 AS line
 CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
 ~~~
@@ -202,7 +206,7 @@ MATCH (to:Regesta {regnum:line.regnum2})
 CREATE (from)-[:PLACE_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
-Dabei werden zunächst mit den beiden `MATCH`-Befehlen jeweils das Regest und der Registereintrag aufgerufen und schließend mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` mitbekommt.
+Mit zwei `MATCH`-Befehlen wird jeweils das Regest und der Registereintrag aufgerufen und  mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` erhält.
 Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten angelegt:
 
 ~~~cypher
@@ -214,19 +218,19 @@ CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name
 ~~~
 
 ## Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
-In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III. sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
+In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
 ![Ausschnitt der Entitätentabelle des Registers der Regesten Friedrichs III.](Bilder/RI2Graph/RegisterF3-Hierarchie.png)
 
-Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `nodeID` als eindeutige Kennung zugewiesen. Bei Registereinträgen, die kein Hauptlemma sind, enthält die dritte Spalte `topnodeID` den Verweis auf die eindeutige Kennung `nodeID` des übergeordneten Eintrages. Beim Import in die Graphdatenbank wird diese Hierarchie über `CHILD_OF`-Kanten abgebildet, die vom untergeordneten Eintrag auf das übergeordnete Lemma verweisen. Damit ist die komplette Registerhierarchie im Graphen abgebildet. In der Spalte `name1` ist das Lemma angegeben, in der Spalte `name3` zusätzliche zum Lemma noch der gesamte Pfad vom Hauptlemma bis zum Registereintrag, jeweils mit Doppelslahes (`//`) getrennt. Bei tiefer gestaffelten Registern ist teilweise ohne Kenntnis der übergeordneten Einträge eine eindeutige Identifizierung eines Eintrages nicht möglich. So wird in Zeile 17 der o.a. Abbildung allein mit der Angabe aus der Spalte `name1` nicht klar ist, um welche `Meierei` es sich handelt. Mit dem kompletten Pfad des Registereintrages in der Spalte `name3` wird dagegen deutlich, dass die Aachener `Meierei` gemeint ist.
+Im Tabellenausschnitt wird jedem Registereintrag in der ersten Spalte eine `nodeID` als eindeutige Kennung zugewiesen. Bei Registereinträgen, die kein Hauptlemma sind, enthält die dritte Spalte `topnodeID` den Verweis auf die eindeutige Kennung `nodeID` des übergeordneten Eintrages. Beim Import in die Graphdatenbank wird diese Hierarchie über `CHILD_OF`-Kanten abgebildet, die vom untergeordneten Eintrag auf das übergeordnete Lemma verweisen. Damit ist die komplette Registerhierarchie im Graphen abgebildet. In der Spalte `name1` ist das Lemma angegeben. In der Spalte `name3` ist zusätzlich zum Lemma noch der gesamte Pfad vom Hauptlemma bis zum Registereintrag, jeweils mit Doppelslahes (`//`) getrennt. Bei tiefer gestaffelten Registern ist teilweise ohne Kenntnis der übergeordneten Einträge eine eindeutige Identifizierung eines Eintrages nicht möglich. So wird in Zeile 17 der o.a. Abbildung allein mit der Angabe aus der Spalte `name1` nicht klar, um welche `Meierei` es sich handelt. Mit dem kompletten Pfad des Registereintrages in der Spalte `name3` wird dagegen deutlich, dass die Aachener `Meierei` gemeint ist.
 
-# Auswertungsperspektiven
+## Auswertungsperspektiven
 
-## Personennetzwerke in den Registern
+### Personennetzwerke in den Registern
 
-### Graf Robert II. von Flandern in seinem Netzwerk
+#### Graf Robert II. von Flandern in seinem Netzwerk
 
-Nach dem Import können nun die Online-Regesten und die Informationen aus dem Registern der Regesten Kaiser Heinrichs IV. in einer Graphdatenbank aus einer Vernetzungsperspektive abgefragt werden.[^f663]
+Nach dem Import können nun die Online-Regesten und die Informationen aus den Registern der Regesten Kaiser Heinrichs IV. in einer Graphdatenbank aus einer Vernetzungsperspektive abgefragt werden.[^f663]
 
 Ausgangspunkt ist der Registereintrag von [Graf Robert II. von Flandern](https://de.wikipedia.org/wiki/Robert_II._(Flandern)). Diesen Knoten finden wir mit folgendem Query.
 
@@ -236,7 +240,7 @@ MATCH (n:IndexPerson) WHERE n.registerId = 'H4P01822'
 RETURN *;
 ~~~
 
-Mit einem Doppelklick auf den `IndexPerson`-Knoten öffnen sich alle `Regesta`-Knoten, in denen Robert genannt ist. Klickt man nun wiederum alle Regestenknoten doppelt, sieht man alle Personen und Orte, mit denen Robert gemeinsam in den Regesten genannt ist.
+Mit einem Doppelklick auf den `IndexPerson`-Knoten öffnen sich alle `Regesta`-Knoten, in denen Robert genannt ist. Klickt man nun wiederum alle Regestenknoten doppelt an, sieht man alle Personen und Orte, mit denen Robert gemeinsam in den Regesten genannt ist.
 
 Dies kann auch in einem cypher-Query zusammengefasst werden.
 
@@ -253,7 +257,7 @@ In der folgenden Abb. wird das Ergebnis dargestellt.
 
 ![Robert mit den Personen, mit denen er gemeinsam in Regesten genannt wird.](Bilder/RI2Graph/RobertVonFlandernMitRegesten.png)
 
-Hier wird der `MATCH`-Befehl um einen Pfad über `PERSON_IN`-Kanten zu `Regesta`-Knoten ergänzt, von denen dann wiederum eine `PERSON_IN`-Kante zu den anderen, in den Regesten genannten `IndexPerson`-Knoten führt.
+Hier wird der `MATCH`-Befehl um einen Pfad über `PERSON_IN`-Kanten zu `Regesta`-Knoten ergänzt, von denen jeweils eine `PERSON_IN`-Kante zu den anderen, in den Regesten genannten `IndexPerson`-Knoten führt.
 
 Nimmt man noch eine weitere Ebene hinzu, wächst die Ergebnismenge stark an.
 
@@ -269,9 +273,9 @@ RETURN *;
 
 ![Robert mit Personen, die wiederum mit Personen gemeinsam in Regesten genannt sind.](Bilder/RI2Graph/Robert-viel.png)
 
-### Graf Robert II. von Flandern und Herzog Heinrich von Niederlothringen
+#### Graf Robert II. von Flandern und Herzog Heinrich von Niederlothringen
 
-In der Graphdatenbank ist es über die Exploration der Beziehungen einer Person hinaus möglich explizit die Verbindungen von zwei Personen abzufragen. In unserem nächsten Beispiel suchen wir jene Regesten, in denen [Graf Robert II. von Flandern](https://de.wikipedia.org/wiki/Robert_II._(Flandern)) und [Herzog Heinrich von Niederlothringen](https://de.wikipedia.org/wiki/Heinrich_I._(Limburg)) gemeinsam genannt sind.
+In der Graphdatenbank ist es über die Exploration der Beziehungen einer Person hinaus möglich, explizit die Verbindungen von zwei Personen abzufragen. In unserem nächsten Beispiel suchen wir jene Regesten, in denen [Graf Robert II. von Flandern](https://de.wikipedia.org/wiki/Robert_II._(Flandern)) und [Herzog Heinrich von Niederlothringen](https://de.wikipedia.org/wiki/Heinrich_I._(Limburg)) gemeinsam genannt sind.
 
 ~~~cypher
 // Robert II. von Flandern und Herzog Heinrich von Niederlothringen mit Netzwerk
@@ -283,11 +287,11 @@ AND m.registerId = 'H4P00926'
 RETURN *;
 ~~~
 
-Es zeigt sich, dass Robert und Heinrich in einem Regest gemeinsam genannt sind.
-
 ![Robert und Heinrich sind in einem Regest gemeinsam genannt.](Bilder/RI2Graph/RobertundHeinrich.png)
 
-Und dieses [Regest](http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa) berichtet ausgerechnet über die Unterwerfung Roberts und Heinrich IV.[^cbec]
+Es zeigt sich, dass Robert und Heinrich in einem Regest gemeinsam genannt sind.
+
+Und dieses [Regest](http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa) berichtet von der Unterwerfung Roberts unter und Heinrich IV.[^cbec]
 
 > Heinrich feiert das Fest der Apostel, wobei sich Graf Robert von Flandern im Beisein mehrerer Fürsten unterwirft, namentlich der Erzbischöfe Friedrich von Köln und Bruno von Trier, der Bischöfe Otbert von Lüttich, Burchard von Münster, Burchard von Utrecht, Herzog Heinrich von Niederlothringen sowie mehrerer Grafen.
 
@@ -295,8 +299,11 @@ Möglicherweise haben beide aber gemeinsame Bekannte, also Personen mit denen so
 
 
 ```
-// Robert und Heinrich mit allen gemeinsamen Personen und Regesten
-MATCH (n1:IndexPerson)-[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-(n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)
+// Robert und Heinrich mit allen
+gemeinsamen Personen und Regesten
+MATCH (n1:IndexPerson)
+-[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-
+(n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)
 <-[:PERSON_IN]-(n3:IndexPerson)
 WHERE n1.registerId = 'H4P00926'
 AND n3.registerId = 'H4P01822'
@@ -324,7 +331,7 @@ RETURN startPerson, endPerson, rel
 
 In der Abbildung sind die zwei Ego-Netzwerke von Heinrich (links) und Robert (rechts) mit den dazwischen liegenden gemeinsamen Bekanntschaften dargestellt. Es zeigt sich, dass Heinrich stärker sowohl mit Geistlichen als auch Weltlichen vernetzt war, während Robert insgesamt weniger Kontakte aber mit einem Schwerpunkt in der Geistlichkeit hatte.
 
-Für den Historiker ist aber vor allem interessant, was in den Regesten steht, die Robert und Heinrich über die Mittelsmänner verbinden. Hierfür wird der cypher-Query angepasst und sowohl Personen und die Regestentexte ausgegeben.
+Für den Historiker ist aber vor allem interessant, was in den Regesten steht, die Robert und Heinrich über die Mittelsmänner verbinden. Hierfür wird der cypher-Query angepasst und sowohl Personen als auch die Regestentexte ausgegeben.
 
 ~~~cypher
 // Liste der Regesten als Ergebnis
@@ -335,15 +342,17 @@ MATCH
 <-[:PERSON_IN]-(endPerson:IndexPerson)
 WHERE startPerson.registerId in ['H4P00926']
 AND endPerson.registerId in ['H4P01822']
-RETURN DISTINCT startPerson.name1, regest1.ident, regest1.text,
-middlePerson.name1, regest2.ident, regest2.text, endPerson.name1;
+RETURN DISTINCT startPerson.name1,
+regest1.ident, regest1.text,
+middlePerson.name1, regest2.ident,
+regest2.text, endPerson.name1;
 ~~~
 
-In der Abbildung wird ein Ausschnitt der Ergebnistabelle gezeigt. In der ersten Spalte der Tabelle finden sich Robert, anschließend die Angaben zum Regest, mit dem er mit der mitteleren Person (middlePerson.name1) verknüpft ist. Dem folgen schließlich die Angaben zum Regest, mit den die mittlere Person mit Robert in der letzten Spalte verbunden ist. Die Tabelle bietet einen Überblick zur Überlieferungssituation aus der Perspektive der Regesta Imperii.
+In der folgenden Abbildung wird ein Ausschnitt der Ergebnistabelle gezeigt. In der ersten Spalte der Tabelle finden sich Robert, anschließend die Angaben zum Regest, mit dem er mit der mitteleren Person (middlePerson.name1) verknüpft ist. Dem folgen schließlich die Angaben zum Regest, mit den die mittlere Person mit Robert in der letzten Spalte verbunden ist. Die Tabelle bietet einen Überblick zur Überlieferungssituation aus der Perspektive der Regesta Imperii.
 
 ![Robert und Heinrich mit den gemeinsamen Bekanntschaften.](Bilder/RI2Graph/RobertHeinrichApocTabelle.png)
 
-## Herrscherhandeln ausgezählt
+### Herrscherhandeln ausgezählt
 
 Wie bereits oben erwähnt wurde in einem ersten Test jeweils das erste Verb des Regestentextes extrahiert, lemmatisiert und in die Graphdatenbank eingespielt. Im folgenden werden nun einige cypher-Querys vorgestellt, die dies beispielhaft auswerten.
 
@@ -366,9 +375,9 @@ RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 |empfangen|29|
 |erhalten|26|
 
-Die Ergebnisliste zeigt gleich die Einschränkungen, da das Hilfsverb werden aus dem textuellen Zusammenhang gerissen ist. Andererseits ergeben sich aber auch interessante Erkenntnisse zur Häufigkeitsverteilung von Herrscherhandeln in Regestentexten. Die Anwendung des Verfahrens auf Regestentexte ist dabei auf der einen Seite positiv, da bei der Erstellung der Regesten sehr stark auf formale Kriterien geachtet wird und so die Zusammenhänge generalisiert gut zu erfassen sind. Auf der anderen Seite ist die Auswertung aber wiederum einen weiteren Schritt von der ursprünglichen Quelle entfernt.
+Die Ergebnisliste zeigt gleich die Einschränkungen, da das Hilfsverb *werden* aus dem textuellen Zusammenhang gerissen ist. Andererseits ergeben sich aber auch interessante Erkenntnisse zur Häufigkeitsverteilung von Herrscherhandeln in Regestentexten. Die Anwendung des Verfahrens auf Regestentexte ist dabei auf der einen Seite positiv, da bei der Erstellung der Regesten sehr stark auf formale Kriterien geachtet wird und so die Zusammenhänge gut zu erfassen sind. Auf der anderen Seite ist die Auswertung aber wiederum einen weiteren Schritt von der ursprünglichen Quelle entfernt.
 
-## Herrscherhandeln pro Ausstellungsort ausgezählt
+### Herrscherhandeln pro Ausstellungsort ausgezählt
 
 Im folgenden Query kommt eine räumliche Komponente zur Abfrage hinzu, da das Lemma hier jeweils abhängig vom Ausstellungsort der Urkunde abgefragt wird.
 
@@ -395,7 +404,7 @@ RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMI
 In der ersten Spalte befindet sich der Ortsname, der aus der Property `normalizedGerman` des `Place`-Knotens stammt. In der zweiten Spalte wird das Lemma angegeben und in der dritten Spalte schließlich die Anzahl der jeweiligen Regesten. Interessant wäre hier auch noch die Ergänzung der zeitlichen Dimension, mit der dann der zeitliche Verlauf in die Auswertung miteinbezogen werden könnte.
 
 
-## Herrscherhandeln und Anwesenheit
+### Herrscherhandeln und Anwesenheit
 
 Im nächsten Beispiel werden in einem Regest genannten Personen in die Auswertung des Herrscherhandelns mit einbezogen.
 
@@ -421,11 +430,11 @@ RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|setzen|1|
 | ... | ... | ... |
 
-Die Ergebnistabelle zeigt den Abschnitt zu Adalbero, einem Metzer Domkanoniker mit den mit der Häufigkeit des jeweiligen Herrscherhandeln-Lemmas.
+Die Ergebnistabelle zeigt den Abschnitt zu Adalbero, einem Metzer Domkanoniker mit der Häufigkeit des jeweiligen Herrscherhandeln-Lemmas.
 
-## Regesten 200 km rund um Augsburg
+### Regesten 200 km rund um Augsburg
 
-In den Propertys der Knoten lassen sich auch ex
+Mit dem folgenden Query werden für den Umkreis von 200 km rund um Augsburg alle Regesten aufgerufen.
 
 ~~~cypher
 // Entfernungen von Orten berechnen lassen
@@ -441,14 +450,16 @@ distance(r.latLong, point) AS Entfernung
 ORDER BY Entfernung;
 ~~~
 
+Solche Queries lassen sich auch mit zeitlichen Abfragen kombinieren und bieten sehr flexible Abfragemöglichkeiten.
 
-## Welche Literatur wird am meisten zitiert
+### Welche Literatur wird am meisten zitiert
 
-Wie bereits oben erwähnt, werden beim Import der Regesten in die Graphdatenbank die mit dem RI-Opac verlinkten Literaturtitel als eigenständige `Reference`-Knoten angelegt und jeweils mit dem `Regesta`-Knoten verknüpft. Diese Verknüpfung wird mit dem folgenden Query abgefragt, ausgezählt und aufgelistet.
+Beim Import der Regesten in die Graphdatenbank werden die mit dem RI-Opac verlinkten Literaturtitel als eigenständige `Reference`-Knoten angelegt und jeweils mit dem `Regesta`-Knoten verknüpft. Diese Verknüpfung wird mit dem folgenden Query abgefragt, ausgezählt und aufgelistet.
 
 ~~~cypher
 MATCH (n:Reference)<-[r:REFERENCES]-(m:Regesta)
-RETURN n.title, count(r) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
+RETURN n.title, count(r) AS Anzahl
+ORDER BY Anzahl DESC LIMIT 10;
 ~~~
 
 |n.title|ANZAHL
@@ -464,13 +475,15 @@ RETURN n.title, count(r) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 |Dobenecker|33
 |Remling|28
 
-# Der Import zusammengefasst
+Mit diesen Daten lassen sich Zitationsnetzwerke in den Regesten darstellen mit denen Regesten gefunden werden können, die auf Grund der gemeinsam zitierten Literatur die gleichen inhaltlichen Schwerpunkte aufweisen können.
 
-Den cypher-Code für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Google-Docs-Dokument](https://docs.google.com/document/d/1u7xDZOOz9dc3cI0vm87N8Mw4FmC_GUGBi3WritNzfpE/edit?usp=sharing) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Nach dem Start der Graphdatenbank kann dann im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sanbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden. Zu beachten ist, dass dort nur der neo4j-Browser für die Eingabe der cypher-Querys zur Verfügung steht und jeder Query (also alle cypher-Befehle, die mit einem Semikolon abgeschlossen sind) einzeln in die Eingabezeile kopiert werden müssen.
+## Der Import zusammengefasst
+
+Den cypher-Code für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Google-Docs-Dokument](https://docs.google.com/document/d/1u7xDZOOz9dc3cI0vm87N8Mw4FmC_GUGBi3WritNzfpE/edit?usp=sharing) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Nach dem Start der Graphdatenbank kann dann im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sandbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden. Zu beachten ist, dass dort nur der neo4j-Browser für die Eingabe der cypher-Querys zur Verfügung steht und jeder Query (also alle cypher-Befehle, die mit einem Semikolon abgeschlossen sind) einzeln in die Eingabezeile kopiert werden müssen.
 
 # Zusammenfassung
 
-In diesem Kapitel wurden die Schritte zum Import der Regesten Kaiser Heinrichs IV. in die Graphdatenbank neo4j erläutert und schließlich noch Auswertungsbeispiele gezeigt.
+In diesem Kapitel wurden die Schritte zum Import der Regesten Kaiser Heinrichs IV. in die Graphdatenbank neo4j erläutert sowie verschiedene Auswertungsbeispiele vorgestellt.
 
 [^5147]: Verwendet wird die Graphdatenbank neo4j. Die Community-Edition ist kostenlos erhältlich unter [https://www.neo4j.com](https://www.neo4j.com).
 [^892b]: Dies ist das Tabellenkalkulationsformat von Libreoffice und Openoffice. Vgl.  [https://de.libreoffice.org](https://de.libreoffice.org).
