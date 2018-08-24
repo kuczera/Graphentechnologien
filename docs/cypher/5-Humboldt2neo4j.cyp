@@ -90,7 +90,7 @@ WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/b
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
 SET (nodes[index]).DtaID = index
-SET (nodes[index]).Document = 'Parthey';;
+SET (nodes[index]).Document = 'Parthey';
 
 
 // URL von Dokument auf alle Wort-Knoten kopieren:
