@@ -29,86 +29,70 @@ MATCH(n) DETACH DELETE n;
 
 // NN1 importieren #################################################################
 call
-apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',{createNextWorkRelationships: true})
+apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/nn_msgermqu2345_1827',{createNextWordRelationships: true})
 yield node return node;
-
-// URL von Dokument auf alle Wort-Knoten kopieren:
-match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url
-set w.document = 'NN1';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
-WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828'
+WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/nn_msgermqu2345_1827'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
-SET (nodes[index]).DtaID = index;
+SET (nodes[index]).DtaID = index
+SET (nodes[index]).Document = 'NN1';
 
 // NN2 importieren #################################################################
 call
-apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/nn_oktavgfeo79_1828',{createNextWorkRelationships: true})
+apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/nn_oktavgfeo79_1828',{createNextWordRelationships: true})
 yield node return node;
-
-// URL von Dokument auf alle Wort-Knoten kopieren:
-match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url
-set w.document = 'NN2';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
 WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/nn_oktavgfeo79_1828'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
-SET (nodes[index]).DtaID = index;
+SET (nodes[index]).DtaID = index
+SET (nodes[index]).Document = 'NN2';
 
 // Patzig importieren ##################################################################
 call
-apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',{createNextWorkRelationships: true})
+apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',{createNextWordRelationships: true})
 yield node return node;
-
-// URL von Dokument auf alle Wort-Knoten kopieren:
-match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url
-set w.document = 'Patzig';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
 WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
-SET (nodes[index]).DtaID = index;
+SET (nodes[index]).DtaID = index
+SET (nodes[index]).Document = 'Patzig';;
 
 // Hufeland importieren #################################################################
 call
-apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/hufeland_privatbesitz_1829',{createNextWorkRelationships: true})
+apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/hufeland_privatbesitz_1829',{createNextWordRelationships: true})
 yield node return node;
-
-// URL von Dokument auf alle Wort-Knoten kopieren:
-match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url
-set w.document = 'Hufeland';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
 WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/hufeland_privatbesitz_1829'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
-SET (nodes[index]).DtaID = index;
+SET (nodes[index]).DtaID = index
+SET (nodes[index]).Document = 'Hufeland';
 
 // Parthey importieren #################################################################
 call
-apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/parthey_msgermqu1711_1828',{createNextWorkRelationships: true})
+apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/parthey_msgermqu1711_1828',{createNextWordRelationships: true})
 yield node return node;
-
-// URL von Dokument auf alle Wort-Knoten kopieren:
-match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url
-set w.document = 'Parthey';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
 WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/parthey_msgermqu1711_1828'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
-SET (nodes[index]).DtaID = index;
+SET (nodes[index]).DtaID = index
+SET (nodes[index]).Document = 'Parthey';;
 
+
+// URL von Dokument auf alle Wort-Knoten kopieren:
+match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
+set w.url = d.url;
