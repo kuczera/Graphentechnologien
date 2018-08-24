@@ -34,7 +34,8 @@ yield node return node;
 
 // URL von Dokument auf alle Wort-Knoten kopieren:
 match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url;
+set w.url = d.url
+set w.document = 'NN1';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
@@ -50,7 +51,8 @@ yield node return node;
 
 // URL von Dokument auf alle Wort-Knoten kopieren:
 match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url;
+set w.url = d.url
+set w.document = 'NN2';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
@@ -66,7 +68,8 @@ yield node return node;
 
 // URL von Dokument auf alle Wort-Knoten kopieren:
 match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url;
+set w.url = d.url
+set w.document = 'Patzig';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
@@ -82,7 +85,8 @@ yield node return node;
 
 // URL von Dokument auf alle Wort-Knoten kopieren:
 match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url;
+set w.url = d.url
+set w.document = 'Hufeland';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
@@ -98,7 +102,8 @@ yield node return node;
 
 // URL von Dokument auf alle Wort-Knoten kopieren:
 match (d:XmlDocument)-[:NEXT_WORD*]->(w:XmlWord)
-set w.url = d.url;
+set w.url = d.url
+set w.document = 'Parthey';
 
 // Knoten durchzählen
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
