@@ -6,7 +6,7 @@ order: 1
 ---
 
 # Graphentechnologien in den digitalen Geisteswissenschaften
-## Modellierung – Import – Exploration
+## Modellierung – Import – Analyse
 
 ### Andreas Kuczera
 
