@@ -84,5 +84,29 @@ Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Die
 
 Nach dem `UNWIND`-Befehl folgt als eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk`, für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind.
 
+Die Funktion apoc.loadxmlSimple ist deprecated und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner gültig aber dadurch in der Anwendung etwas komplizierter.
+
+~~~cypher
+CALL
+apoc.load.xml("file:///var/lib/neo4j/import/kollatz.xml", "/collection/*")  YIELD value AS work // this uses an xpath expression to get all child nodes of "<collection>""
+WITH
+[x in work._children where x._type="title" | x._text][0] as titel,
+[x in work._children where x._type="autor" | x._text] as autoren,
+[x in work._children where x._type="kommentator" | x._text] as kommentatoren,
+[x in work._children where x._type="druckort" | x._text] as druckorte,
+work.id as eid
+MERGE (w:Werk{eid:eid})
+SET w.name = titel
+FOREACH (x in autoren |
+   MERGE (p:Person {name:x})
+   MERGE (p)-[:AUTOR_VON]->(w) )
+FOREACH (x in kommentatoren |
+   MERGE (p:Person {name:x})
+   MERGE (w)-[:KOMMENTIERT_VON]->(p) )
+FOREACH (x in druckorte |
+   MERGE (o:Ort {name:x})
+   MERGE (w)-[:GEDRUCKT_IN]->(o) )
+~~~
+
 
 [^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen zur Installation und die Dokumentation findet sich unter: [https://neo4j-contrib.github.io/neo4j-apoc-procedures/](https://neo4j-contrib.github.io/neo4j-apoc-procedures/). Die Dokumentation zu apoc.load.xml ist erreichbar unter [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml).

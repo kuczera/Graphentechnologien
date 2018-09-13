@@ -23,7 +23,7 @@ Zeigt alle Verknüpfungen und ihre Häufigkeiten in der Datenbank
 ~~~cyper
 CALL db.relationshipTypes()
 YIELD relationshipType
-CALL apoc.cypher.run("MATCH ()-[:" + `relationshipType` + "]->()
+CALL apoc.cypher.run("MATCH ()-[:" + 'relationshipType' + "]->()
 RETURN count(*) as count", null)
 YIELD value
 RETURN relationshipType, value.count AS count

@@ -11,9 +11,9 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# Mehrere Werte in einem CSV-Feld importieren
+# CSV-Feld enthält mehrere Werte
 
-Beim Import von Daten im CSV-Format in die Graphdatenbank kann es vorkommen, dass in einem CSV-Feld mehrere werte zusammen stehen. In diesem Abschnitt wird erklärt, wie man diese Werte auseinandernehmen, einzeln als Knoten anlegen und verknüpfen kann.
+Beim Import von Daten im CSV-Format in die Graphdatenbank kann es vorkommen, dass in einem CSV-Feld mehrere Werte zusammen stehen. In diesem Abschnitt wird erklärt, wie man diese Werte auseinandernehmen, einzeln im Rahmen des Imports nutzen kann.
 
 In der Regel ist es von Vorteil, zunächst das CSV-Feld als eine Propery zu importieren und in einem zweiten Schritt auseinanderzunehmen.
 
@@ -23,7 +23,7 @@ In der Property `abschluss` steht zum Beispiel drin:
 
 `lic. theol., mag. art., dr. theol., bacc. art., bacc. bibl. theol.`
 
-Der Befehl hierzu sieht wie folgt auch:
+Für die Aufteilung der Einzelwerte kann die `split`-Funktion verwendet werden, die einen String jeweils an einem anzugebenden Schlüsselzeichen (hier das Komma) auftrennt. Der Befehl hierzu sieht wie folgt auch:
 
 ~~~cypher
 MATCH (p:Person)
@@ -138,6 +138,103 @@ Mit dem Befehl apoc.load.xml ist es möglich, einen xml-Baum 1:1 in die Graphdat
 |:NEXT_WORD|Verbindet Wortknoten zu einer Kette von Wortknoten. Wird nur erzeugt, wenn createNextWordRelationships:true gesetzt wird|
 
 
+# (apoc.load.json)
+
+(Dieser Abschnitt befindet sich gerade in Bearbeitung)
+
+~~~cypher
+create constraint on (p:Person) assert p.id is unique;
+create constraint on (p:AristWork) assert p.id is unique;
+create constraint on (p:Manuscript) assert p.id is unique;
+
+call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
+unwind keys(value.persons) as personId
+merge (personNode:Person{id:personId})
+set personNode = value.persons[personId];
+
+call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
+unwind keys(value.aristWorks) as aristWorksId
+merge (aristWorksNode:AristWork{id:aristWorksId})
+set aristWorksNode = value.aristWorks[aristWorksId];
+
+call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
+unwind keys(value.mss) as msId
+merge (msNode:Manuscript{id:msId})
+set msNode = value.mss[msId];
+
+call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
+unwind value.`ms-person-rel` as rel
+match (start:Person{id:rel.person})
+match (end:Manuscript{id:rel.ms})
+with start, end, rel
+call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as dummy
+return count(*);
+
+call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
+unwind value.`ms-ms-rel` as rel
+merge (start:Manuscript{id:rel.ms})
+merge (end:Manuscript{id:rel.`other-ms`})
+with start, end, rel
+call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as dummy
+return count(*);
+
+call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
+unwind value.`ms-aristWork-rel` as rel
+match (start:Manuscript{id:rel.ms})
+match (end:AristWork{id:rel.aristWork})
+with start, end, rel
+call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as dummy
+return count(*);
+~~~
+
+json-example
+
+~~~
+{
+  "mspersonrel": [{
+    "ms": "69686",
+    "person": "d3f1",
+    "rel": "author-contained"
+  }, {
+    "ms": "69686",
+    "person": "p3366450e-0387-43d4-9f04-7f0f1c08dff8",
+    "rel": "scribe"
+  }, {
+    "ms": "69686",
+    "person": "p8c827441-77b4-4e12-8209-7ce8f06060f1",
+    "rel": "scribe"
+  }
+  ],
+  "persons": {
+    "d19f17": {
+      "label": "Castro, Juan Pàez de",
+      "id": "d19f17"
+    },
+    "d10f30": {
+      "label": "Augustinus (Aurelius Augustinus)",
+      "id": "d10f30"
+    },
+    "d22f20": {
+      "label": "Manouel\n Chrysoloras",
+      "id": "d22f20"
+    }
+  },
+  "aristWorks": {
+    "EE": {
+      "label": "Ethica ad Eudemum (EE)",
+      "id": "EE"
+    },
+    "Parva-Naturalia": {
+      "label": "Parva naturalia (Parva Naturalia)",
+      "id": "Parva-Naturalia"
+    },
+    "Hist.-An.": {
+      "label": "Historia animalium (Hist. An.)",
+      "id": "Hist.-An."
+    }
+  }
+
+~~~
 
 [^5cb9]: Vgl. https://guides.neo4j.com/apoc (zuletzt aufgerufen am 11.04.2018).
 
