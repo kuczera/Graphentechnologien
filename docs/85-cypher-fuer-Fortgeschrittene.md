@@ -30,12 +30,13 @@ ORDER BY label
 ## Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie
 
 ~~~cyper
-CALL db.labels()
-YIELD label
-CALL apoc.cypher.run("MATCH (:`"+label+"`) RETURN count(*) as count", null)
+CALL db.relationshipTypes()
+YIELD relationshipType
+CALL apoc.cypher.run("MATCH ()-[:" + `relationshipType` + "]->()
+RETURN count(*) as count", null)
 YIELD value
-RETURN label, value.count as count
-ORDER BY count DESC
+RETURN relationshipType, value.count AS count
+ORDER BY relationshipType
 ~~~
 
 
