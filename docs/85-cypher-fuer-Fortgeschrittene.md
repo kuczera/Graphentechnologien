@@ -11,6 +11,34 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+# Analyse der Graphdaten
+
+## Welche und jeweils wieviele Knoten enthält die Datenbank
+
+Mit dem folgenden Query werden alle Typen von Knoten und deren jeweilige Häufigkeit aufgelistet.
+
+~~~cypher
+CALL db.labels()
+YIELD label
+CALL apoc.cypher.run("MATCH (:`"+label+"`)
+RETURN count(*) as count", null)
+YIELD value
+RETURN label, value.count as count
+ORDER BY label
+~~~
+
+## Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie
+
+~~~cyper
+CALL db.labels()
+YIELD label
+CALL apoc.cypher.run("MATCH (:`"+label+"`) RETURN count(*) as count", null)
+YIELD value
+RETURN label, value.count as count
+ORDER BY count DESC
+~~~
+
+
 # CSV-Feld enthält mehrere Werte
 
 Beim Import von Daten im CSV-Format in die Graphdatenbank kann es vorkommen, dass in einem CSV-Feld mehrere Werte zusammen stehen. In diesem Abschnitt wird erklärt, wie man diese Werte auseinandernehmen, einzeln im Rahmen des Imports nutzen kann.
