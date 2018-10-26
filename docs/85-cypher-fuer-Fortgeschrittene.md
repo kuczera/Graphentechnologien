@@ -39,6 +39,47 @@ RETURN relationshipType, value.count AS count
 ORDER BY relationshipType
 ~~~
 
+# Weitere Labels für einen Knoten
+
+Gegeben sind Knoten vom Typ IndexEntry, die in der Property type noch näher spezifiziert sind (z.B. Ort, Person, Sache etc.).
+Mit dem folgenden Query wird der Wert der Proptery type als zusätzliches Label angelegt.
+
+~~~cypher
+MATCH (e:IndexEntry)
+WHERE e.type IS NOT NULL
+WITH e, e.type AS label
+CALL apoc.create.addLabels(id(e), [label]) YIELD node
+RETURN node;
+~~~
+
+Die Namen der Labels können auch selbst bestimmt werden.
+
+~~~cypher
+MATCH (e:IndexEntry)
+WHERE e.type = 'person'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexPerson']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'ereignis'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexEvent']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'sache'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexThing']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'ort'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexPlace']) YIELD node
+RETURN node;
+~~~
+
 
 # CSV-Feld enthält mehrere Werte
 
