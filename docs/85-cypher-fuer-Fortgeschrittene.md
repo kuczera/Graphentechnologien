@@ -11,6 +11,11 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+# cypher-Dokumentation
+
+Die Dokumentation von cypher findet sich auf den Seiten von neo4j:
+[https://neo4j.com/docs/developer-manual/current/](https://neo4j.com/docs/developer-manual/current/)
+
 # Analyse der Graphdaten
 
 ## Welche und jeweils wieviele Knoten enthält die Datenbank
