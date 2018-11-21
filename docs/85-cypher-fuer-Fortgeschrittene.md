@@ -201,7 +201,7 @@ In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) d
 
 # apoc.xml.import
 
-Mit dem Befehl apoc.load.xml ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5] Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
+Mit dem Befehl apoc.xml.import ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5] Darüber hinaus werden mit dem Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
 
 Beispielbefehl:
 call
