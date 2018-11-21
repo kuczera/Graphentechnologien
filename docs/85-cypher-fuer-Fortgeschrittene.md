@@ -199,9 +199,16 @@ Wenn eine Liste mit Funktionen ausgegeben wird, war die Installation erfolgreich
 
 In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) der apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
 
-# apoc.load.xml
+# apoc.xml.import
 
-Mit dem Befehl apoc.load.xml ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5]
+Mit dem Befehl apoc.load.xml ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5] Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
+
+Beispielbefehl:
+call
+apoc.xml.import("URL",{createNextWordRelationships:
+true})
+yield node
+return node;
 
 
 |Kantentyp|Beschreibung|
