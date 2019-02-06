@@ -3,6 +3,19 @@
 
 ## Die Register der Regesta Imperii
 
+## Vorbereitung der Datenbank
+
+Für diesen Abschnitt werden beispielhaft die Regesten Heinrichs IV. in die Graphdatenbank importiert, wie im Kapitel [Regestenmodellierung im Graphen](20_Regestenmodellierung-im-Graphen.md) beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden cypher-Query werden zwischen Personeneinträgen des Registers, dies gemeinsam in einem Regest genannt sind, `KNOWS`-Kanten erstellt.
+
+~~~cypher
+MATCH (n1:IndexPerson)-[r1:PERSON_IN]->(:Regesta)<-[r2:PERSON_IN]-(n2:IndexPerson)
+WHERE id(n1) <> id(n2)
+WITH n1, count(r1) AS c, n2
+CREATE (n1)-[k:KNOWS]->(n2)
+SET k.count = c;
+~~~
+
+
 
 ## Explorative Datenanalyse oder was ist in der Datenbank darin
 
