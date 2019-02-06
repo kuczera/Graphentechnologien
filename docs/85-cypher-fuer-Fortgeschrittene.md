@@ -11,6 +11,11 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+# cypher-Dokumentation
+
+Die Dokumentation von cypher findet sich auf den Seiten von neo4j:
+[https://neo4j.com/docs/developer-manual/current/](https://neo4j.com/docs/developer-manual/current/)
+
 # Analyse der Graphdaten
 
 ## Welche und jeweils wieviele Knoten enthält die Datenbank
@@ -37,6 +42,47 @@ RETURN count(*) as count", null)
 YIELD value
 RETURN relationshipType, value.count AS count
 ORDER BY relationshipType
+~~~
+
+# Weitere Labels für einen Knoten
+
+Gegeben sind Knoten vom Typ IndexEntry, die in der Property type noch näher spezifiziert sind (z.B. Ort, Person, Sache etc.).
+Mit dem folgenden Query wird der Wert der Proptery type als zusätzliches Label angelegt.
+
+~~~cypher
+MATCH (e:IndexEntry)
+WHERE e.type IS NOT NULL
+WITH e, e.type AS label
+CALL apoc.create.addLabels(id(e), [label]) YIELD node
+RETURN node;
+~~~
+
+Die Namen der Labels können auch selbst bestimmt werden.
+
+~~~cypher
+MATCH (e:IndexEntry)
+WHERE e.type = 'person'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexPerson']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'ereignis'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexEvent']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'sache'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexThing']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'ort'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexPlace']) YIELD node
+RETURN node;
 ~~~
 
 
@@ -79,8 +125,11 @@ MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 ~~~
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 0ced1e51a822a7e4d6adce8e50b12c19a823f258
 # `MERGE` schlägt fehl da eine Property NULL ist
 
 Der `MERGE`-Befehl entspricht in der Syntax dem `CREATE`-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten überprüft. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der `MERGE`-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
@@ -169,9 +218,16 @@ Wenn eine Liste mit Funktionen ausgegeben wird, war die Installation erfolgreich
 
 In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) der apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
 
-# apoc.load.xml
+# apoc.xml.import
 
-Mit dem Befehl apoc.load.xml ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5]
+Mit dem Befehl apoc.xml.import ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen.[^81c5] Darüber hinaus werden mit dem Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
+
+Beispielbefehl:
+call
+apoc.xml.import("URL",{createNextWordRelationships:
+true})
+yield node
+return node;
 
 
 |Kantentyp|Beschreibung|
