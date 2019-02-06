@@ -55,6 +55,7 @@ Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem 
 Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
 
 ~~~cypher
+// Regestenknoten erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line 
 CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history,date:line.date_string,ident:line.identifier,regnum:line.regnum,origPlaceOfIssue:line.locality_string, startDate:line.start_date, endDate:line.end_date})
 MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
