@@ -28,7 +28,7 @@ CALL apoc.cypher.run("MATCH (:`"+label+"`)
 RETURN count(*) as count", null)
 YIELD value
 RETURN label, value.count as count
-ORDER BY label
+ORDER BY label;
 ~~~
 
 Zeigt alle Verknüpfungen und ihre Häufigkeiten in der Datenbank
@@ -40,7 +40,7 @@ CALL apoc.cypher.run("MATCH ()-[:" + `relationshipType` + "]->()
 RETURN count(*) as count", null)
 YIELD value
 RETURN relationshipType, value.count AS count
-ORDER BY relationshipType
+ORDER BY relationshipType;
 ~~~
 
 ## Zentralitätsalgorithmen in der historischen Netzwerkanalyse
@@ -54,9 +54,9 @@ CALL algo.pageRank.stream("IndexPerson", "KNOWS",
 {iterations:20})
 YIELD nodeId, score
 MATCH (node) WHERE id(node) = nodeId
-RETURN node.shortName AS Person,
+RETURN node.name1 AS Person,
 apoc.math.round(score,3)
-ORDER BY score DESC
+ORDER BY score DESC;
 ~~~
 
 ### Degree Centrality
@@ -66,7 +66,7 @@ MATCH (u:IndexPerson)
 RETURN u.name1 AS name,
 size((u)-[:KNOWS]->()) AS follows,
 size((u)<-[:KNOWS]-()) AS followers
-ORDER by followers DESC
+ORDER by followers DESC;
 ~~~
 
 ### Betweenes Centrality
@@ -142,8 +142,7 @@ YIELD nodeA,nodeB,nodeC
 MATCH (a:IndexPerson) WHERE id(a) = nodeA
 MATCH (b:IndexPerson) WHERE id(b) = nodeB
 MATCH (c:IndexPerson) WHERE id(c) = nodeC
-RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node
-
+RETURN a.name1 AS nodeA, b.name1 AS nodeB, c.name1 AS node;
 ~~~
 
 direkt aus dem Beispiel übernommen
@@ -153,7 +152,7 @@ CALL algo.triangleCount.stream('IndexPerson', 'KNOWS')
 YIELD nodeId, triangles, coefficient
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
 RETURN p.name1 AS name, triangles, coefficient
-ORDER BY coefficient DESC
+ORDER BY coefficient DESC;
 ~~~
 
 nach der Anzahl der Dreiecksbeziehungen sortiert
@@ -163,7 +162,7 @@ CALL algo.triangleCount.stream('IndexPerson', 'KNOWS')
 YIELD nodeId, triangles, coefficient
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
 RETURN p.name1 AS name, triangles, coefficient
-ORDER BY triangles DESC
+ORDER BY triangles DESC;
 ~~~
 
 
@@ -184,5 +183,5 @@ YIELD nodeA,nodeB,nodeC
 MATCH (a:IndexPerson) WHERE id(a) = nodeA
 MATCH (b:IndexPerson) WHERE id(b) = nodeB
 MATCH (c:IndexPerson) WHERE id(c) = nodeC
-RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node
+RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 ~~~
