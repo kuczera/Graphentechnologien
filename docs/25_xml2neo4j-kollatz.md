@@ -88,7 +88,7 @@ Die Funktion apoc.loadxmlSimple ist deprecated und wird von der Funktion apoc.lo
 
 ~~~cypher
 CALL
-apoc.load.xml("file:///var/lib/neo4j/import/kollatz.xml", "/collection/*")  YIELD value AS work // this uses an xpath expression to get all child nodes of "<collection>""
+apoc.load.xml("https://raw.githubusercontent.com/kuczera/Graphentechnologien/master/docs/data/kollatz.xml", "/collection/*")  YIELD value AS work // this uses an xpath expression to get all child nodes of "<collection>""
 WITH
 [x in work._children where x._type="title" | x._text][0] as titel,
 [x in work._children where x._type="autor" | x._text] as autoren,
@@ -105,7 +105,7 @@ FOREACH (x in kommentatoren |
    MERGE (w)-[:KOMMENTIERT_VON]->(p) )
 FOREACH (x in druckorte |
    MERGE (o:Ort {name:x})
-   MERGE (w)-[:GEDRUCKT_IN]->(o) )
+   MERGE (w)-[:GEDRUCKT_IN]->(o) );
 ~~~
 
 
