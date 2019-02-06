@@ -50,13 +50,40 @@ In den Abbildungen finden sich beispielhaft das Regest RI III,2,3 Nr. 1487, einm
 
 Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Die `MERGE`-Befehle erzeugen ergänzende Knoten für die Datumsangaben und die Ausstellungsorte. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher, ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt, wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
+## Indexe Erstellen
+
+Für die Beschleunigung des Importprozesses ist es von Vorteil vorher Indexe für häufig genutzte Properties zu erstellen.
+
+~~~cypher
+// vorab index erzeugen -> Import wird schneller
+CREATE INDEX ON :Regesta(ident);
+CREATE INDEX ON :Regesta(regnum);
+CREATE INDEX ON :Regesta(persistentIdentifier);
+CREATE INDEX ON :Regesta(registerId);
+CREATE INDEX ON :Regesta(heftId);
+CREATE INDEX ON :Regesta(placeOfIssue);
+CREATE INDEX ON :Regesta(origPlaceOfIssue);
+CREATE INDEX ON :Date(startDate);
+CREATE INDEX ON :Place(original);
+CREATE INDEX ON :Place(normalizedGerman);
+CREATE INDEX ON :Lemma(lemma);
+CREATE INDEX ON :Literature(literatur);
+CREATE INDEX ON :Reference(reference);
+CREATE INDEX ON :IndexEntry(registerId);
+CREATE INDEX ON :IndexEntry(nodeId);
+CREATE INDEX ON :Regesta(latLong);
+CREATE INDEX ON :IndexPlace(registerId);
+CREATE INDEX ON :IndexEvent(registerId);
+CREATE INDEX ON :IndexPerson(registerId);
+~~~
+
 ## Erstellen der Regestenknoten
 
 Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
 
 ~~~cypher
 // Regestenknoten erstellen
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line 
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
 CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history,date:line.date_string,ident:line.identifier,regnum:line.regnum,origPlaceOfIssue:line.locality_string, startDate:line.start_date, endDate:line.end_date})
 MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
 MERGE (r)-[:DATE]->(d)  
@@ -99,11 +126,10 @@ SET rel.allocation = line.Zuordnung
 SET rel.state = line.Lage
 SET rel.certainty = line.Sicherheit
 SET rel.institutionInCity = line.InstInDerStadt
-RETURN count(p)
-;
+RETURN count(p);
 ~~~
 
-Da Import-Query etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind. Für diesen Import sollen aber nur jene angelegt werden, die für die Regesten Kaiser Heinrichs IV. relevant sind. Mit dem `MERGE`-Befehl wird der `Place`-Knoten erstellt und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten und in den `PLACE_OF_ISSUE`-Kanten ergänzt.
+Da Import-Query etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind. Für diesen Import sollen aber nur jene angelegt werden, die für die Regesten Kaiser Heinrichs IV. relevant sind. Mit dem `MERGE`-Befehl wird der `Place`-Knoten erstellt (falls es ihn nicht schon gibt) und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten und in den `PLACE_OF_ISSUE`-Kanten ergänzt.
 
 Mit dem folgenden Query werden die Koordinatenangaben zu Höhen- und Breitengraden der Ausstellungsorte (`Place`-Knoten), die in den Propertys Lat und Long abgespeichert sind, in der neuen Property LatLong zusammengefasst und in `point`-Werte umgewandelt. Seit Version 3 kann neo4j mit diesen Werten Abstandsberechnungen durchführen (Mehr dazu siehe unten bei den Auswertungen).
 
@@ -114,14 +140,13 @@ SET r.latLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longi
 SET o.latLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
 SET r.placeOfIssue = o.normalizedGerman
 SET r.latitude = o.latitude
-SET r.longitude = o.longitude
-;
+SET r.longitude = o.longitude;
 ~~~
 
 In den Regesta Imperii Online sind die Datumsangaben der Regesten iso-konform im Format JJJJ-MM-TT (also Jahr-Monat-Tag) abgespeichert. neo4j behandelt diese Angaben aber als String. Um Datumsberechnungen durchführen zu können, müssen die Strings in Datumswerte umgerechnet werden. Der cypher-Query hierzu sieht wie folgt aus:
 
 ~~~cypher
-// Date in Isodatum umwandeln
+// Date in neo4j-Datumsformat umwandeln
 MATCH (n:Regesta)
 SET n.isoStartDate = date(n.startDate);
 MATCH (n:Regesta)
@@ -202,6 +227,7 @@ CREATE (:IndexPerson {registerId:line.ID, name1:line.name1});
 Mit dem folgenden cypher-Query werden nach dem gleichen Muster aus der Tabelle `Orte` die Ortseinträge in die Graphdatenbank importiert.
 
 ~~~cypher
+// Registereinträge Orte erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2049106817"
 AS line
 CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
@@ -272,7 +298,7 @@ In der folgenden Abb. wird das Ergebnis dargestellt.
 
 Hier wird der `MATCH`-Befehl um einen Pfad über `PERSON_IN`-Kanten zu `Regesta`-Knoten ergänzt, von denen jeweils eine `PERSON_IN`-Kante zu den anderen, in den Regesten genannten `IndexPerson`-Knoten führt.
 
-Nimmt man noch eine weitere Ebene hinzu, wächst die Ergebnismenge stark an.
+Nimmt man noch eine weitere Ebene hinzu, wächst die Ergebnismenge stark an. Der folgende Query kann daher je nach Rechnerleistung etwas länger dauern.
 
 ~~~cypher
 // Robert II. von Flandern mit Netzwerk und Herrscherhandeln (viel)
@@ -311,9 +337,8 @@ Und dieses [Regest](http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae
 Möglicherweise haben beide aber gemeinsame Bekannte, also Personen mit denen sowohl Heinrich als auch Robert in unterschiedlichen Regesten gemeinsam genannt sind. Hierfür wird der cypher-Query um eine Ebende erweitert.
 
 
-```
-// Robert und Heinrich mit allen
-gemeinsamen Personen und Regesten
+~~~cypher
+// Robert und Heinrich mit allen gemeinsamen Personen und Regesten
 MATCH (n1:IndexPerson)
 -[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-
 (n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)
@@ -321,7 +346,8 @@ MATCH (n1:IndexPerson)
 WHERE n1.registerId = 'H4P00926'
 AND n3.registerId = 'H4P01822'
 RETURN *;
-```
+~~~
+
 ![Robert und Heinrich mit den gemeinsamen Bekanntschaften.](Bilder/RI2Graph/RobertundHeinrichMitBrokern.png)
 
 Ein erster Blick auf das Ergebnis zeigt, dass Heinrich allgemein besser vernetzt ist. Für die weitere Analyse ihres Verhältnisses ist nun die Lektüre der angegebenen Regesten notwendig.
@@ -337,7 +363,7 @@ WITH startPerson, endPerson, count(regest) as anzahl,
 collect(regest.ident) as idents
 CALL apoc.create.vRelationship(startPerson, "KNOWS",
 {anzahl:anzahl, regesten:idents}, endPerson) YIELD rel
-RETURN startPerson, endPerson, rel
+RETURN startPerson, endPerson, rel;
 ~~~
 
 ![Robert und Heinrich mit den gemeinsamen Bekanntschaften.](Bilder/RI2Graph/RobertUndHeinrichApoc.png)
@@ -492,7 +518,8 @@ Mit diesen Daten lassen sich Zitationsnetzwerke in den Regesten darstellen mit d
 
 ## Der Import zusammengefasst
 
-Den cypher-Code für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Google-Docs-Dokument](https://docs.google.com/document/d/1u7xDZOOz9dc3cI0vm87N8Mw4FmC_GUGBi3WritNzfpE/edit?usp=sharing) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Nach dem Start der Graphdatenbank kann dann im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sandbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden. Zu beachten ist, dass dort nur der neo4j-Browser für die Eingabe der cypher-Querys zur Verfügung steht und jeder Query (also alle cypher-Befehle, die mit einem Semikolon abgeschlossen sind) einzeln in die Eingabezeile kopiert werden müssen.
+Den komplette [cypher-Code](cypher/20_cypher-Datenbankerstellung.txt) für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Textdatei](cypher/20_cypher-Datenbankerstellung.txt) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Inzwischen ist es möglich, in der Befehlszeile des neo4j-Browsers auch mehrere Befehle nacheinander ausführen zu lassen. Alternativ kann man nach dem Start der Graphdatenbank im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. 
+Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sandbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden.
 
 # Zusammenfassung
 
