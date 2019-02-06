@@ -55,7 +55,7 @@ Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem 
 Für die Beschleunigung des Importprozesses ist es von Vorteil vorher Indexe für häufig genutzte Properties zu erstellen.
 
 ~~~cypher
-// vorab index erzeugen -> Import wird schneller
+// vorab Index erzeugen -> Import wird schneller
 CREATE INDEX ON :Regesta(ident);
 CREATE INDEX ON :Regesta(regnum);
 CREATE INDEX ON :Regesta(persistentIdentifier);
