@@ -36,7 +36,7 @@ Eine wichtige Rolle spielen auch die Zentralitätsmaße (Beispiele):
 
 Die folgende Abbildung zeigt einen kleinen Beispielgraphen, an dem einige Zentralitätsmaße erklärt werden sollen.[^d019]
 
-![Beispielgraph für Zentralitätsmaße aus [D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, 351]http://dx.doi.org/10.2307/2393394](Bilder/krackhardtKite.png)
+![Beispielgraph für Zentralitätsmaße aus D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, S. 351 (http://dx.doi.org/10.2307/2393394).](Bilder/krackhardtKite.png)
 
 * Bei der Berechnung der **Dichte** wird der Quotient zwischen der tatsächlichen Anzahl der Kanten und der maximal möglichen Anzahl der Kanten berechnet.
 Die Formel hierfür lautet
@@ -240,6 +240,6 @@ MATCH (c:IndexPerson) WHERE id(c) = nodeC
 RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 ~~~
 
-[^9ea3]: Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs [Historisch-archäologische Netzwerkanalyse]https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/#/step-1 von Aline Deicke und Marjam Trautmann, der im Rahmen der [International Summer School]https://iss.adwmainz.net in Mainz stattfand (abgerufen am 07.02.2019).
+[^9ea3]: Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs [Historisch-archäologische Netzwerkanalyse](https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/#/step-1) von Aline Deicke und Marjam Trautmann, der im Rahmen der [International Summer School](https://iss.adwmainz.net) in Mainz stattfand (abgerufen am 07.02.2019).
 
-[^d019]: Vgl. zu diesm Abschnitt [D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, 342-369]https://www.jstor.org/stable/2393394?origin=crossref&seq=1#metadata_info_tab_contents
+[^d019]: Vgl. zu diesm Abschnitt [D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, S. 342-369](https://www.jstor.org/stable/2393394?origin=crossref&seq=1#metadata_info_tab_contents) (abgerufen am 07.02.2019).
