@@ -1,12 +1,12 @@
 ---
-title: Historische Netzwerkanalyse mit neo4j
+title: Netzwerkanalyse mit neo4j
 layout: default
 order: 70
 contents: true
 ---
 
 
-# Historische Netzwerkanalyse mit neo4j
+# Netzwerkanalyse mit neo4j
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
 
