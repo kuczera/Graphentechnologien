@@ -38,6 +38,8 @@ Die folgende Abbildung zeigt einen kleinen Beispielgraphen, an dem einige Zentra
 
 ![Beispielgraph für Zentralitätsmaße aus D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, S. 351, http://dx.doi.org/10.2307/2393394.](Bilder/krackhardtKite.png)
 
+[Beispielgraph für Zentralitätsmaße aus D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, S. 351](http://dx.doi.org/10.2307/2393394).
+
 * Bei der Berechnung der **Dichte** wird der Quotient zwischen der tatsächlichen Anzahl der Kanten und der maximal möglichen Anzahl der Kanten berechnet.
 Die Formel hierfür lautet
 $$Dichte des Netzwerks = 2m/(n*(n-1))$$
