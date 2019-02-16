@@ -44,6 +44,14 @@ RETURN relationshipType, value.count AS count
 ORDER BY relationshipType
 ~~~
 
+## Welche Knoten haben keine Kanten
+
+~~~cyper
+MATCH (n)
+WHERE size((n)--())=0
+RETURN labels(n), count(labels(n)) AS Anzahl ORDER BY Anzahl DESC;
+
+
 # Weitere Labels für einen Knoten
 
 Gegeben sind Knoten vom Typ IndexEntry, die in der Property type noch näher spezifiziert sind (z.B. Ort, Person, Sache etc.).
