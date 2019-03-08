@@ -19,4 +19,5 @@ Neben den Bänden bietet das Projekt auch ein [digitales Personenregister](https
 ## Germania Sacra JSON
 
 
+
 [^eeaa]: Zu diesem Abschnitt vgl. [http://www.germania-sacra.de/](http://www.germania-sacra.de/) (zuletzt abgerufen am 07.03.2019).
