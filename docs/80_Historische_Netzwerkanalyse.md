@@ -1,7 +1,7 @@
 ---
 title: Netzwerkanalyse mit neo4j
 layout: default
-order: 70
+order: 80
 contents: true
 ---
 
