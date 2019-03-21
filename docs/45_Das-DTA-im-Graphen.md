@@ -172,7 +172,7 @@ Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen,
 ![Die Beispielzeile aus der TEIP5-Fassung des  Faust](Bilder/TEI2Graph/BilderFroherTageP5.png)
 
 # Zusammenfassung
-Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden. Am Ende wurde beispielhaft die TEI-P5-Fassung eingespielt um die gleiche Stelle in beiden Fassungen vergleichen zu können. Weitere Informationen zu XML im Graphen finden Sie im Kapitel zu [XML-Text im Graphen](https://kuczera.github.io/Graphentechnologien/60_XML-Text%20im%20Graphen.html).
+Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden. Am Ende wurde beispielhaft die TEI-P5-Fassung eingespielt um die gleiche Stelle in beiden Fassungen vergleichen zu können. Weitere Informationen zu XML im Graphen finden Sie im Kapitel zu [XML-Text im Graphen](https://kuczera.github.io/Graphentechnologien/60_XML-Text-im-Graphen.html).
 
 [^0235]: Zu __constraints__ vgl. [https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/](https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/)
 
