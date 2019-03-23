@@ -55,6 +55,7 @@ Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten
 	}
 ```
 
+
 Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.  
 
 ```json
@@ -97,5 +98,58 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
 
 ```
 
+Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt. 
+
+```cypher
+CREATE INDEX ON :Person(gnd);
+CREATE INDEX ON :Kloster(Bistum);
+create constraint on (p:Person) assert p.id is unique;
+create constraint on (k:Kloster) assert k.id is unique;
+```
+
+Im ersten Abschnitt des Codebeispiels werden zwei Indexe für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet.
+
+```cypher
+call apoc.load.json("https://seafile.rlp.net/f/456adda2cffc475ab755/?dl=1") yield value as all
+unwind all.persons as p
+CREATE (p1:Person {personBezeichnungPlural:p.person_bezeichnung_plural, gso:p.person_gso, personOfficeId:p.person_office_id, name:p.person_name, gnd:p.person_gnd, anmerkung:p.person_anmerkung, personVonVerbal:p.person_von_verbal, bezeichnung:p.person_bezeichnung, personVon:p.person_von, personBisVerbal:p.person_bis_verbal, personBis:p.person_bis, personNamensalternativen:p.person_namensalternativen, vorname:p.person_vorname})
+RETURN count(p1);
+```
+
+Dieser Query importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
+
+```cypher
+// Klosterknoten erstellen
+call apoc.load.json("https://seafile.rlp.net/f/91c3600003d54cc9ac83/?dl=1") yield value as all
+unwind all.kloster as k
+CREATE (kl:Kloster {ort:k.ort,
+GeonameIdOrtsname:k.GeonameID_Ortsname,
+datum:k.Datum_von, bezeichnung:k.bezeichnung, bistum:k.bistum, wikipedia:k.Wikipedia, datumBis:k.Datum_bis, kid:k.klosterid, gnd:k.GND})
+RETURN count(kl);
+```
+
+In diesem Query werden analog zu den Personen die Klöster mit den zugehörigen Informationen in die Graphdatenbank importiert.
+
+```cypher
+// Bistumsknoten erstellen
+MATCH (k:Kloster)
+MERGE (b:Bistum {name:k.bistum})
+MERGE (b)<-[bi:BISTUM]-(k)
+RETURN count(bi);
+```
+
+Die Zugehörigkeit eines Klosters zu einem Bistum ist in der Eigenschaft Bistum bei den jeweiligen Klosterknoten gespeichert. Aus dieser Information werden in diesem Query die Bistumsknoten erstellt und die Klosterknoten den jeweiligen Bistumsknoten zugeordnet.
+
+```cypher
+//Professionsknoten erstellen
+MATCH (p:Person)
+MERGE (pro:Profession {name:p.bezeichnung})
+MERGE (pro)<-[pr:PROFESSION]-(p)
+RETURN count(pr);
+```
+
+Analog zu den Bistumern werden in diesem Query die Professionen erstellt und den einzelnen Personenknoten zugeordnet.
+
+(Dieser Abschnitt befindet sich in Bearbeitung)
 
 [^eeaa]: Zu diesem Abschnitt vgl. [http://www.germania-sacra.de/](http://www.germania-sacra.de/) (zuletzt abgerufen am 07.03.2019).
