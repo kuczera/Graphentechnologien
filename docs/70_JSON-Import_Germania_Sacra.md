@@ -1,5 +1,5 @@
 ---
-title: JSON Import mit den Personendaten der Germania Sacra
+title: JSON Import mit den Daten der Germania Sacra
 layout: default
 order: 70
 contents: true
