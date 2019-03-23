@@ -6,7 +6,7 @@ contents: true
 ---
 
 
-# Import von JSON in neo4j mit `apoc.load.json`
+# JSON Import mit den Daten der Germania Sacra
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
 
