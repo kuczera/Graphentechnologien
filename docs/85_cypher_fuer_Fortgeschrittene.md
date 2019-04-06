@@ -133,6 +133,40 @@ MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 ~~~
 
+# Vorkommende Wörter in einer Textproperty zählen
+
+Werden Texte in der Property source eines Knotens l gespeichert, kann man sich mit folgendem Query die Häufigkeit der einzelnen Wörter anzeigen lassen.
+
+~~~cypher
+match (l:Letter)
+return apoc.coll.frequencies( 
+  apoc.coll.flatten(
+    collect( 
+      split(
+        apoc.text.regreplace(l.source, "[^a-zA-Z0-9ÄÖÜäöüß ]",""
+      ),
+    " ")
+  )
+);
+~~~
+
+In der folgenden Fassung wird die Liste noch nach Häufigkeit sortiert.
+
+~~~cypher
+match (l:Letter)
+with apoc.coll.frequencies( 
+  apoc.coll.flatten(collect( 
+    split(
+      apoc.text.regreplace(l.source, "[^a-zA-Z0-9ÄÖÜäöüß ]","")
+      , " ")
+    )
+  )
+) as freq
+unwind freq as x
+return x.item, x.count order by x.count desc
+~~~
+
+
 # `MERGE` schlägt fehl da eine Property NULL ist
 
 Der `MERGE`-Befehl entspricht in der Syntax dem `CREATE`-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten überprüft. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der `MERGE`-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
