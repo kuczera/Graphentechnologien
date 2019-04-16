@@ -102,14 +102,15 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
 
 Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt. 
 
+Im ersten Abschnitt des Codebeispiels werden zwei Indexe für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet.
+
 ```cypher
 CREATE INDEX ON :Person(gnd);
 CREATE INDEX ON :Kloster(Bistum);
 create constraint on (p:Person) assert p.id is unique;
 create constraint on (k:Kloster) assert k.id is unique;
 ```
-
-Im ersten Abschnitt des Codebeispiels werden zwei Indexe für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet.
+Dieser Query importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
 
 ```cypher
 call apoc.load.json("https://seafile.rlp.net/f/456adda2cffc475ab755/?dl=1") yield value as all
@@ -118,7 +119,7 @@ CREATE (p1:Person {personBezeichnungPlural:p.person_bezeichnung_plural, gso:p.pe
 RETURN count(p1);
 ```
 
-Dieser Query importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
+In diesem Query werden analog zu den Personen die Klöster mit den zugehörigen Informationen in die Graphdatenbank importiert.
 
 ```cypher
 // Klosterknoten erstellen
@@ -130,7 +131,7 @@ datum:k.Datum_von, bezeichnung:k.bezeichnung, bistum:k.bistum, wikipedia:k.Wikip
 RETURN count(kl);
 ```
 
-In diesem Query werden analog zu den Personen die Klöster mit den zugehörigen Informationen in die Graphdatenbank importiert.
+Die Zugehörigkeit eines Klosters zu einem Bistum ist in der Eigenschaft Bistum bei den jeweiligen Klosterknoten gespeichert. Aus dieser Information werden in diesem Query die Bistumsknoten erstellt und die Klosterknoten den jeweiligen Bistumsknoten zugeordnet.
 
 ```cypher
 // Bistumsknoten erstellen
@@ -139,8 +140,7 @@ MERGE (b:Bistum {name:k.bistum})
 MERGE (b)<-[bi:BISTUM]-(k)
 RETURN count(bi);
 ```
-
-Die Zugehörigkeit eines Klosters zu einem Bistum ist in der Eigenschaft Bistum bei den jeweiligen Klosterknoten gespeichert. Aus dieser Information werden in diesem Query die Bistumsknoten erstellt und die Klosterknoten den jeweiligen Bistumsknoten zugeordnet.
+Analog zu den Bistumern werden in diesem Query die Professionen erstellt und den einzelnen Personenknoten zugeordnet.
 
 ```cypher
 //Professionsknoten erstellen
@@ -150,7 +150,6 @@ MERGE (pro)<-[pr:PROFESSION]-(p)
 RETURN count(pr);
 ```
 
-Analog zu den Bistumern werden in diesem Query die Professionen erstellt und den einzelnen Personenknoten zugeordnet.
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
 
