@@ -55,6 +55,12 @@ Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten
 	}
 ```
 
+Die folgende Abbildung zeigt beispielhaft den ersten Personeneintrag des obigen json-Beispiels von Ludold von Escherde als importierten Personenknoten im Graphen. 
+
+![Personenknoten von Ludold von Escherde in der Graphdatenbank](Bilder/Germania-Sacra-Personenknoten-mit-Properties.png)
+
+Unter dem Personenknoten werden die aus dem json importierten Properties aufgelistet.
+
 
 ### Klöster
 
