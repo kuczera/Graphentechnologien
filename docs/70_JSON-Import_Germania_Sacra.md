@@ -56,6 +56,8 @@ Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten
 ```
 
 
+### Klöster
+
 Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.  
 
 ```json
