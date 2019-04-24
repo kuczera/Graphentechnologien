@@ -5,11 +5,9 @@ order: 85
 contents: true
 ---
 
-# Inhalt
-{:.no_toc}
+# Cypher für Fortgeschrittene
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
+In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
 
 ## cypher-Dokumentation
 
