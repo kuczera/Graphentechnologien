@@ -222,16 +222,6 @@ Gießen, im August 2018
 
 Andreas Kuczera
 
-\chapter{Inhalt}\label{inhalt}
-
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
-
 \chapter{Was ist eine Graphdatenbank}\label{was-ist-eine-graphdatenbank}
 
 In den seit den 70er Jahren etablierten, relationalen Datenbanken werden die Daten in Tabellen abgespeichert, die untereinander über Schlüssel oder Schlüsseltabellen verknüpft sind. In Graphdatenbanken werden die Daten dagegen in Knoten und Kanten gespeichert. \includegraphics{Bilder/Beispielgraph.png}
@@ -243,16 +233,6 @@ Knoten und Kanten können also noch zusätzliche Eigenschaften besitzen, in dene
 \chapter{Installation und Start}\label{installation-und-start}
 
 Informationen zur Installation von neo4j finden Sie auf den Dokumentationsseiten unter \url{https://neo4j.com/docs/operations-manual/current/installation/}. Für den normalen Nutzer empfiehlt sich die Installation von \href{https://neo4j.com/download/}{neo4j-Desktop}. Unter \url{https://neo4j.com/blog/this-week-in-neo4j-getting-started-with-neo4j-desktop-and-browser-graphileon-personal-edition-intuitive-detections-research-with-neo4j/?ref=twitter\#features-1} finden sich Videos, in denen die Installation von \href{https://www.youtube.com/watch?v=8yWhuUnPapw}{neo4j-Desktop} und erste Schritte im \href{https://www.youtube.com/watch?v=rQTximyaETA}{neo4j-Browser} erklärt werden.
-
-\chapter{Inhalt}\label{inhalt-1}
-
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
 
 \chapter{\texorpdfstring{Das Projekt Regesta Imperii oder ``Wie suchen Onlinenutzer Regesten''}{Das Projekt Regesta Imperii oder Wie suchen Onlinenutzer Regesten}}\label{das-projekt-regesta-imperii-oder-wie-suchen-onlinenutzer-regesten}
 
@@ -338,17 +318,9 @@ Schließlich ergaben Nachfragen bei neo4j, dass bei Problemen mit dem Datenmodel
 
 In diesem Kapitel wurde zunächst das Akademieprojekt Regesta Imperii vorgestellt. Seit der Anfang der 2000er Jahre erfolgten Digitalisierung stehen die Regesten unter \url{www.regesta-imperii.de} frei im Internet zur Nutzung zur Verfügung. Für die Auswertung gibt es eine einfache Suchmaske und eine erweiterte Suche. Für die Jahre 2012 und 2013 wurde die Suchstrategien der Nutzer in der Online-Regestensuche untersucht und es zeigte sich, dass sich zwei Nutzungsszenarien unterscheiden lassen, von denen aber nur eines von den aktuellen Suchmasken der Regesta Imperii Online optimal bedient wird. Im zweiten Teil des Kapitels wurde die Visualisierung von Registernetzwerken und die anschließende Modellierung in Graphdatenbanken dargestellt und Nutzungs- und Auswertungsszenarien diskutiert. Im folgenden Kapitel wird die Modellierung von Regesten im Graphen detailliert erklärt.
 
-\chapter{Inhalt}\label{inhalt-2}
+\chapter{Regestenmodellierung im Graphen}\label{regestenmodellierung-im-graphen}
 
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
-
-\chapter{Wie kommen die Regesten in den Graphen}\label{wie-kommen-die-regesten-in-den-graphen}
+\section{Wie kommen die Regesten in den Graphen}\label{wie-kommen-die-regesten-in-den-graphen}
 
 Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Typo3, welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
 
@@ -360,11 +332,11 @@ Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Ty
 
 In der CSV-Datei finden sich die oben erläuterten einzelnen Elemente der Regesten in jeweils eigenen Spalten. Die Spaltenüberschrift gibt Auskunft zum Inhalt der jeweiligen Spalte.
 
-\section{\texorpdfstring{Import mit dem \texttt{LOAD\ CSV}-Befehl}{Import mit dem LOAD CSV-Befehl}}\label{import-mit-dem-load-csv-befehl}
+\subsection{\texorpdfstring{Import mit dem \texttt{LOAD\ CSV}-Befehl}{Import mit dem LOAD CSV-Befehl}}\label{import-mit-dem-load-csv-befehl}
 
 Mit dem Befehl \texttt{LOAD\ CSV} können die CSV-Dateien mit den Regesten in die Graphdatenbank importiert werden.\footnote{Verwendet wird die Graphdatenbank neo4j. Die Community-Edition ist kostenlos erhältlich unter \url{https://www.neo4j.com}.} Hierfür muss die Datenbank aber Zugriff auf die CSV-Daten haben. Dies ist einerseits über den im Datenbankverzeichnis vorhandene Ordner \texttt{import} oder über eine URL, unter der die CSV-Datei abrufbar ist, möglich. Da sich die einzelnen Zugriffswege auf den \texttt{import}-Ordner von Betriebssystem zu Betriebssystem unterscheiden, wird hier beispielhaft der Import über eine URL vorgestellt. Hierfür wird ein Webserver benötigt, auf den man die CSV-Datei hochlädt und sich anschließend die Webadresse für den Download der Datei notiert.
 
-\section{Google-Docs für den CSV-Download}\label{google-docs-fuxfcr-den-csv-download}
+\subsection{Google-Docs für den CSV-Download}\label{google-docs-fuxfcr-den-csv-download}
 
 Es ist aber auch möglich, CSV-Daten in Google-spreadsheets zu speichern und dort eine URL für den Download der Daten zu erstellen. Zunächst benötigt man hierfür einen Google-Account. Anschließend öffnet man Google-Drive und erstellt dort eine leere Google-Tabellen-Datei in der man dann die CSV-Datei hochladen und öffnen kann.
 
@@ -390,7 +362,7 @@ Damit erhält man das aktuelle Tabellenblatt als CSV-Download. Anschließend mus
 \caption{Download-Link der CSV-Datei}
 \end{figure}
 
-\section{Regestenmodellierung im Graphen}\label{regestenmodellierung-im-graphen}
+\subsection{Regestenmodellierung im Graphen}\label{regestenmodellierung-im-graphen-1}
 
 Mit dem \texttt{LOAD\ CSV}-Befehl stehen die Informationen der Regestentabelle nun für die weitere Verarbeitung zur Verfügung. Nun muss festgelegt werden, wie diese Informationen im Graphen modelliert werden sollen. Daher wird im nächsten Schritt das Modell der Regesten im Graphen vorgestellt (siehe Abbildung).
 
@@ -400,7 +372,7 @@ In den Abbildungen finden sich beispielhaft das Regest RI III,2,3 Nr. 1487, einm
 
 Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten \texttt{CREATE}-Befehl werden die Regesten erstellt. Die \texttt{MERGE}-Befehle erzeugen ergänzende Knoten für die Datumsangaben und die Ausstellungsorte. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird hier nicht der \texttt{CREATE}-Befehl sondern der \texttt{MERGE}-Befehl verwendet. Dieser funktioniert wie der \texttt{CREATE}-Befehl, prüft aber vorher, ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt, wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend wird die Kante zwischen Regestenknoten und Ausstellungsortsknoten und Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
-\section{Indexe Erstellen}\label{indexe-erstellen}
+\subsection{Indexe Erstellen}\label{indexe-erstellen}
 
 Für die Beschleunigung des Importprozesses ist es von Vorteil vorher Indexe für häufig genutzte Properties zu erstellen.
 
@@ -427,7 +399,7 @@ CREATE INDEX ON :IndexEvent(registerId);
 CREATE INDEX ON :IndexPerson(registerId);
 \end{verbatim}
 
-\section{Erstellen der Regestenknoten}\label{erstellen-der-regestenknoten}
+\subsection{Erstellen der Regestenknoten}\label{erstellen-der-regestenknoten}
 
 Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
 
@@ -484,7 +456,7 @@ Zwischen Regestenknoten und Datumsknoten wird eine \texttt{HAT\_DATUM}-Kante ers
 \bottomrule
 \end{longtable}
 
-\section{Erstellen der Ausstellungsorte}\label{erstellen-der-ausstellungsorte}
+\subsection{Erstellen der Ausstellungsorte}\label{erstellen-der-ausstellungsorte}
 
 In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun bei der Erstellung der Regestendatenbank im Graphen berücksichtigt werden können. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich aber auch teilweise auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit den 1.000 häufigsten Ortsangaben konnten schon die Ausstellungsorte der Mehrzahl der Regesten georeferenziert werden.
 
@@ -544,7 +516,7 @@ SET d.isoEndDate = date(d.endDate);
 
 Zunächst werden mit dem \texttt{MATCH}-Befehl alle Regestenknoten aufgerufen. Anschließend wird für jeden Regestenknoten aus der String-Property \texttt{startDate} die Datumsproperty \texttt{isoStartDate} berechnet und im Regestenknoten abgespeichert. Mit Hilfe der Property können dann Datumsangaben und Zeiträume abgefragt werden (Beispiel hierzu unten in der Auswertung).
 
-\subsection{Herrscherhandeln in den Regesta Imperii}\label{herrscherhandeln-in-den-regesta-imperii}
+\section{Herrscherhandeln in den Regesta Imperii}\label{herrscherhandeln-in-den-regesta-imperii}
 
 Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Verb im Regest das Herrscherhandeln beschrieben. Um dies auch digital auswerten zu können, haben wir in einem kleinen Testprojekt mit Hilfe des Stuttgart-München Treetaggers aus jedem Regest das erste Verb extrahiert und normalisiert. Die Ergebnisse sind in folgender \href{https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/edit?usp=sharing}{Tabelle} einsehbar. Diese Tabelle wird mit dem folgenden cypher-Query in die Graphdatenbank eingelesen.
 
@@ -559,7 +531,7 @@ MERGE (r)-[:ACTION]->(l);
 
 Dabei wird zunächst mit dem \texttt{MATCH}-Befehl das jeweilige Regest gesucht, anschließend mit dem \texttt{MERGE}-Befehl der \texttt{Lemma}-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der \texttt{Regesta}-knoten mit dem \texttt{Lemma}-Knoten über eine \texttt{ACTION}-Kante verbunden.
 
-\subsection{Zitationsnetzwerke in den Regesta Imperii}\label{zitationsnetzwerke-in-den-regesta-imperii}
+\section{Zitationsnetzwerke in den Regesta Imperii}\label{zitationsnetzwerke-in-den-regesta-imperii}
 
 In vielen Online-Regesten ist die zitierte Literatur mit dem \href{http://opac.regesta-imperii.de/lang_de/}{Regesta-Imperii-Opac} verlinkt. Da es sich um URLs handelt, sind diese Verweise eindeutig. Andererseits lassen sie sich mit regulären Ausdrücken aus den Regesten extrahieren. Mit folgendem Query werden aus den Überlieferungsteilen der Regesten die mit dem Opac verlinkten Literaturangaben extrahiert und jede Literaturangabe als \texttt{Refernce}-Knoten angelegt.
 
@@ -576,9 +548,9 @@ MERGE (reg)-[:REFERENCES]->(ref);
 
 Da dies mit dem \texttt{MERGE}-Befehl geschieht, wird in der Graphdatenbank jeder Literaturtitel nur einmal angelegt. Anschließend werden die \texttt{Reference}-Knoten mit den Regesten über \texttt{REFERNCES}-Kanten verbunden. Zu den Auswertungsmöglichkeiten vgl. unten den Abschnitt zu den \protect\hyperlink{ux5cux23Auswertungsperspektiven}{Auswertungsperspektiven}.
 
-\chapter{Import der Registerdaten in die Graphdatenbank}\label{import-der-registerdaten-in-die-graphdatenbank}
+\section{Import der Registerdaten in die Graphdatenbank}\label{import-der-registerdaten-in-die-graphdatenbank}
 
-\section{Vorbereitung der Registerdaten}\label{vorbereitung-der-registerdaten}
+\subsection{Vorbereitung der Registerdaten}\label{vorbereitung-der-registerdaten}
 
 Register spielen für die Erschließung von gedrucktem Wissen eine zentrale Rolle, da dort in alphabetischer Ordnung die im Werk vorkommenden Entitäten (z.B. Personen und Orte) hierarchisch gegliedert aufgeschlüsselt werden. Für die digitale Erschließung der Regesta Imperii sind Register von zentraler Bedeutung, da mit ihnen die in den Regesten vorkommenden Personen und Orte bereits identifiziert vorliegen. Für den Import in die Graphdatenbank wird allerdings eine digitalisierterte Fassung des Registers benötigt. Im Digitalisierungsprojekt Regesta Imperii Online wurden Anfang der 2000er Jahre auch die gedruckt vorliegenden Register digitalisiert. Sie dienen nun als Grundlage für die digitale Registererschließung der Regesta Imperii. Im hier gezeigten Beispiel werden die Regesten Kaiser Heinrichs IV. und das dazugehörige Register importiert. Da der letzte Regestenband der Regesten Kaiser Heinrichs IV. mit dem Gesamtregister erst vor kurzem gedruckt wurde, liegen hier aktuelle digitale Fassung von Registern und Regesten vor. Die für den Druck in Word erstellte Registerfassung wird hierfür zunächst in eine hierarchisch gegliederte XML-Fassung konvertiert, damit die Registerhierarchie auch maschinenlesbar abgelegt ist.
 
@@ -608,7 +580,7 @@ In einer Tabelle werden alle Entitäten aufgelistet und jeweils mit einer ID ver
 
 In der anderen Tabelle werden die Verknüpfungen zwischen Registereinträgen und den Regesten aufgelistet. Der Registereintrag Adalbero kommt also in mehreren Regesten vor. Da das Register der Regesten Heinrichs IV. nur zwei Hierarchiestufen enthält, in denen beispielsweise verschiedene Amtsphasen ein und derselben Person unterschieden werden, wurden diese beim Import zusammengefasst.\footnote{Vgl. die Vorbemerkung zum Register in Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 5. Lief.: Die Regesten Rudolfs von Rheinfelden, Hermanns von Salm und Konrads (III.). Verzeichnisse, Register, Addenda und Corrigenda, bearbeitet von Lubich, Gerhard unter Mitwirkung von Junker, Cathrin; Klocke, Lisa und Keller, Markus - Köln (u.a.) (2018), S. 291.} Damit gibt es pro Person jeweils nur einen Knoten.
 
-\section{Import der Registerdaten in die Graphdatenbank}\label{import-der-registerdaten-in-die-graphdatenbank-1}
+\subsection{Import der Registerdaten in die Graphdatenbank}\label{import-der-registerdaten-in-die-graphdatenbank-1}
 
 Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Die digitalisierten Registerdaten können \href{https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/edit?usp=sharing}{hier} eingesehen werden. In dem Tabellendokument befinden sich insgesamt drei Tabellen. In der Tabelle Personen sind die Einträge des Personenregisters aufgelistet und in der Tabelle Orte befindet sich die Liste aller Einträge des Ortsregisters. Schließlich enthält die Tabelle \texttt{APPEARS\_IN} Information dazu, welche Personen oder Orte in welchen Regesten genannt sind. Der folgende cypher-Query importiert die Einträge der Personentabelle in die Graphdatenbank und erstellt für jeden Eintrag einen Knoten vom Typ \texttt{:IndexPerson}:
 
@@ -649,7 +621,7 @@ MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2}
 CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 \end{verbatim}
 
-\section{Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.}\label{die-hierarchie-des-registers-der-regesten-kaiser-friedrichs-iii.}
+\subsection{Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.}\label{die-hierarchie-des-registers-der-regesten-kaiser-friedrichs-iii.}
 
 In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
@@ -1040,23 +1012,13 @@ Remling & 28\tabularnewline
 
 Mit diesen Daten lassen sich Zitationsnetzwerke in den Regesten darstellen mit denen Regesten gefunden werden können, die auf Grund der gemeinsam zitierten Literatur die gleichen inhaltlichen Schwerpunkte aufweisen können.
 
-\section{Der Import zusammengefasst}\label{der-import-zusammengefasst}
+\subsection{Der Import zusammengefasst}\label{der-import-zusammengefasst}
 
 Den komplette \href{cypher/20_cypher-Datenbankerstellung.txt}{cypher-Code} für die Erstellung der Graphdatenbank ist zusammengefasst über ein \href{cypher/20_cypher-Datenbankerstellung.txt}{Textdatei} abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Inzwischen ist es möglich, in der Befehlszeile des neo4j-Browsers auch mehrere Befehle nacheinander ausführen zu lassen. Alternativ kann man nach dem Start der Graphdatenbank im Reiter \texttt{Terminal} mit dem Befehl \texttt{bin/cypher-shell} die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine \href{https://neo4j.com/lp/try-neo4j-sandbox}{Sandbox} erstellt werden.
 
-\chapter{Zusammenfassung}\label{zusammenfassung-1}
+\section{Zusammenfassung}\label{zusammenfassung-1}
 
 In diesem Kapitel wurden die Schritte zum Import der Regesten Kaiser Heinrichs IV. in die Graphdatenbank neo4j erläutert sowie verschiedene Auswertungsbeispiele vorgestellt.
-
-\chapter{Inhalt}\label{inhalt-3}
-
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
 
 \chapter{Import von strukturierten XML-Daten in neo4j}\label{import-von-strukturierten-xml-daten-in-neo4j}
 
@@ -1191,16 +1153,6 @@ FOREACH (x in druckorte |
    MERGE (w)-[:GEDRUCKT_IN]->(o) );
 \end{verbatim}
 
-\chapter{Inhalt}\label{inhalt-4}
-
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
-
 \chapter{Verwandtschaft im Graphen}\label{verwandtschaft-im-graphen}
 
 In diesem Kapitel wird am Beispiel eines Ausschnitts der Daten des Projekts \textbf{Nomen et Gens}\footnote{Informationen zum Projekt „Nomen et Gens`` finden Sie unter \url{http://www.neg.uni-tuebingen.de/} (abgerufen am 10.08.2018).} die Modellierung von Verwandtschaft in der Graphdatenbank neo4j dargestellt.\footnote{Dieses Kapitel geht in großen Teilen zurück auf meinem Aufsatz Graphentechnologien in den Digitalen Geisteswissenschaften, in: ABI Technik 2017; 37(3): 179--196, \url{https://doi.org/10.1515/abitech-2017-0042}. URL: \url{https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf}, insbesondere die Seiten 179 bis 182 und wurde nur geringfügig ergänzt.}
@@ -1259,17 +1211,7 @@ Das Ergebnis zeigt, dass Berchar tatsächlich mit Karl dem Großen verwandt ist.
 
 Mit diesem Beispiel sind die interessanten Erschließungs- und Modellierungsperspektiven für die digitale Genealogie nur angedeutet. Mit Graphentechnologien lässt sich intuitive Datenmodellierung mit sehr flexiblen Erschließungs- und Abfragemöglichkeiten kombinieren.
 
-\chapter{Inhalt}\label{inhalt-5}
-
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
-
-\section{Das DTA im Graphen}\label{das-dta-im-graphen}
+\chapter{Das DTA im Graphen}\label{das-dta-im-graphen}
 
 Das Deutsche Textarchiv (DTA) stellt einen Disziplinen übergreifenden Grundbestand deutscher Werke aus dem Zeitraum von ca. 1600 bis 1900 im Volltext und als digitale Faksimiles frei zur Verfügung und bereitet ihn so auf, dass er über das Internet in vielfältiger Weise nutzbar ist. Das DTA-Korpus soll in größtmöglicher Breite widerspiegeln, was an bedeutenden Werken in deutscher Sprache veröffentlicht wurde. Die ausgewählten Texte stehen repräsentativ für die Entwicklung der deutschen Sprache seit der Frühen Neuzeit. Alle DTA-Texte werden unter einer offenen Lizenz veröffentlicht (CC BY-NC). Das DTA fördert die Wiederverwendung seiner Texte in allen Bereichen der Digitalen Geisteswissenschaften.
 
@@ -1453,16 +1395,6 @@ Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen,
 \section{Zusammenfassung}\label{zusammenfassung-3}
 
 Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden. Am Ende wurde beispielhaft die TEI-P5-Fassung eingespielt um die gleiche Stelle in beiden Fassungen vergleichen zu können. Weitere Informationen zu XML im Graphen finden Sie im Kapitel zu \href{https://kuczera.github.io/Graphentechnologien/60_XML-Text-im-Graphen.html}{XML-Text im Graphen}.
-
-\chapter{Inhalt}\label{inhalt-6}
-
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
 
 \chapter{Textmodelle im Graphen}\label{textmodelle-im-graphen}
 
@@ -2764,15 +2696,9 @@ MATCH (c:IndexPerson) WHERE id(c) = nodeC
 RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 \end{verbatim}
 
-\chapter{Inhalt}\label{inhalt-7}
+\chapter{Cypher für Fortgeschrittene}\label{cypher-fuxfcr-fortgeschrittene}
 
-\{:.no\_toc\}
-
-\begin{itemize}
-\tightlist
-\item
-  Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
-\end{itemize}
+In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
 
 \section{cypher-Dokumentation}\label{cypher-dokumentation}
 
