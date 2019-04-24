@@ -5,7 +5,6 @@ order: 70
 contents: true
 ---
 
-
 # JSON Import mit den Daten der Germania Sacra
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
@@ -55,11 +54,9 @@ Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten
 	}
 ```
 
-
 Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.  
 
 ```json
-
 {"kloster":
 [
  {
@@ -95,10 +92,9 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
    "Datum_von": 1180,
    "Datum_bis": 1803
  },
-
 ```
 
-Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt. 
+Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
 
 ```cypher
 CREATE INDEX ON :Person(gnd);
@@ -152,4 +148,4 @@ Analog zu den Bistumern werden in diesem Query die Professionen erstellt und den
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
 
-[^eeaa]: Zu diesem Abschnitt vgl. [http://www.germania-sacra.de/](http://www.germania-sacra.de/) (zuletzt abgerufen am 07.03.2019).
+[^eeaa]&#x3A; Zu diesem Abschnitt vgl. <http://www.germania-sacra.de/> (zuletzt abgerufen am 07.03.2019).
