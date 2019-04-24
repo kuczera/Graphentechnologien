@@ -1269,11 +1269,11 @@ Mit diesem Beispiel sind die interessanten Erschließungs- und Modellierungspers
   Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
 \end{itemize}
 
-\chapter{Das DTA im Graphen}\label{das-dta-im-graphen}
+\section{Das DTA im Graphen}\label{das-dta-im-graphen}
 
 Das Deutsche Textarchiv (DTA) stellt einen Disziplinen übergreifenden Grundbestand deutscher Werke aus dem Zeitraum von ca. 1600 bis 1900 im Volltext und als digitale Faksimiles frei zur Verfügung und bereitet ihn so auf, dass er über das Internet in vielfältiger Weise nutzbar ist. Das DTA-Korpus soll in größtmöglicher Breite widerspiegeln, was an bedeutenden Werken in deutscher Sprache veröffentlicht wurde. Die ausgewählten Texte stehen repräsentativ für die Entwicklung der deutschen Sprache seit der Frühen Neuzeit. Alle DTA-Texte werden unter einer offenen Lizenz veröffentlicht (CC BY-NC). Das DTA fördert die Wiederverwendung seiner Texte in allen Bereichen der Digitalen Geisteswissenschaften.
 
-\chapter{Die Downloadformate des DTA}\label{die-downloadformate-des-dta}
+\section{Die Downloadformate des DTA}\label{die-downloadformate-des-dta}
 
 Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download an. Als Beispiel wird hier \href{http://deutschestextarchiv.de/book/show/goethe_faust01_1808}{Goethes Faust} in der ersten Auflage von 1808 importiert.
 
@@ -1330,7 +1330,7 @@ Vergleicht man das TCF-Xml mit der gleiche Stelle im TEIP5 ist zu erkennen, dass
 
 Die Downloadformate sind also für verschiedene Nutzungsszenarien optimiert. Für den Import in eine Graphdatenbank bietet sich das TCF-Format an.
 
-\chapter{Vorbereitungen}\label{vorbereitungen}
+\section{Vorbereitungen}\label{vorbereitungen}
 
 Als Vorbereitung müssen einige Constraints eingerichtet werden.\footnote{Zu \textbf{constraints} vgl. \url{https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/}}
 
@@ -1342,9 +1342,9 @@ create constraint on (l:Lemma) assert l.text is unique;
 
 Mit den Befehlen wird sichergestellt, dass die im nächsten Schritt importierten Knoten eindeutige IDs haben.
 
-\chapter{Import des TCF-Formats}\label{import-des-tcf-formats}
+\section{Import des TCF-Formats}\label{import-des-tcf-formats}
 
-\section{Tokenimport}\label{tokenimport}
+\subsection{Tokenimport}\label{tokenimport}
 
 Nun folgt der Import-Befehl mit der apoc-procedure \emph{apoc.load.xmlSimple}.
 
@@ -1360,7 +1360,7 @@ create (a)-[:NEXT_TOKEN]->(b);
 
 In der ersten Zeile wird der apoc-Befehl \emph{apoc.load.xmlSimple} aufgerufen, der als Argument die URL der TCF-Version von Goethes Faust im Deutschen Textarchiv erhält. Die weiteren cypher-Befehle parsen die XML-Datei und spielen die Token (also die einzelnen Wörter) als Wortknoten in die Graphdatenbank ein. Schließlich werden die NEXT\_TOKEN-Kanten zwischen den eingespielten Wörtern erstellt.
 
-\section{Satzstrukturen}\label{satzstrukturen}
+\subsection{Satzstrukturen}\label{satzstrukturen}
 
 Der nächste Befehl lädt wieder die gleiche XML-Datei und importiert die Satzstrukturen.
 
@@ -1378,7 +1378,7 @@ with value[0] as a, value[1] as b
 create (a)-[:NEXT_SENTENCE]->(b);
 \end{verbatim}
 
-\section{Lemmaimport}\label{lemmaimport}
+\subsection{Lemmaimport}\label{lemmaimport}
 
 Im folgenden Befehl werden die Lemmata importiert und jedes Token mit dem zugehörigen Lemma verknüpft.
 
@@ -1400,7 +1400,7 @@ match (t:Token{id:lemma.tokenIDs}) set t.Lemma = lemma._text;
 
 Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den cypher-Querys für den gesamten Artikel herunterzuladen).
 
-\section{Beispielabfrage}\label{beispielabfrage}
+\subsection{Beispielabfrage}\label{beispielabfrage}
 
 Bei Cypher-Abfragen können alle Eigenschaften von Knoten und Kanten miteinbezogen werden. Der Query fragt nach einem \texttt{Token}-Knoten mit dem Lemma \textbf{Bild}, gefolgt von einem \texttt{Token}-Knoten mit dem Lemma \textbf{froh} und dazu die drei vorhergehenden und die drei nachfolgenen \texttt{Token}-Knoten.
 
@@ -1420,7 +1420,7 @@ Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen
 \caption{Eine Beispielzeile aus dem Faust}
 \end{figure}
 
-\chapter{Import der TEIP5-Fassung}\label{import-der-teip5-fassung}
+\section{Import der TEIP5-Fassung}\label{import-der-teip5-fassung}
 
 Im nächsten Schritt wird die TEIP5-Fassung von Goethes Faust importiert
 
@@ -1450,7 +1450,7 @@ Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen,
 \caption{Die Beispielzeile aus der TEIP5-Fassung des Faust}
 \end{figure}
 
-\chapter{Zusammenfassung}\label{zusammenfassung-3}
+\section{Zusammenfassung}\label{zusammenfassung-3}
 
 Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden. Am Ende wurde beispielhaft die TEI-P5-Fassung eingespielt um die gleiche Stelle in beiden Fassungen vergleichen zu können. Weitere Informationen zu XML im Graphen finden Sie im Kapitel zu \href{https://kuczera.github.io/Graphentechnologien/60_XML-Text-im-Graphen.html}{XML-Text im Graphen}.
 
@@ -2774,13 +2774,13 @@ RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
   Will be replaced with the ToC, excluding the ``Contents'' header \{:toc\}
 \end{itemize}
 
-\chapter{cypher-Dokumentation}\label{cypher-dokumentation}
+\section{cypher-Dokumentation}\label{cypher-dokumentation}
 
 Die Dokumentation von cypher findet sich auf den Seiten von neo4j: \url{https://neo4j.com/docs/developer-manual/current/}
 
-\chapter{Analyse der Graphdaten}\label{analyse-der-graphdaten}
+\section{Analyse der Graphdaten}\label{analyse-der-graphdaten}
 
-\section{Welche und jeweils wieviele Knoten enthält die Datenbank}\label{welche-und-jeweils-wieviele-knoten-enthuxe4lt-die-datenbank}
+\subsection{Welche und jeweils wieviele Knoten enthält die Datenbank}\label{welche-und-jeweils-wieviele-knoten-enthuxe4lt-die-datenbank}
 
 Mit dem folgenden Query werden alle Typen von Knoten und deren jeweilige Häufigkeit aufgelistet.
 
@@ -2794,7 +2794,7 @@ RETURN label, value.count as count
 ORDER BY label
 \end{verbatim}
 
-\section{Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie}\label{welche-verknuxfcpfungen-gibt-es-in-der-datenbank-und-wie-huxe4ufig-sind-sie}
+\subsection{Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie}\label{welche-verknuxfcpfungen-gibt-es-in-der-datenbank-und-wie-huxe4ufig-sind-sie}
 
 \begin{verbatim}
 CALL db.relationshipTypes()
@@ -2806,7 +2806,7 @@ RETURN relationshipType, value.count AS count
 ORDER BY relationshipType
 \end{verbatim}
 
-\section{Welche Knoten haben keine Kanten}\label{welche-knoten-haben-keine-kanten}
+\subsection{Welche Knoten haben keine Kanten}\label{welche-knoten-haben-keine-kanten}
 
 \begin{verbatim}
 MATCH (n)
@@ -2814,7 +2814,7 @@ WHERE size((n)--())=0
 RETURN labels(n), count(labels(n)) AS Anzahl ORDER BY Anzahl DESC;
 \end{verbatim}
 
-\chapter{Weitere Labels für einen Knoten}\label{weitere-labels-fuxfcr-einen-knoten}
+\section{Weitere Labels für einen Knoten}\label{weitere-labels-fuxfcr-einen-knoten}
 
 Gegeben sind Knoten vom Typ IndexEntry, die in der Property type noch näher spezifiziert sind (z.B. Ort, Person, Sache etc.). Mit dem folgenden Query wird der Wert der Proptery type als zusätzliches Label angelegt.
 
@@ -2854,7 +2854,7 @@ CALL apoc.create.addLabels(id(e), ['IndexPlace']) YIELD node
 RETURN node;
 \end{verbatim}
 
-\chapter{CSV-Feld enthält mehrere Werte}\label{csv-feld-enthuxe4lt-mehrere-werte}
+\section{CSV-Feld enthält mehrere Werte}\label{csv-feld-enthuxe4lt-mehrere-werte}
 
 Beim Import von Daten im CSV-Format in die Graphdatenbank kann es vorkommen, dass in einem CSV-Feld mehrere Werte zusammen stehen. In diesem Abschnitt wird erklärt, wie man diese Werte auseinandernehmen, einzeln im Rahmen des Imports nutzen kann.
 
@@ -2878,7 +2878,7 @@ MERGE (t)<-[:ABSCHLUSS]-(p)
 
 Der Query nimmt die Liste von Abschlüssen jeweils beim Komma auseinander, erstellt mit dem \texttt{MERGE}-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten. Zu beachten ist, dass die im CSV-Feld gemeinsam genannten Begriffe konsistent benannt sein müssen.
 
-\chapter{Regluäre Ausdrücke}\label{regluuxe4re-ausdruxfccke}
+\section{Regluäre Ausdrücke}\label{regluuxe4re-ausdruxfccke}
 
 Mit Apoc ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
 
@@ -2892,15 +2892,15 @@ MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 \end{verbatim}
 
-\chapter{Vorkommende Wörter in einer Textproperty zählen}\label{vorkommende-wuxf6rter-in-einer-textproperty-zuxe4hlen}
+\section{Vorkommende Wörter in einer Textproperty zählen}\label{vorkommende-wuxf6rter-in-einer-textproperty-zuxe4hlen}
 
 Werden Texte in der Property source eines Knotens l gespeichert, kann man sich mit folgendem Query die Häufigkeit der einzelnen Wörter anzeigen lassen.
 
 \begin{verbatim}
 match (l:Letter)
-return apoc.coll.frequencies( 
+return apoc.coll.frequencies(
   apoc.coll.flatten(
-    collect( 
+    collect(
       split(
         apoc.text.regreplace(l.source, "[^a-zA-Z0-9ÄÖÜäöüß ]",""
       ),
@@ -2913,8 +2913,8 @@ In der folgenden Fassung wird die Liste noch nach Häufigkeit sortiert.
 
 \begin{verbatim}
 match (l:Letter)
-with apoc.coll.frequencies( 
-  apoc.coll.flatten(collect( 
+with apoc.coll.frequencies(
+  apoc.coll.flatten(collect(
     split(
       apoc.text.regreplace(l.source, "[^a-zA-Z0-9ÄÖÜäöüß ]","")
       , " ")
@@ -2925,7 +2925,7 @@ unwind freq as x
 return x.item, x.count order by x.count desc
 \end{verbatim}
 
-\chapter{\texorpdfstring{\texttt{MERGE} schlägt fehl da eine Property NULL ist}{MERGE schlägt fehl da eine Property NULL ist}}\label{merge-schluxe4gt-fehl-da-eine-property-null-ist}
+\section{\texorpdfstring{\texttt{MERGE} schlägt fehl da eine Property NULL ist}{MERGE schlägt fehl da eine Property NULL ist}}\label{merge-schluxe4gt-fehl-da-eine-property-null-ist}
 
 Der \texttt{MERGE}-Befehl entspricht in der Syntax dem \texttt{CREATE}-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten überprüft. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der \texttt{MERGE}-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
 
@@ -2948,7 +2948,7 @@ MERGE (o:Ort {ortsname:line.Herkunft})
 MERGE (p)-[:HERKUNFT]->(o);
 \end{verbatim}
 
-\chapter{Knoten hat bestimmte Kante nicht}\label{knoten-hat-bestimmte-kante-nicht}
+\section{Knoten hat bestimmte Kante nicht}\label{knoten-hat-bestimmte-kante-nicht}
 
 Am Beispiel der \href{http://134.176.70.65:10210/browser/}{Regesta-Imperii-Graphdatenbank} der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine \texttt{PLACE\_OF\_ISSUE}-Kante zu einem \texttt{Place}-Knoten haben:
 
@@ -2959,7 +2959,7 @@ WHERE NOT
 RETURN reg;
 \end{verbatim}
 
-\chapter{Häufigkeit von Wortketten}\label{huxe4ufigkeit-von-wortketten}
+\section{Häufigkeit von Wortketten}\label{huxe4ufigkeit-von-wortketten}
 
 Am Beispiel des \href{http://134.176.70.65:10220/browser/}{DTA-Imports} von \href{http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864}{Berg Ostasien} wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
 
@@ -2970,7 +2970,7 @@ WHERE count > 1 // evtl höherer Wert hier
 RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
 \end{verbatim}
 
-\chapter{\texorpdfstring{Der \texttt{WITH}-Befehl}{Der WITH-Befehl}}\label{der-with-befehl}
+\section{\texorpdfstring{Der \texttt{WITH}-Befehl}{Der WITH-Befehl}}\label{der-with-befehl}
 
 Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.\footnote{Hierzu vgl. https://de.wikipedia.org/wiki/Deklarative\_Programmierung zuletzt abgerufen am 12.6.2018.} Hier hilft oft der \texttt{WITH}-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
 
@@ -2985,17 +2985,17 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 Der \texttt{LOAD\ CSV}-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den \texttt{CREATE}-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende \texttt{WITH}-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
-\chapter{Die Apoc-Bibliothek}\label{die-apoc-bibliothek}
+\section{Die Apoc-Bibliothek}\label{die-apoc-bibliothek}
 
 Die Funktionalitäten sind bei neo4j in verschiedene Bereiche aufgeteilt. Die Datenbank selbst bringt Grundfunktionalitäten mit. Um Industriestandards zu genügen haben diese Funktionen umfangreiche Tests und Prüfungen durchlaufen. Weiteregehende Funktionen sind in die sogenannte \href{https://guides.neo4j.com/apoc}{\emph{apoc-Bibliothek}} ausgelagert, die zusätzlich installiert werden muss. Diese sogenannten \emph{user defined procedures} sind benutzerdefinierte Implementierungen bestimmter Funktionen, die in cypher selbst nicht so leicht ausgedrückt werden können. Diese Prozeduren sind in Java implementiert und können einfach in Ihre Neo4j-Instanz implementiert und dann direkt von Cypher aus aufgerufen werden.\footnote{Vgl. https://guides.neo4j.com/apoc (zuletzt aufgerufen am 11.04.2018).}
 
 Die APOC-Bibliothek besteht aus vielen Prozeduren, die bei verschiedenen Aufgaben in Bereichen wie Datenintegration, Graphenalgorithmen oder Datenkonvertierung helfen.
 
-\section{Installation in neo4j}\label{installation-in-neo4j}
+\subsection{Installation in neo4j}\label{installation-in-neo4j}
 
 Die Apoc-Bibliothek lässt sich unter \url{http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/\%7Bapoc-release\%7D} herunterladen und muss in den plugin-Ordner der neo4j-Datenbank kopiert werden.
 
-\section{Installation unter neo4j-Desktop}\label{installation-unter-neo4j-desktop}
+\subsection{Installation unter neo4j-Desktop}\label{installation-unter-neo4j-desktop}
 
 In \href{https://neo4j.com/download/}{\emph{neo4j-Desktop}} kann die Apoc-Bibliothek jeweils pro Datenbank im Management-Bereich über den Reiter plugins per Mausklick installiert werden.
 
@@ -3005,7 +3005,7 @@ In \href{https://neo4j.com/download/}{\emph{neo4j-Desktop}} kann die Apoc-Biblio
 \caption{Installation der apoc-Bibliothek in neo4j-Desktop}
 \end{figure}
 
-\section{Liste aller Funktionen}\label{liste-aller-funktionen}
+\subsection{Liste aller Funktionen}\label{liste-aller-funktionen}
 
 Nach dem Neustart der Datenbank stehen die zusätzlichen Funktionen zur Verfügung. Mit folgendem Befehl kann überprüft werden, ob die Apoc-Bibliotheken installiert sind:
 
@@ -3013,11 +3013,11 @@ CALL dbms.functions()
 
 Wenn eine Liste mit Funktionen ausgegeben wird, war die Installation erfolgreich. Falls nicht, sollte die Datenbank nochmals neu gestartet werden.
 
-\section{Dokumentation aller Funktionen}\label{dokumentation-aller-funktionen}
+\subsection{Dokumentation aller Funktionen}\label{dokumentation-aller-funktionen}
 
 In der \href{https://neo4j-contrib.github.io/neo4j-apoc-procedures/}{Dokumentation} der apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
 
-\chapter{apoc.xml.import}\label{apoc.xml.import}
+\section{apoc.xml.import}\label{apoc.xml.import}
 
 Mit dem Befehl apoc.xml.import ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen. Die \href{https://neo4j-contrib.github.io/neo4j-apoc-procedures/\#_import_xml_directly}{Dokumentation} findet sich \href{https://neo4j-contrib.github.io/neo4j-apoc-procedures/\#_import_xml_directly}{hier}.
 
@@ -3060,7 +3060,7 @@ Verbindet Wortknoten zu einer Kette von Wortknoten. Wird nur erzeugt, wenn creat
 \bottomrule
 \end{longtable}
 
-\chapter{(apoc.load.json)}\label{apoc.load.json}
+\section{(apoc.load.json)}\label{apoc.load.json}
 
 (Dieser Abschnitt befindet sich gerade in Bearbeitung)
 
