@@ -11,11 +11,11 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# Das DTA im Graphen
+## Das DTA im Graphen
 
 Das Deutsche Textarchiv (DTA) stellt einen Disziplinen übergreifenden Grundbestand deutscher Werke aus dem Zeitraum von ca. 1600 bis 1900 im Volltext und als digitale Faksimiles frei zur Verfügung und bereitet ihn so auf, dass er über das Internet in vielfältiger Weise nutzbar ist. Das DTA-Korpus soll in größtmöglicher Breite widerspiegeln, was an bedeutenden Werken in deutscher Sprache veröffentlicht wurde. Die ausgewählten Texte stehen repräsentativ für die Entwicklung der deutschen Sprache seit der Frühen Neuzeit. Alle DTA-Texte werden unter einer offenen Lizenz veröffentlicht (CC BY-NC). Das DTA fördert die Wiederverwendung seiner Texte in allen Bereichen der Digitalen Geisteswissenschaften.
 
-# Die Downloadformate des DTA
+## Die Downloadformate des DTA
 
 Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download an. Als Beispiel wird hier [Goethes Faust](http://deutschestextarchiv.de/book/show/goethe_faust01_1808) in der ersten Auflage von 1808 importiert.
 
@@ -58,7 +58,7 @@ Vergleicht man das TCF-Xml mit der gleiche Stelle im TEIP5 ist zu erkennen, dass
 
 Die Downloadformate sind also für verschiedene Nutzungsszenarien optimiert. Für den Import in eine Graphdatenbank bietet sich das TCF-Format an.
 
-# Vorbereitungen
+## Vorbereitungen
 
 Als Vorbereitung müssen einige Constraints eingerichtet werden.[^0235]
 
@@ -70,9 +70,9 @@ create constraint on (l:Lemma) assert l.text is unique;
 
 Mit den Befehlen wird sichergestellt, dass die im nächsten Schritt importierten Knoten eindeutige IDs haben.
 
-# Import des TCF-Formats
+## Import des TCF-Formats
 
-## Tokenimport
+### Tokenimport
 
 Nun folgt der Import-Befehl mit der apoc-procedure *apoc.load.xmlSimple*.
 
@@ -88,7 +88,7 @@ create (a)-[:NEXT_TOKEN]->(b);
 
 In der ersten Zeile wird der apoc-Befehl *apoc.load.xmlSimple* aufgerufen, der als Argument die URL der TCF-Version von Goethes Faust im Deutschen Textarchiv erhält. Die weiteren cypher-Befehle parsen die XML-Datei und spielen die Token (also die einzelnen Wörter) als Wortknoten in die Graphdatenbank ein. Schließlich werden die NEXT_TOKEN-Kanten zwischen den eingespielten Wörtern erstellt.
 
-## Satzstrukturen
+### Satzstrukturen
 
 Der nächste Befehl lädt wieder die gleiche XML-Datei und importiert die Satzstrukturen.
 
@@ -106,7 +106,7 @@ with value[0] as a, value[1] as b
 create (a)-[:NEXT_SENTENCE]->(b);
 ~~~
 
-## Lemmaimport
+### Lemmaimport
 
 Im folgenden Befehl werden die Lemmata importiert und jedes Token mit dem zugehörigen Lemma verknüpft.
 
@@ -128,7 +128,7 @@ match (t:Token{id:lemma.tokenIDs}) set t.Lemma = lemma._text;
 
 Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den cypher-Querys für den gesamten Artikel herunterzuladen).
 
-## Beispielabfrage
+### Beispielabfrage
 
 Bei Cypher-Abfragen können alle Eigenschaften von Knoten und Kanten miteinbezogen werden. Der Query fragt nach einem `Token`-Knoten mit dem Lemma **Bild**, gefolgt von einem `Token`-Knoten mit dem Lemma **froh** und dazu die drei vorhergehenden und die drei nachfolgenen `Token`-Knoten.
 
@@ -145,7 +145,7 @@ Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen
 ![Eine Beispielzeile aus dem Faust](Bilder/TEI2Graph/BilderFroherTage.png)
 
 
-# Import der TEIP5-Fassung
+## Import der TEIP5-Fassung
 
 Im nächsten Schritt wird die TEIP5-Fassung von Goethes Faust importiert
 
@@ -171,7 +171,7 @@ Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen,
 
 ![Die Beispielzeile aus der TEIP5-Fassung des  Faust](Bilder/TEI2Graph/BilderFroherTageP5.png)
 
-# Zusammenfassung
+## Zusammenfassung
 Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden. Am Ende wurde beispielhaft die TEI-P5-Fassung eingespielt um die gleiche Stelle in beiden Fassungen vergleichen zu können. Weitere Informationen zu XML im Graphen finden Sie im Kapitel zu [XML-Text im Graphen](https://kuczera.github.io/Graphentechnologien/60_XML-Text-im-Graphen.html).
 
 [^0235]: Zu __constraints__ vgl. [https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/](https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/)
