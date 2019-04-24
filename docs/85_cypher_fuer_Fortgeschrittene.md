@@ -5,20 +5,18 @@ order: 85
 contents: true
 ---
 
-# Inhalt
-{:.no_toc}
+# Cypher für Fortgeschrittene
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
+In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
 
-# cypher-Dokumentation
+## cypher-Dokumentation
 
 Die Dokumentation von cypher findet sich auf den Seiten von neo4j:
 [https://neo4j.com/docs/developer-manual/current/](https://neo4j.com/docs/developer-manual/current/)
 
-# Analyse der Graphdaten
+## Analyse der Graphdaten
 
-## Welche und jeweils wieviele Knoten enthält die Datenbank
+### Welche und jeweils wieviele Knoten enthält die Datenbank
 
 Mit dem folgenden Query werden alle Typen von Knoten und deren jeweilige Häufigkeit aufgelistet.
 
@@ -32,7 +30,7 @@ RETURN label, value.count as count
 ORDER BY label
 ~~~
 
-## Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie
+### Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie
 
 ~~~cyper
 CALL db.relationshipTypes()
@@ -44,7 +42,7 @@ RETURN relationshipType, value.count AS count
 ORDER BY relationshipType
 ~~~
 
-## Welche Knoten haben keine Kanten
+### Welche Knoten haben keine Kanten
 
 ~~~cyper
 MATCH (n)
@@ -52,7 +50,7 @@ WHERE size((n)--())=0
 RETURN labels(n), count(labels(n)) AS Anzahl ORDER BY Anzahl DESC;
 ~~~
 
-# Weitere Labels für einen Knoten
+## Weitere Labels für einen Knoten
 
 Gegeben sind Knoten vom Typ IndexEntry, die in der Property type noch näher spezifiziert sind (z.B. Ort, Person, Sache etc.).
 Mit dem folgenden Query wird der Wert der Proptery type als zusätzliches Label angelegt.
@@ -94,7 +92,7 @@ RETURN node;
 ~~~
 
 
-# CSV-Feld enthält mehrere Werte
+## CSV-Feld enthält mehrere Werte
 
 Beim Import von Daten im CSV-Format in die Graphdatenbank kann es vorkommen, dass in einem CSV-Feld mehrere Werte zusammen stehen. In diesem Abschnitt wird erklärt, wie man diese Werte auseinandernehmen, einzeln im Rahmen des Imports nutzen kann.
 
@@ -119,7 +117,7 @@ MERGE (t)<-[:ABSCHLUSS]-(p)
 Der Query nimmt die Liste von Abschlüssen jeweils beim Komma auseinander, erstellt mit dem `MERGE`-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten.
 Zu beachten ist, dass die im CSV-Feld gemeinsam genannten Begriffe konsistent benannt sein müssen.
 
-# Regluäre Ausdrücke
+## Regluäre Ausdrücke
 
 Mit Apoc ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
 
@@ -133,7 +131,41 @@ MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 ~~~
 
-# `MERGE` schlägt fehl da eine Property NULL ist
+## Vorkommende Wörter in einer Textproperty zählen
+
+Werden Texte in der Property source eines Knotens l gespeichert, kann man sich mit folgendem Query die Häufigkeit der einzelnen Wörter anzeigen lassen.
+
+~~~cypher
+match (l:Letter)
+return apoc.coll.frequencies(
+  apoc.coll.flatten(
+    collect(
+      split(
+        apoc.text.regreplace(l.source, "[^a-zA-Z0-9ÄÖÜäöüß ]",""
+      ),
+    " ")
+  )
+);
+~~~
+
+In der folgenden Fassung wird die Liste noch nach Häufigkeit sortiert.
+
+~~~cypher
+match (l:Letter)
+with apoc.coll.frequencies(
+  apoc.coll.flatten(collect(
+    split(
+      apoc.text.regreplace(l.source, "[^a-zA-Z0-9ÄÖÜäöüß ]","")
+      , " ")
+    )
+  )
+) as freq
+unwind freq as x
+return x.item, x.count order by x.count desc
+~~~
+
+
+## `MERGE` schlägt fehl da eine Property NULL ist
 
 Der `MERGE`-Befehl entspricht in der Syntax dem `CREATE`-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten überprüft. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der `MERGE`-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
 
@@ -156,7 +188,7 @@ MERGE (o:Ort {ortsname:line.Herkunft})
 MERGE (p)-[:HERKUNFT]->(o);
 ~~~
 
-# Knoten hat bestimmte Kante nicht
+## Knoten hat bestimmte Kante nicht
 
 Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://134.176.70.65:10210/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
 
@@ -167,7 +199,7 @@ WHERE NOT
 RETURN reg;
 ~~~
 
-# Häufigkeit von Wortketten
+## Häufigkeit von Wortketten
 
 Am Beispiel des [DTA-Imports](http://134.176.70.65:10220/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
 
@@ -178,7 +210,7 @@ WHERE count > 1 // evtl höherer Wert hier
 RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
 ~~~
 
-# Der `WITH`-Befehl
+## Der `WITH`-Befehl
 
 Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
 
@@ -193,23 +225,23 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 Der `LOAD CSV`-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den `CREATE`-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende `WITH`-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
-# Die Apoc-Bibliothek
+## Die Apoc-Bibliothek
 
 Die Funktionalitäten sind bei neo4j in verschiedene Bereiche aufgeteilt. Die Datenbank selbst bringt Grundfunktionalitäten mit. Um Industriestandards zu genügen haben diese Funktionen umfangreiche Tests und Prüfungen durchlaufen. Weiteregehende Funktionen sind in die sogenannte [*apoc-Bibliothek*](https://guides.neo4j.com/apoc) ausgelagert, die zusätzlich installiert werden muss. Diese sogenannten *user defined procedures* sind benutzerdefinierte Implementierungen bestimmter Funktionen, die in cypher selbst nicht so leicht ausgedrückt werden können. Diese Prozeduren sind in Java implementiert und können einfach in Ihre Neo4j-Instanz implementiert und dann direkt von Cypher aus aufgerufen werden.[^5cb9]
 
 Die APOC-Bibliothek besteht aus vielen Prozeduren, die bei verschiedenen Aufgaben in Bereichen wie Datenintegration, Graphenalgorithmen oder Datenkonvertierung helfen.
 
-## Installation in neo4j
+### Installation in neo4j
 
 Die Apoc-Bibliothek lässt sich unter [http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/%7Bapoc-release%7D](http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/%7Bapoc-release%7D) herunterladen und muss in den plugin-Ordner der neo4j-Datenbank kopiert werden.
 
-## Installation unter neo4j-Desktop
+### Installation unter neo4j-Desktop
 
 In [*neo4j-Desktop*](https://neo4j.com/download/) kann die Apoc-Bibliothek jeweils pro Datenbank im Management-Bereich über den Reiter plugins per Mausklick installiert werden.
 
 ![Installation der apoc-Bibliothek in neo4j-Desktop](Bilder/cypherFortgeschrittene/neo4j-Desktop-install-apoc.png)
 
-## Liste aller Funktionen
+### Liste aller Funktionen
 
 Nach dem Neustart der Datenbank stehen die zusätzlichen Funktionen zur Verfügung. Mit folgendem Befehl kann überprüft werden, ob die Apoc-Bibliotheken installiert sind:
 
@@ -217,11 +249,11 @@ CALL dbms.functions()
 
 Wenn eine Liste mit Funktionen ausgegeben wird, war die Installation erfolgreich. Falls nicht, sollte die Datenbank nochmals neu gestartet werden.
 
-## Dokumentation aller Funktionen
+### Dokumentation aller Funktionen
 
 In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) der apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
 
-# apoc.xml.import
+## apoc.xml.import
 
 Mit dem Befehl apoc.xml.import ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen. Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
 
@@ -242,7 +274,7 @@ return node;
 |:NEXT_WORD|Verbindet Wortknoten zu einer Kette von Wortknoten. Wird nur erzeugt, wenn createNextWordRelationships:true gesetzt wird|
 
 
-# (apoc.load.json)
+## (apoc.load.json)
 
 (Dieser Abschnitt befindet sich gerade in Bearbeitung)
 
