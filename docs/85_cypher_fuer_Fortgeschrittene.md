@@ -1,13 +1,13 @@
 ---
-title: Cypher für Fortgeschrittene
+title: Anhang
 layout: default
 order: 85
 contents: true
 ---
 
-# Cypher für Fortgeschrittene
+# Anhang
 
-In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
+In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen bei der Verwendung von Graphdatenbanken in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
 
 ## cypher-Dokumentation
 
