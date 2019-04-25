@@ -9,7 +9,7 @@ contents: true
 
 ## Wie kommen die Regesten in den Graphen
 
-Die Regesta Imperii Online basieren momentan auf dem Content-Managment-System Typo3, welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
+In diesem Abschnitt wird beispielhaft an Hand der Regesten Kaiser Heinrichs IV. der Import der Online-Regesten in die Graphdatenbank neo4j durchgespielt.[^0153] Die Webseite der Regesta Imperii Online basiert auf dem Content-Managment-System typo3, welches auf eine mysql-Datenbank aufbaut. In der Datenbank werden die Regesteninformationen in verschiedenen Tabellen vorgehalten. Die Webseite bietet zum einen die Möglichkeit, die Regesten über eine REST-Schnittstelle im CEI-XML-Format oder als CSV-Dateien herunterzuladen. Für den Import in die Graphdatenbank bietet sich das CSV-Format an.
 
 ![Regesten als CSV-Datei](Bilder/RI2Graph/ReggH4-Regestentabelle.png)
 
@@ -17,18 +17,17 @@ In der CSV-Datei finden sich die oben erläuterten einzelnen Elemente der Regest
 
 ### Import mit dem `LOAD CSV`-Befehl
 
-Mit dem Befehl `LOAD CSV` können die CSV-Dateien mit den Regesten in die Graphdatenbank importiert werden.[^5147] Hierfür muss die Datenbank aber Zugriff auf die CSV-Daten haben. Dies ist einerseits über den im Datenbankverzeichnis vorhandene Ordner `import`  oder über eine URL, unter der die CSV-Datei abrufbar ist, möglich. Da sich die einzelnen Zugriffswege auf den `import`-Ordner von Betriebssystem zu Betriebssystem unterscheiden, wird hier beispielhaft der Import über eine URL vorgestellt. Hierfür wird ein Webserver benötigt, auf den man die CSV-Datei hochlädt und sich anschließend die Webadresse für den Download der Datei notiert.
+Mit dem Befehl `LOAD CSV` können die CSV-Dateien mit den Regesten in die Graphdatenbank neo4j importiert werden.[^5147] Hierfür muss die Datenbank aber Zugriff auf die CSV-Daten haben. Dies ist einerseits über den im Datenbankverzeichnis vorhandene Ordner `import` oder über eine URL, unter der die CSV-Datei abrufbar ist, möglich. Da sich die einzelnen Zugriffswege auf den `import`-Ordner von Betriebssystem zu Betriebssystem unterscheiden, wird hier beispielhaft der Import über eine URL vorgestellt. Hierfür wird ein Webserver benötigt, auf den man die CSV-Datei hochlädt und sich anschließend die Webadresse für den Download der Datei notiert.
 
 ### Google-Docs für den CSV-Download
 
-Es ist aber auch möglich, CSV-Daten in Google-spreadsheets zu speichern und dort eine URL für den Download der Daten zu erstellen. Zunächst benötigt man hierfür einen Google-Account. Anschließend öffnet man Google-Drive und erstellt dort eine leere Google-Tabellen-Datei in der man dann die CSV-Datei hochladen und öffnen kann.
+Es ist aber auch möglich, CSV-Daten in Google-spreadsheets zu speichern und dort eine URL für den Download der Daten zu erstellen. Zunächst benötigt man hierfür einen Google-Account. Anschließend öffnet man Google-Drive und erstellt dort eine leere Google-Tabellen-Datei (Google-Spreadsheet) in der man dann die CSV-Datei kopieren kann.
 
 ![Freigabe der Datei zum Ansehen für Dritte!](Bilder/RI2Graph/google-docs-freigeben.png)
 
-Wichtig ist nun, die Datei zur Ansicht freizugeben (Klick auf `Freigeben` oben rechts im Fenster dann `Link zum Freigeben` abrufen und anschließend `Fertig` bestätigen). Jetzt ist die CSV-Datei in Google-Docs gespeichert und kann von Dritten angesehen werden. Für den Import in die Graphdatenbank benötigen wir aber einen Download im CSV-Format. Diesen findet man unter `Datei/Herunterladen als/Kommagetrennte Werte.csv aktuelles Tabellenblatt`.
+Wichtig ist nun, die Datei zur Ansicht freizugeben (Klick auf `Freigeben` oben rechts im Fenster dann `Link zum Freigeben` abrufen und anschließend `Fertig` bestätigen). Jetzt ist die CSV-Datei in Google-Docs gespeichert und kann auch von anderen Personen über den Freigabelink angesehen werden. Für den Import in die Graphdatenbank benötigen wir aber einen Download im CSV-Format. Diesen findet man unter `Datei/Herunterladen als/Kommagetrennte Werte.csv aktuelles Tabellenblatt`.
 
 ![Herunterladen als CSV-DAtei](Bilder/RI2Graph/google-docs-herunterladen-csv.png)
-
 
 Damit erhält man das aktuelle Tabellenblatt als CSV-Download. Anschließend muss nun im Browser unter Downloads der Download-Link der Datei gesucht und kopiert werden.
 
@@ -38,8 +37,8 @@ Damit erhält man das aktuelle Tabellenblatt als CSV-Download. Anschließend mus
 
 Mit dem `LOAD CSV`-Befehl stehen die Informationen der Regestentabelle nun für die weitere Verarbeitung zur Verfügung. Nun muss festgelegt werden, wie diese Informationen im Graphen modelliert werden sollen. Daher wird im nächsten Schritt das Modell der Regesten im Graphen vorgestellt (siehe Abbildung).
 
-![RI III,2,3 n. 1487, in: Regesta Imperii Online,
-URI: http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa.](Bilder/RI2Graph/ReggH4-Nr-1487.png)
+![RI III,2,3 n. 1487, in: Regesta Imperii Online, URI: http://www.regesta-imperii.de/id/cf75356b-bd0d-4a67-8aeb-3ae27d1dcefa.](Bilder/RI2Graph/ReggH4-Nr-1487.png)
+
 ![Das Regest im Graphen.](Bilder/RI2Graph/ReggH4-Nr-1487imGraph.png)
 
 In den Abbildungen finden sich beispielhaft das Regest RI III,2,3 Nr. 1487, einmal in der Ansicht der Onlineregesten und in der zweiten Abbildung als Modell im Graphen (neben anderen Regesten).
@@ -48,7 +47,7 @@ Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem 
 
 ### Indexe Erstellen
 
-Für die Beschleunigung des Importprozesses ist es von Vorteil vorher Indexe für häufig genutzte Properties zu erstellen.
+Bevor nun mit dem Import begonnen wird, ist es für die Beschleunigung des Importprozesses von Vorteil vorher Indexe für häufig genutzte Properties zu erstellen.
 
 ~~~cypher
 // vorab Index erzeugen -> Import wird schneller
@@ -75,40 +74,52 @@ CREATE INDEX ON :IndexPerson(registerId);
 
 ### Erstellen der Regestenknoten
 
-Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
+Mit dem folgenden cypher-Query werden die Regestenknoten in der Graphdatenbank erstellt:
 
 ~~~cypher
 // Regestenknoten erstellen
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
-CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history,date:line.date_string,ident:line.identifier,regnum:line.regnum,origPlaceOfIssue:line.locality_string, startDate:line.start_date, endDate:line.end_date})
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/
+1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/
+export?format=csv&id=1GLQIH9LA5btZc-VCRd-
+8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
+CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary,
+  archivalHistory:line.archival_history, date:line.date_string,  
+  ident:line.identifier,  regnum:line.regnum,
+  origPlaceOfIssue:line.locality_string, startDate:line.start_date,
+  endDate:line.end_date})
 MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
-MERGE (r)-[:DATE]->(d)  
+MERGE (r)-[:DATE]->(d)
 RETURN count(r);
 ~~~
 
 Im folgenden werden die einzelnen Teile des Import-Befehls erläutert:
 
 |Befehl|Variablen|Bemerkungen|
-|:--------|------|:-------|
+|:--------------------------|--------------------|:-------------------------------|
 |`LOAD CSV WITH HEADERS FROM` "https://docs.google.com/ ..." AS line|line|Import der CSV-Dateien. Es wird jeweils eine Zeile an die Variable line weitergegeben|
-|`CREATE`(r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history,date:line.date_string|line.persistent_identifier, line.summary etc. |Erstellung des Regestenknotens. Für die weiteren Befehle steht der neu erstellt Regestenknoten unter der Variable `r` zur Verfügung.|
+|`CREATE`(r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history, date:line.date_string|line.persistent_ identifier, line.summary etc. |Erstellung des Regestenknotens. Für die weiteren Befehle steht der neu erstellt Regestenknoten unter der Variable `r` zur Verfügung.|
 |`MERGE` (d:Date {startDate:line.start_date, endate:line.end_date})|line.start_date und line.end_date|Es wird geprüft, ob ein Datumsknoten mit der Datumsangabe schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Datumsknoten unter der Variable d zur Verfügung.|
 |`MERGE` (r)-[:HAT_DATUM]->(d)|`(r)` ist der Regestenknoten, `(d)` ist der Datumsknoten|Zwischen Regestenknoten und Datumsknoten wird eine `HAT_DATUM`-Kante erstellt.|
 
 ### Erstellen der Ausstellungsorte
 
-In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun bei der Erstellung der Regestendatenbank im Graphen berücksichtigt werden können. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich aber auch teilweise auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit den 1.000 häufigsten Ortsangaben konnten schon die Ausstellungsorte der Mehrzahl der Regesten georeferenziert werden.
+In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun beim Import der Regesten in den Graphen berücksichtigt werden kann. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich aber auch teilweise auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit der Identifizierung der 1.000 häufigsten Ortsangaben konnte schon die überwiegende Mehrzahl der Ausstellungsorte georeferenziert werden. Die Daten zur Ortsidentifizierung liegen auch in einer Google-Tabelle vor.
 
 Mit dem folgenden cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
 
 ~~~cypher
 // RI-Ausstellungsorte-geo erstellen
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw/export?format=csv&id=13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw&gid=420547059" AS line
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/
+13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw/
+export?format=csv&id=13_f6Vja4HfOpju9RVDubHiMLzS6Uoa7MIOHFEg5V7lw
+&gid=420547059"
+AS line
 WITH line
 WHERE line.Lat IS NOT NULL
 AND line.normalisiertDeutsch IS NOT NULL
 MATCH (r:Regesta {origPlaceOfIssue:line.Original})
-MERGE (p:Place {normalizedGerman:line.normalisiertDeutsch, longitude:line.Long, latitude:line.Lat})
+MERGE (p:Place {normalizedGerman:line.normalisiertDeutsch,
+  longitude:line.Long, latitude:line.Lat})
 WITH r, p, line
 MERGE (r)-[rel:PLACE_OF_ISSUE]->(p)
 SET p.wikidataId = line.wikidataId
@@ -127,19 +138,25 @@ RETURN count(p);
 
 Da Import-Query etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind. Für diesen Import sollen aber nur jene angelegt werden, die für die Regesten Kaiser Heinrichs IV. relevant sind. Mit dem `MERGE`-Befehl wird der `Place`-Knoten erstellt (falls es ihn nicht schon gibt) und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten und in den `PLACE_OF_ISSUE`-Kanten ergänzt.
 
-Mit dem folgenden Query werden die Koordinatenangaben zu Höhen- und Breitengraden der Ausstellungsorte (`Place`-Knoten), die in den Propertys Lat und Long abgespeichert sind, in der neuen Property LatLong zusammengefasst und in `point`-Werte umgewandelt. Seit Version 3 kann neo4j mit diesen Werten Abstandsberechnungen durchführen (Mehr dazu siehe unten bei den Auswertungen).
+### Koordinaten der Ausstellungsorte
+
+Mit dem folgenden Query werden die Koordinatenangaben zu Höhen- und Breitengraden der Ausstellungsorte (`Place`-Knoten), die in den Propertys latitude und longitude abgespeichert sind, in der neuen Property LatLong zusammengefasst und in `point`-Werte umgewandelt. Seit Version 3 kann neo4j mit diesen Werten Abstandsberechnungen durchführen (Mehr dazu siehe unten bei den Auswertungen).
 
 ~~~cypher
 // Regesten und Ausstellungsorte mit Koordinaten der Ausstellungsorte versehen
 MATCH (r:Regesta)-[:PLACE_OF_ISSUE]->(o:Place)
-SET r.latLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
-SET o.latLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
+SET r.latLong = point({latitude: tofloat(o.latitude),
+  longitude: tofloat(o.longitude)})
+SET o.latLong = point({latitude: tofloat(o.latitude),
+  longitude: tofloat(o.longitude)})
 SET r.placeOfIssue = o.normalizedGerman
 SET r.latitude = o.latitude
 SET r.longitude = o.longitude;
 ~~~
 
-In den Regesta Imperii Online sind die Datumsangaben der Regesten iso-konform im Format JJJJ-MM-TT (also Jahr-Monat-Tag) abgespeichert. neo4j behandelt diese Angaben aber als String. Um Datumsberechnungen durchführen zu können, müssen die Strings in Datumswerte umgerechnet werden. Der cypher-Query hierzu sieht wie folgt aus:
+### Ausstellungsdatum
+
+In den Regesta Imperii Online sind die Datumsangaben der Regesten iso-konform im Format JJJJ-MM-TT (also Jahr-Monat-Tag) abgespeichert. neo4j behandelt diese Angaben aber als String. Um Datumsberechnungen durchführen zu können, müssen die Strings in neo4j-interne Datumswerte umgerechnet werden. Der cypher-Query hierzu sieht wie folgt aus:
 
 ~~~cypher
 // Date in neo4j-Datumsformat umwandeln
@@ -155,9 +172,10 @@ SET d.isoEndDate = date(d.endDate);
 
 Zunächst werden mit dem `MATCH`-Befehl alle Regestenknoten aufgerufen. Anschließend wird für jeden Regestenknoten aus der String-Property `startDate` die Datumsproperty `isoStartDate` berechnet und im Regestenknoten abgespeichert. Mit Hilfe der Property können dann Datumsangaben und Zeiträume abgefragt werden (Beispiel hierzu unten in der Auswertung).
 
-## Herrscherhandeln in den Regesta Imperii
+## Exkurs: Herrscherhandeln in den Regesta Imperii
 
-Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Verb im Regest das Herrscherhandeln beschrieben. Um dies auch digital auswerten zu können, haben wir in einem kleinen Testprojekt mit Hilfe des Stuttgart-München Treetaggers aus jedem Regest das erste Verb extrahiert und normalisiert. Die Ergebnisse sind in folgender [Tabelle](https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/edit?usp=sharing) einsehbar. Diese Tabelle wird mit dem folgenden cypher-Query in die Graphdatenbank eingelesen.
+Bisher wurden beim Import der Regesten in den Graphen nur die in den Online-Regesten bereits angelegten Angaben importiert. Im folgenden Schritt werden nun in einem kleinen Exkurs die Regestentexte selbst analysiert und anschließend die Graphdatenbank um eine weitere Informationsebene ergänzt.
+Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Verb im Regest das Herrscherhandeln beschrieben. Um dies auch digital auswerten zu können, haben wir in einem kleinen Testprojekt mit Hilfe des [Stuttgart-München Treetaggers](http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/)[^29b0] aus jedem Regest das erste Verb extrahiert und normalisiert. Die Ergebnisse sind in folgender [Tabelle](https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/edit?usp=sharing) einsehbar. Diese Tabelle wird mit dem folgenden cypher-Query in die Graphdatenbank eingelesen.
 
 ~~~cypher
 // ReggH4-Herrscherhandeln
@@ -168,7 +186,9 @@ MERGE (l:Lemma{lemma:line.Lemma})
 MERGE (r)-[:ACTION]->(l);
 ~~~
 
-Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Lemma`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-knoten mit dem `Lemma`-Knoten über eine `ACTION`-Kante verbunden.
+Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Lemma`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-knoten mit dem `Lemma`-Knoten über eine `ACTION`-Kante verbunden. In der folgenden Abbildung ist ein Ausschnitt mit Regesten und den verknüpften Lemmaknoten dargestellt.
+
+![Herrscherhandeln im Graphen.](Bilder/RI2Graph/ReggH4-Action.png)
 
 ## Zitationsnetzwerke in den Regesta Imperii
 
@@ -241,7 +261,7 @@ MATCH (to:Regesta {regnum:line.regnum2})
 CREATE (from)-[:PLACE_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
-Mit zwei `MATCH`-Befehlen wird jeweils das Regest und der Registereintrag aufgerufen und  mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` erhält.
+Mit zwei `MATCH`-Befehlen wird jeweils das Regest und der Registereintrag aufgerufen und mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` erhält.
 Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten angelegt:
 
 ~~~cypher
@@ -514,15 +534,15 @@ Mit diesen Daten lassen sich Zitationsnetzwerke in den Regesten darstellen mit d
 
 ### Der Import zusammengefasst
 
-Den komplette [cypher-Code](cypher/20_cypher-Datenbankerstellung.txt) für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Textdatei](cypher/20_cypher-Datenbankerstellung.txt) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Inzwischen ist es möglich, in der Befehlszeile des neo4j-Browsers auch mehrere Befehle nacheinander ausführen zu lassen. Alternativ kann man nach dem Start der Graphdatenbank im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt. 
+Den komplette [cypher-Code](cypher/20_cypher-Datenbankerstellung.txt) für die Erstellung der Graphdatenbank ist zusammengefasst über ein [Textdatei](cypher/20_cypher-Datenbankerstellung.txt) abrufbar. Es ist zu empfehlen, die aktuelle Version von neo4j-Desktop zu installieren, eine Graphdatenbank anzulegen und in der Graphdatenbank die APOC-Bibliothek zu installieren. Inzwischen ist es möglich, in der Befehlszeile des neo4j-Browsers auch mehrere Befehle nacheinander ausführen zu lassen. Alternativ kann man nach dem Start der Graphdatenbank im Reiter `Terminal` mit dem Befehl `bin/cypher-shell` die cypher-shell aufgerufen werden. In diese Shell werden dann alle Befehl gemeinsam reinkopiert und ausgeführt.
 Alternativ zur Installation von neo4j kann auch auf den Internetseiten von neo4j seine [Sandbox](https://neo4j.com/lp/try-neo4j-sandbox) erstellt werden.
 
 ## Zusammenfassung
 
 In diesem Kapitel wurden die Schritte zum Import der Regesten Kaiser Heinrichs IV. in die Graphdatenbank neo4j erläutert sowie verschiedene Auswertungsbeispiele vorgestellt.
 
-[^5147]: Verwendet wird die Graphdatenbank neo4j. Die Community-Edition ist kostenlos erhältlich unter [https://www.neo4j.com](https://www.neo4j.com).
-[^892b]: Dies ist das Tabellenkalkulationsformat von Libreoffice und Openoffice. Vgl.  [https://de.libreoffice.org](https://de.libreoffice.org).
+[^5147]: Zu Installation und ersten Schritten von neo4j vgl. in der Einleitung den Abschnitt zu Installation und Start.
+[^892b]: Dies ist das Tabellenkalkulationsformat von Libreoffice und Openoffice. Vgl. [https://de.libreoffice.org](https://de.libreoffice.org).
 
 [^336e]: Die Angaben in der Graphdatenbank sind Englisch, daher *Regesta*.
 
@@ -549,3 +569,7 @@ Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOW
 
 
 [^cbec]: Vgl. RI III,2,3 n. 1487.
+
+[^0153]: Die den Regesten Kaiser Heinrichs IV. umfassen folgende Bände: Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 1. Lief.: 1056 (1050) – 1065, bearb. von Struve, Tilman - Köln (u.a.) (1984). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 2. Lief.: 1065–1075, bearb. von Struve, Tilman unter Mitwirkung von Lubich, Gerhard und Jäckel, Dirk - Köln (u.a.) (2010). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 3. Lief.: 1076–1085, bearb. von Lubich, Gerhard nach Vorarbeiten von Struve, Tilman unter Mitwirkung von Jäckel, Dirk - Köln (u.a.) (2016). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 4. Lief.: 1086–1105/06, bearb. von Lubich, Gerhard nach Vorarbeiten von Brauch, Daniel unter Mitwirkung von Weber, Matthias - Köln (u.a.) (2016). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 5. Lief.: Die Regesten Rudolfs von Rheinfelden, Hermanns von Salm und Konrads (III.). Verzeichnisse, Register, Addenda und Corrigenda, bearbeitet von Lubich, Gerhard unter Mitwirkung von Junker, Cathrin; Klocke, Lisa und Keller, Markus - Köln (u.a.) (2018).
+
+[^29b0]: Zum Treetagger vgl. http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/.

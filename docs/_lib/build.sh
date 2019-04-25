@@ -22,9 +22,9 @@ pandoc -o "$DEST"/"$FILENAMEBASE".pdf "${BUILDOPTS[@]}" "${LATEXOPTS[@]}" \
        --include-in-header "$TEMPLATES"/latex-defs.tex ??_*.md
 
 # EPUB
-pandoc -o "$DEST"/"$FILENAMEBASE".epub "${BUILDOPTS[@]}" \
-        --filter "$LIB"/internallinks.py ??_*.md
+#pandoc -o "$DEST"/"$FILENAMEBASE".epub "${BUILDOPTS[@]}" \
+#        --filter "$LIB"/internallinks.py ??_*.md
 
 # ODT
-pandoc -o "$DEST"/"$FILENAMEBASE".odt "${BUILDOPTS[@]}" \
-        --filter "$LIB"/internallinks.py ??_*.md
+#pandoc -o "$DEST"/"$FILENAMEBASE".odt "${BUILDOPTS[@]}" \
+#        --filter "$LIB"/internallinks.py ??_*.md
