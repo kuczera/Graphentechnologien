@@ -121,7 +121,7 @@ RETURN * LIMIT 25
 
 In einem zweiten Schritt kann der so entstandene Graph mit Hilfe von cypher-Querys weiter bearbeitet werden. Die Grahdatenbank neo4j ist schemafrei und somit können nun über die importieren XML-Strukturen weitere Erschließungsstrukturen gelegt werden, ohne dass ein XML-Parser sich über das nicht mehr wohlgeformte XML beschwert. Zu beachten ist bei jedem Schritt, ob wieder der Schritt zurück nach XML getätigt werden soll. Sicherlich ist es kein größeres Problem, eine in eine Graphdatenbank importierte XML-Datei wieder als solche zu exportieren. Ist der Graph aber mit weiteren Informationen angereichert, so muss geklärt werden, ob, und wenn ja wie, diese zusätzlichen Informationen in wohlgeformtes XML transferiert werden können.
 
-# Das DTA-Basisformat im Graphen
+## Das DTA-Basisformat im Graphen
 
 Das DTA-Basisformat ist ein Subset der TEI und bietet für Textphänomene jeweils nur eine Möglichkeit der Auszeichnung. Damit wird die in der TEI vorhandene Flexibilität bei der Auszeichnung eingeschränkt, um damit einen höheren Grad an Interoperabilität zu erreichen. Das DTA-Basisformat folgt den P5-Richtlinien der TEI, trifft aber eine Tag-Auswahl der für die Auszeichung historischer Texte notwendigen Elemente.
 
@@ -517,14 +517,10 @@ MATCH
 ![\<subst>-Beispiel nach dem Graph-Umbau. ](Bilder/TEI2Graph/subst-add-del-bearbeitet.png)
 
 
-### `<choice>`-Element
 
-### `<sic> und <corr>`-Elemente
+## Graph-Refactoring am Beispiel der Mitschrift von Patzig
 
-# Anhang
-
-
-## cypher-Befehle für den Import der Mitschrift von Patzig
+### Import der Patzig-Mitschrift
 
 Mit den folgenden Befehlen wird die Humboldt-Mitschrift von Patzig in die Graphdatenbank importiert, jedem Knoten zur Identifikation die DTA-URL als Propterty mitgegeben und die Knoten durchnummeriert. Die Nummerierung ist für das wiederholte Auffinden der in diesem Beitrag behandelten Textstellen notwendig.
 
@@ -549,10 +545,9 @@ UNWIND indexes AS index
 SET (nodes[index]).DtaID = index;
 ~~~
 
+### Liste aller im Patzig-Manusskript vorkommenden Elemente sortiert nach Häufigkeit
 
-## Liste aller im Patzig-Manusskript vorkommenden Elemente sortiert nach Häufigkeit
-
-cypher-Query zur Erstellung der Tabelle:
+Mit dem folgenden cypher-Query erhält man eine Liste der vorkommenden XML-Elemente nach Häufigkeit:
 
 ~~~cypher
 MATCH (n:XmlTag)
@@ -651,80 +646,17 @@ ORDER BY Anzahl DESC;
 |	language	|	1	|
 |	handDesc	|	1	|
 
-## Weitere Texte
-
 ### Dokument vorbereiten
 
-#### `<lb/>`-GraphElemente erstellen
+### `<lb/>`-GraphElemente untersuchen
 
-Finde alle lb-Elemente, die direkt an einem Wortknoten stehen und ein Wort trennen.
+Im DTA-XML dient das <lb/>-Element zur Markierung von Zeilenwechseln. Befindet sich am Ende einer Zeile ein getrenntes Wort, unterbricht das <lb/>-Elemente ebendieses Wort. Der folgende Query liefert jene Stellen im Text, an denen ein <lb/>-Element ein Wort am Zeilenwechsel trennt.
 
 ~~~cypher
 MATCH (w0:XmlWord)-[:NEXT]->(n:XmlTag {_name:'lb'})-[:NEXT]->(w1:XmlWord)
 WHERE w0.text =~ '.*-'
 RETURN *;
 ~~~
-
-~~~cypher
-MATCH (w0:XmlWord), (n:XmlTag {_name:'lb'}),
-p1=shortestPath((w0)-[:NEXT*..1]->(n))
-//p1=shortestPath((w0)-[:NEXT*..2]->(n)-[:NEXT*..2]->(w1))
-WHERE w0.text =~ '.*-'
-RETURN p1;
-~~~
-
-`<lb/>`-Elemente per Hand entfernen, die Wörter trennen:
-
-~~~cypher
-MATCH
-(n2:XmlWord)-[:NEXT_WORD]->
-(n3:XmlWord)-[:NEXT_WORD]->
-(n4:XmlWord),
-(n3)-[:NEXT]->(t1:XmlTag{_name:'lb'})-[:NEXT]->(n4)
-WHERE n3.text =~ '.*-'
-SET t1.before = n3.text,
-t1.after = n4.text,
-n4.text = left(n3.text,
-size(n3.text)-1)+n4.text
-CREATE (n2)-[:NEXT_WORD]->(n4)
-CREATE (n2)-[:NEXT]->(t1)
-CREATE (n2)-[:NEXT_SIBLING]->(t1)
-DETACH DELETE n3
-RETURN *;
-~~~
-
-~~~cypher
-MATCH
-(n2:XmlWord)-[:NEXT_WORD]->
-(n3:XmlWord)-[:NEXT_WORD]->
-(n4:XmlWord),
-(n3)-[:NEXT]->(t1:XmlTag{_name:'lb'})-[:NEXT]->(n4)
-CREATE (n2)-[:NEXT_WORD]->(n4)
-CREATE (n2)-[:NEXT]->(t1)
-CREATE (n2)-[:NEXT_SIBLING]->(t1)
-DETACH DELETE n3
-RETURN *;
-~~~
-
-~~~cypher
-// lb-GraphElemente erstellen
-
-MATCH p=(t1:XmlTag {_name:'lb'})-[:NEXT]->(n1:XmlWord)-[:NEXT_WORD*..20]->(n2:XmlWord)-[:NEXT]->(t2:XmlTag {_name:'lb'})
-CREATE (gt:GraphElement {_name:'lb'})
-MERGE (gt)-[:FIRST_CHILD_OF]->(n1)
-MERGE (gt)-[:LAST_CHILD_OF]->(n2)
-RETURN *;
-~~~
-
-#### `<lb/>`-Elemente umwandeln
-
-##### `<lb/>`-Elemente ohne Worttrennungen umwandeln
-
-
-
-#### `<fw>`-Elemente aus der Textkette rausnehmen
-Im Patzig-Manusskript wird am Ende jeder Seite das erste Wort der folgenden Seite vermerkt um neben der Seitennummerierung auch einen inhaltlichen Anhaltspunkt für die Reihenfolge der Seiten zu geben. Am Ende der Seite 6 befindet sich das Wort `Nachdem`. Mit Graph-Refactoring wird nun dieses Wort aus der Textkette herausgenommen, verbleibt aber als Information im Graphen.
-<fw type="catch" place="bottom">Zeit</fw><lb/>
 
 
 [^b20c]: Vgl. www.neo4j.com (abgerufen am 7.8.2017).
