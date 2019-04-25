@@ -1,59 +1,48 @@
 ---
-title: XML-Text im Graphen
+title: Graph-Refactoring mit DTA-XML
 layout: default
 order: 60
 contents: true
 ---
 
-# Textmodelle im Graphen
+# Graph-Refactoring mit DTA-XML
 
-## Text als Graph
+## Modellierungsüberlegungen
 
-Die Diskussion über Modellierungsansätze von Text als Graph hält aktuell an.[^28e2]
-
-### XML-Dateien als Ketten von Zeichen
-
-Da die technische Grundlage von XML Textdateien sind, handelt es sich bei XML um eine eindimensionale Kette von Tokens[^bb95].
-
-
-### Modellierungsüberlegungen
-
-Prinzipiell können XML-Dateien ohne größere Probleme in einen Graphen importiert werden, da sie einen geerdeten, gerichteten azyklischen Graphen, der vielfache Elternbeziehungen verhindert, und damit ein Ordered Hierarchy of Content Objects (OHCO) darstellen. Es gibt vor allem im Bereich des Mixed-Content verschiedene Ansätze, XML-Strukturen im Graphen abzubilden[^32a2]. Überlegungen zur Auslagerung von Annotationen aus XML in eine Graphdatenbank brachte schon Desmond Schmidt in die Diskussion ein:
+Die Diskussion über Modellierungsansätze von Text als Graph hält aktuell an.[^28e2] Momentan ist XML als Technik für die Codierung von Text in digitalen Editionen sehr verbreitet und bildet einen Quasi-Standard.
+Da die technische Grundlage von XML normale Plain-Textdateien sind, handelt es sich bei XML um eine eindimensionale Kette von Tokens[^bb95].
+Prinzipiell können XML-Dateien ohne größere Probleme in einen Graphen importiert werden, da sie einen geerdeten, gerichteten azyklischen Graphen (der vielfache Elternbeziehungen verhindert) und damit ein Ordered Hierarchy of Content Objects (OHCO) darstellen. Es gibt vor allem im Bereich des Mixed-Content verschiedene Ansätze, XML-Strukturen im Graphen abzubilden[^32a2]. Überlegungen zur Auslagerung von Annotationen aus XML in eine Graphdatenbank brachte schon Desmond Schmidt in die Diskussion ein:
 
 *Embedded annotations can also be removed from TEI texts. The elements `<note>`, `<interp>`, and `<interpGrp>` describe content that, like metadata, is about the text, not the text itself. These are really annotations, and should ideally be represented via the established standards and practices of external annotation (Hunter and Gerber 2012). Annotations are stored in triple stores or graph databases like Neo4J,20 which record the identifiers of each component of the annotation and its data*[^b141].
 
-#### Granularität des Modells -- Was ist ein Token ?
+Diesen Gedanken folgend werden in diesem Abschnitt Ansätze für eine Modellierung der Semantik des DTA-Basisformat im Property-Graphen nach dem Prinzip des `Texts als Kette von Wortknoten` (Text as a chain of wordnodes) mit angelagerter Annotation vorgestellt.
 
-Für den Bereich der historisch-kritischen und philologischen Editionen ist es in der Regel ausreichend, beim Import von XML-kodierten Texten in den Graphen jeweils ein Wort in einen Knoten zu importieren, da meist die historische Aussage der Quelle im Vordergrund steht. In anderen Bereichen der digitalen Geisteswissenschaften kann die Entscheidung, welche Einheit für den Import in einen Knoten gewählt wird, durchaus anders ausfallen. So ist für Philologien die Betrachtung auf Buchstabenebene interessant[^736a]. Im Graphmodell ist man im Hinblick auf die Granularität des Datenmodells wesentlich flexibler als z.B. bei XML oder Standoff-Markup. So ist es beispielsweise denkbar, an einen Wortknoten eine weitere Kette von Knoten anzulagern, welche pro Knoten jeweils einen Buchstaben des Wortes und die zugehörigen Annotationen enthalten. Es handelt sich um einen buchstabenbasierten Sub-Graphen, dessen Anfang und Ende mit dem  Wortknoten verbunden ist. Damit können verschiedene Granularitätsstufen in einem Modell und in einer Datenbank abgebildet werden.
+## Granularität des Modells -- Was ist ein Token ?
+
+Dabei ist die Entscheidung, für ein Wort jeweils einen Knoten zu nehmen schon eine wichtige Vorentscheidung. Es wäre durchaus denkbar auch für jedes Zeichen einen Knoten anzulegen. Für den Bereich der historisch-kritischen und philologischen Editionen ist es in der Regel ausreichend, beim Import von XML-kodierten Texten in den Graphen jeweils ein Wort in einen Knoten zu importieren, da meist die historische Aussage der Quelle im Vordergrund steht. In anderen Bereichen der digitalen Geisteswissenschaften kann die Entscheidung, welche Einheit für den Import in einen Knoten gewählt wird, durchaus anders ausfallen. So ist für Philologien die Betrachtung auf Buchstabenebene interessant[^736a].
+
 
 ![Granularität von Text im Graphen](Bilder/Granularitaet-im-Graphen.png)
 
+Im Graphmodell ist man im Hinblick auf die Granularität des Datenmodells wesentlich flexibler als z.B. bei XML oder Standoff-Markup. So ist es beispielsweise denkbar, an einen Wortknoten eine weitere Kette von Knoten anzulagern, welche pro Knoten jeweils einen Buchstaben des Wortes und die zugehörigen Annotationen enthalten. Es handelt sich um einen buchstabenbasierten Sub-Graphen, dessen Anfang und Ende mit dem Wortknoten verbunden ist. Damit können verschiedene Granularitätsstufen in einem Modell und in einer Datenbank abgebildet werden.
 
-## Technische Vorbemerkungen
+## Import der DTA-XML-Daten
 
-### Die Graphdatenbank neo4j
+Für den Import der Texte wird die Procedure apoc.xml.import aus der apoc-Bibliothek von neo4j verwendet[^ed8a]. Die Procedure nimmt XML-Dateien entgegen und importiert sie in die Graphdatenbank.
 
-Technische Grundlage der im Rahmen dieses Werkes vorgestellten Beispiel ist die Graphdatenbank neo4j[^b20c]. Die Graphdatenbank gibt es unter Open-Source-Lizenz in einer Community-Edition und unter einer kommerziellen Lizenz in einer Enterprise-Edition. Für die hier vorliegenden Aufgabengebiete war die Leistungsfähigkeit der Community-Edition völlig ausreichend. Darüber hinaus hat sich neo4j in den letzten Jahren als eine der führenden Graphdatenbanken etabliert und bietet neben stabiler Funktionalität auch genormte Schnittstellen. Prinzipiell wurde darauf hingearbeitet, dass die hier vorgestellten Überlegungen zu Graphenmodellierung historisch-kritischer Editionen auch auf andere Property-Graphdatenbanken wie z.b. orientdb[^dff9] übertragbar sind.
+Importiert wird die Transkription von [Gotthilf Patzigs Mitschriften](http://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13) von Humboldts Vorträgen über physische Geographie.[^70f5]
 
-### Der neo4j-XML-Importer
-
-Für den Import der Texte wurde die Procedure apoc.xml.import aus der apoc-Bibliothek von neo4j verwendet[^ed8a]. Die Procedure  nimmt XML-Dateien entgegen und importiert sie in die Graphdatenbank.
-
-#### Import
-
-Befehl für den Import der Patzig-XML-Datei[^8a2a]:
+Mit dem folgenden Befehl wird die Patzig-Mitschrift in die Graphdatenbank importiert[^8a2a]:
 
 ~~~cypher
-CALL apoc.xml.import('http://www.deutschestextarchiv.de/
-	book/download_xml/patzig_msgermfol841842_1828',
-	{createNextWordRelationships: true}) 	
+CALL apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',
+	{createNextWordRelationships:true}) 	
 	yield node return node;
 ~~~
 
+Dabei werden die XML-Knoten in Graphknoten umgewandelt und verschiedene Arten von Kanten erstellt, die einerseits die Baum-Hierarchie des XMLs im Graphen abbilden. Mit der Option `createNextWordRelationships:true` wird darüber hinaus festgelegt, dass die im XML vorhandenen Textknoten über `NEXT_WORD`-Kanten miteinerander verknüpft werden. Zu beachten ist hierbei, dass es in TEI-XML zwei verschiedene Klassen von Elementen gibt. Die eine dient der Klassifizierung von Text, die zweite bringt Varianten und zusätzlichen Text mit, der beim Import in seiner Serialität eingelesen und mit `NEXT_WORD`-Kanten verbunden wird. Dies kann dann zu Problemen bei der Lesbarkeit der Wortkette führen.
 
-Dabei werden die XML-Knoten in Graphknoten umgewandelt und verschiedene Arten von Kanten erstellt, die einerseits die Baum-Hierarchie des XMLs im Graphen abbilden. Mit der Option  `createNextWorkRelationships: true` wird darüber hinaus festgelegt, dass die im XML vorhandenen Textknoten über `NEXT_WORD`-Kanten miteinerander verknüpft werden. Zu beachten ist hierbei, dass es in TEI-XML zwei verschiedene Arten von Elementen gibt. Die eine Klasse dient der Klassifizierung von Text, die zweite Art bringt Varianten und zusätzlichen Text mit, der beim Import in seiner Serialität eingelesen und mit `NEXT_WORD`-Kanten verbunden wird. Dies kann dann zur Sinnentstellung des Textes führen.[^4da1]
-
-Zur Abbildung des Wurzelelement der importieren XML-Datei wird ein Knoten vom Typ `XmlDocument` angelegt. Dieser erhält die Propertys `_xmlEncoding` zur Darstellung des Encodings, `_xmlVersion` für die Xml-Version und `url` für die URL des importierten XML-Dokuments.
+Das Wurzelelement der importieren XML-Datei wird in einen Knoten vom Typ `XmlDocument` importiert. Dieser erhält die Properties `_xmlEncoding` zur Darstellung des Encodings, `_xmlVersion` für die Xml-Version und `url` für die URL des importierten XML-Dokuments.
 
 Mit einem weiteren cypher-Query erhalten alle der importierten Knoten die Eigenschaft `url` mit der URL des importierten XML-Dokuments. Damit lassen sich Knoten in einer Graphdatenbank mit mehreren importierten XML-Dokumenten auseinanderhalten.
 
@@ -66,13 +55,13 @@ Mit dem nächsten cypher-Query werden die Knoten des importierten XML-Dokuments 
 
 ~~~cypher
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
-WHERE NOT (end)-[:NEXT]->() AND start.url =  'http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828'
+WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
 SET (nodes[index]).DtaID = index;
 ~~~
 
-#### Erläuterung der entstandenen Graphstrukturen
+## Erläuterung der entstandenen Graphstrukturen
 
 Nach Abschluss des Imports werden jetzt die importierten Datenstrukturen erläutert. In der folgenden Tabelle werden die verschiedenen Typen von Knoten erläutert, die während des Imports erstellt wurden.
 
@@ -81,10 +70,10 @@ Tabelle zum Importvorgang der XML-Elemente und den entsprechenden Knoten
 |XML-Knoten|Graphknoten|Bemerkungen|
 |-------------------|------------------|------------------------------------|
 |XML-Wurzelelement|XmlDocument|Gibt es nur einmal. Es enthält Angaben zur Encodierung, zur XML-Version und die URL der importierten XML-Datei|
-|XML-Element-Knoten|XmlTag-Knoten|Die Attribute des XML-Elements werden in entsprechende Propertys des XMLTag-Knotens in der Datenbank umgewandelt|
+|XML-Element-Knoten|XmlTag-Knoten|Die Attribute des XML-Elements werden in entsprechende Properties des XMLTag-Knotens in der Datenbank umgewandelt|
 |XML-Text-Knoten|XmlWord|Jedes Wort des XML-Textknotens wird ein XmlWord-Knoten im Graphen|
 
-In der nächsten Tabelle werden die verschiedenen Kantentypen erläutert, mit einen einerseits die Serialität des XMLs (`NEXT`-Kanten), und die Hierarchie (`NEXT_SIBLING` und `IS_CHILD_OF`-Kanten), andererseits aber auch die Abfolge der Inhalte der XML-Textelemente (`NEXT_WORD`) dargestellt werden.
+In der nächsten Tabelle werden die verschiedenen Kantentypen erläutert. Sie geben die Serialität des XMLs (`NEXT`-Kanten), die Hierarchie (`NEXT_SIBLING` und `IS_CHILD_OF`-Kanten) und auch die Abfolge der Inhalte der XML-Textelemente (`NEXT_WORD`) wieder.
 
 Tabelle zu den erstellen Kantentypen
 
@@ -101,12 +90,11 @@ Die folgende Abbildung zeigt einen kleinen Ausschnitt aus der TEI-XML-Datei der 
 
 ![XML-Beispiel aus der TEI-XML-Datei der Patzig-Vorlesungsmitschrift.](Bilder/TEI2Graph/subst-xml-Beispiel.png)
 
+Dieser Abschnitt wird in der folgenden Abbildung im Graph gezeigt. In der Abbildung des XML-Ausschnittes sind jene Teile blau markiert, die sich auch in der Graphabbildung befinden.
+
 ![XML-Beispiel im Graphen.](Bilder/TEI2Graph/xml-importer-datenmodell.png)
 
-Beim Import der XML-Datei in den Graphen die XML-Element-Knoten in Xml-Tag-Knoten
-In der Abbildung des XML-Ausschnittes sind jene Teile blau markiert, die sich auch in der Graphabbildung befinden. Aus Sicht der XML-Hierarchie befindet sich der XML-Textknoten mit dem Inhalt *gedeckt u.* auf der gleichen Ebene mit dem `<subst>`-Element. Dies wird beim
-
-Mit dieser Modellierung lassen sich beispielsweise die von einem `<add>`-Element umfassten Wörter abfragen, in dem man ausgehend vom `add`-Knoten der `FIRT_CHILD_OF`-Kante rückwärts folgt, anschließend von diesem Knoten den `NEXT_SIBLING`-Kanten so lange folgt, bis wieder die `LAST_CHILD_OF`-Kante wieder zum `add`-Knoten zurückführt. Der entsprechende cypher-Query sieht wie folgt aus:
+So lassen sich beispielsweise die von einem `<add>`-Element umfassten Wörter abfragen, in dem man ausgehend vom `add`-Knoten der `FIRST_CHILD_OF`-Kante rückwärts folgt, anschließend vom gefundenen Knoten den `NEXT_SIBLING`-Kanten so lange folgt, bis man über eine `LAST_CHILD_OF`-Kante wieder zum `add`-Knoten zurückgeführt. Der entsprechende cypher-Query sieht wie folgt aus:
 
 ~~~cypher
 MATCH
@@ -119,15 +107,15 @@ RETURN * LIMIT 25
 
 ![XML-Hierarchie eines `<add>`-Elements und der von ihm umfassten Wörter im Graphen.](Bilder/TEI2Graph/XML-Hierarchie.png)
 
-In einem zweiten Schritt kann der so entstandene Graph mit Hilfe von cypher-Querys weiter bearbeitet werden. Die Grahdatenbank neo4j ist schemafrei und somit können nun über die importieren XML-Strukturen weitere Erschließungsstrukturen gelegt werden, ohne dass ein XML-Parser sich über das nicht mehr wohlgeformte XML beschwert. Zu beachten ist bei jedem Schritt, ob wieder der Schritt zurück nach XML getätigt werden soll. Sicherlich ist es kein größeres Problem, eine in eine Graphdatenbank importierte XML-Datei wieder als solche zu exportieren. Ist der Graph aber mit weiteren Informationen angereichert, so muss geklärt werden, ob, und wenn ja wie, diese zusätzlichen Informationen in wohlgeformtes XML transferiert werden können.
+In einem zweiten Schritt kann der so entstandene Graph mit Hilfe von cypher-Querys weiter bearbeitet werden. Die Grahdatenbank neo4j ist schemafrei und somit können nun über die importieren XML-Strukturen weitere Erschließungsstrukturen gelegt werden, ohne dass ein XML-Parser sich über das nicht mehr wohlgeformte XML beschwert. Zu beachten ist bei jedem Schritt, ob wieder der Schritt zurück nach XML getätigt werden soll. Sicherlich ist es kein größeres Problem, eine in eine Graphdatenbank importierte XML-Datei wieder als solche zu exportieren. Ist der Graph aber mit weiteren Informationen angereichert, so muss geklärt werden, ob, und wenn ja wie, diese zusätzlichen Informationen in wohlgeformtes XML transformiert werden können.
 
 ## Das DTA-Basisformat im Graphen
 
-Das DTA-Basisformat ist ein Subset der TEI und bietet für Textphänomene jeweils nur eine Möglichkeit der Auszeichnung. Damit wird die in der TEI vorhandene Flexibilität bei der Auszeichnung eingeschränkt, um damit einen höheren Grad an Interoperabilität zu erreichen. Das DTA-Basisformat folgt den P5-Richtlinien der TEI, trifft aber eine Tag-Auswahl der für die Auszeichung historischer Texte notwendigen Elemente.
+Das DTA-Basisformat ist ein Subset der TEI und bietet für Textphänomene jeweils nur eine Annotationsmöglichkeit. Damit wird die in der TEI vorhandene Flexibilität bei der Auszeichnung eingeschränkt, um damit einen höheren Grad an Interoperabilität zu erreichen. Das DTA-Basisformat folgt den P5-Richtlinien der TEI, trifft aber eine Tag-Auswahl der für die Auszeichung historischer Texte notwendigen Elemente.
 
-Im folgenden Abschnitt werden für ausgewählte Elemente des DTA-Basisformats mögliche Modellierungsformen im Graphen beschrieben. Zum äußeren Erscheinungsbild wird der Seitenfall sowie Spalten- und Zeilenumbrüche berücksichtigt. Bei den Textphänomenen werden Absätze, Schwer- und Unleserliches und inhaltlich werden die Kapiteleinteilung, inhaltliche Inline-Auszeichnungen und editorische Eingriffe behandelt. Für die Metadaten werden keine Modellierungsvorschläge formuliert, da diese sich sauber im XML-Baum darstellen lassen und keine Überlappungsprobleme etc. entstehen.
+Im folgenden Abschnitt werden für ausgewählte Elemente des DTA-Basisformats mögliche Modellierungsformen im Graphen beschrieben. Zum äußeren Erscheinungsbild wird der Seitenfall sowie Spalten- und Zeilenumbrüche berücksichtigt. Bei den Textphänomenen werden Absätze, Schwer- und Unleserliches behandelt. Inhaltlich werden beschränkt es sich auf die Kapiteleinteilung und Inline-Auszeichnungen. Abschließend werden noch editorische Eingriffe im Graph modelliert. Für die Metadaten werden keine Modellierungsvorschläge formuliert, da diese sich sauber im XML-Baum darstellen lassen und keine Überlappungsprobleme etc. entstehen.
 
-## Strukturen des Dokuments
+## Layoutstrukturen des Dokuments
 
 ### Graphenmodellierung von Zeilen
 
@@ -167,13 +155,13 @@ DETACH DELETE t1, t2
 RETURN * LIMIT 20;
 ~~~
 
-Im Graphen sieht die Stelle wie folgt aus:
+Im Graphen sieht das Ergebnis wie folgt aus:
 
 ![`<lb/>`-Element im Graphen](Bilder/TEI2Graph/lb-to-line.png)
 
 ### Zeilenwechsel mit Worttrennungen
 
-Nun kommt es im Bereich der Zeilenwechsel sehr häufig zu Worttrennungen. Als Beispiel nehmen wir folgende Zeile, die sich auf der gleichen Seite wo das eben behandelte Beispiel befindet:
+Nun kommt es im Bereich der Zeilenwechsel sehr häufig zu Worttrennungen. Als Beispiel nehmen wir folgende Zeile, die sich auf der gleichen Seite wie das eben behandelte Beispiel befindet:
 
 ~~~XML
 ... Die Ken&#x0303;t-<lb/>
@@ -195,10 +183,8 @@ MATCH (n0:XmlWord {DtaID:10197})-[:NEXT_WORD]->
 RETURN * LIMIT 20;
 ~~~
 
-
-
-Das `<lb/>`-Element trennt das Wort Kenntniß[^4fcf].
-Im nächsten Schritt werden nun die beiden getrennten Wortknoten `Kennt-` und `niß` im zweiten Wortknoten `niß` zusammengefasst. Der erste Wortknoten  `Kennt-` inkl. seiner Kanten wird gelöscht und eine neue NEXT-Kante zwischen dem `niß`-Wortknoten und dem vorhergehenden `Die`-Wortknoten erstellt. Die Informationen, an welcher Stelle das Wort getrennt war, wird in den Eigenschaften des neuen `Kenntniß`-Wortnnotens gespeichert. In der Eigenschaft `before` steht dann der Inhalt des ursprünlich ersten Wortknotens `Kennt-` und in der Eigenschaft after der Inhalt des ursprünglich zweiten Wortknotens `niß`.
+Das `<lb/>`-Element trennt das Wort Kenntniß.[^4fcf]
+Im nächsten Schritt werden nun die beiden getrennten Wortknoten `Kennt-` und `niß` im zweiten Wortknoten `niß` zusammengefasst. Der erste Wortknoten `Kennt-` inkl. seiner Kanten wird gelöscht und eine neue `NEXT-` und `NEXT_WORD`-Kante zwischen dem `niß`-Wortknoten und dem vorhergehenden `Die`-Wortknoten erstellt. Die Informationen, an welcher Stelle das Wort getrennt war, wird in den Eigenschaften des neuen `Kenntniß`-Wortnnotens gespeichert. In der Eigenschaft `before` steht dann der Inhalt des ursprünlich ersten Wortknotens `Kennt-` und in der Eigenschaft after der Inhalt des ursprünglich zweiten Wortknotens `niß`.
 
 Hier werden die notwendigen Cypher-Befehle angezeigt:
 
@@ -221,11 +207,11 @@ Im Graphen ergibt sich anschließend folgendes Bild:
 
 ![`<lb/>`-Element im Graphen herausgenommen, Wortknoten zusammengefasst](Bilder/TEI2Graph/lb-Trennung-rausgenommen2.png)
 
-Am unteren Bereich der Abbildung sind in der Legende die Propertys des Wortknotens *Kentniß* hervorgehoben. Dort erkennt man die vorher vorhandenen Wortbestandteile und den neuen Wert der Property *text*.
+Im unteren Bereich der Abbildung sind in der Legende die Properties des Wortknotens *Kentniß* hervorgehoben. Dort erkennt man die vorher vorhandenen Wortbestandteile und den neuen Wert der Property *text*.
 
-### Seitenzahlen und Faksimilezählung
+### Seitenfall und Faksimilezählung
 
-Im DTA-Bf wird jeweils der Anfang einer Seite mit dem leeren Element `<pb>` markiert[^8317]. Das leere Element kann noch die Attribute `facs` für die Zählung der Faksimileseiten und `n`  für die auf der Seite ggf. angegebene Seitenzahl enthalten.
+Im DTA-Bf wird jeweils der Anfang einer Seite mit dem leeren Element `<pb>` markiert[^8317]. Das leere Element kann noch die Attribute `facs` für die Zählung der Faksimileseiten und `n` für die auf der Seite ggf. angegebene Seitenzahl enthalten.
 
 ~~~xml
 <pb facs="#f[Bildnummer]" n="[Seitenzahl]"/>
@@ -234,7 +220,8 @@ Im DTA-Bf wird jeweils der Anfang einer Seite mit dem leeren Element `<pb>` mark
 Ist eine Seitenzahl im Faksimile falsch wiedergegeben, so wird diese originalgetreu übernommen und die richtige Seitenzahl in eckigen hinzugefügt in das `n`-Attribut übernommen.
 
 ~~~xml
-<pb facs="#f[Bildnummer]" n="[fehlerhafte Seitenzahl [korrigierte Seitenzahl]]"/>
+<pb facs="#f[Bildnummer]"
+	n="[fehlerhafte Seitenzahl [korrigierte Seitenzahl]]"/>
 ~~~
 
 
@@ -252,7 +239,8 @@ in einzelnen großen Zügen zu ent-<lb/>
 werfen</hi>.</p><lb/>
 <fw place="bottom" type="catch">Nachdem</fw><lb/>
 <pb facs="#f0007" n="3."/>
-<p><note place="left"><hi rendition="#u">Neue&#x017F;te A&#x017F;tronomi&#x017F;che Ent-<lb/>
+<p><note place="left"><hi rendition="#u">Neue&#x017F;te
+	A&#x017F;tronomi&#x017F;che Ent-<lb/>
 deckungen.</hi><lb/> ...
 ~~~
 
@@ -277,7 +265,7 @@ Im Graphen ergibt sich folgendes Bild:
 
 ![Der Pfad vom `<pb/>`-Element zum ersten Wort der Seite *befreundet*.](Bilder/TEI2Graph/pb6-Bestand.png)
 
-Markiert ist das `<pb/>`-Element der Seite 6. Im Fuß der Abbildung werden die Propertys des Elements angezeigt. Der Textfluss wird durch den Wortknoten `befreun-` unterbrochen, der eine Kustode darstellt. Diese soll aus dem Textfluss herausgelöst und direkt mit dem letzten Wortknoten `Volke` über die neu eingeführte `catch_words`-Kante verbunden werden. Der `<fw>`, und der `<lb/>`-Knoten werden gelöscht und der letzte Wortknoten der Seite über eine neue `NEXT`-Kante mit dem `<pb/>`-Knoten verknüpft.
+Markiert ist das `<pb/>`-Element der Seite 6. Im Fuß der Abbildung werden die Properties des Elements angezeigt. Der Textfluss wird durch den Wortknoten `befreun-` unterbrochen, der eine Kustode darstellt. Diese soll aus dem Textfluss herausgelöst und direkt mit dem letzten Wortknoten `Volke` über die neu eingeführte `catch_words`-Kante verbunden werden. Der `<fw>`, und der `<lb/>`-Knoten werden gelöscht und der letzte Wortknoten der Seite über eine neue `NEXT`-Kante mit dem `<pb/>`-Knoten verknüpft.
 
 Hier der Query für den Umbau:
 
@@ -306,7 +294,9 @@ Im Graphen ergibt sich folgendes Bild:
 
 ![Die Kustode *befreun-* wird aus der `NEXT_WORD`-Textkette herausgenommen und über eine `CATCH_WORDS`-Kante mit dem Wortknoten *Volke* verknüpft.](Bilder/TEI2Graph/fw-catch-words.png)
 
-Die Kustode ist nun  nicht mehr über `NEXT_WORD`-Kanten mit dem Fließtext verknüpft, bleibt aber über die `CATCH_WORDS`-Kante mit dem letzten Wort der Seite verbunden. In einem zweiten Schritt müssen nun die beiden `<pb/>`-Elementknoten zu einem neu einzuführenden `page`-Knoten zusammengeführt werden. Hierfür lassen wir uns im nächsten cypher-Query alle `<pb/>`-Knoten mit einer DtaID kleiner als 875 anzeigen, da diese vor dem `<pb/>`-Knoten der Seite 6 mit der DtaID 874 liegen:
+Die Kustode ist nun nicht mehr über `NEXT_WORD`-Kanten mit dem Fließtext verknüpft, bleibt aber über die `CATCH_WORDS`-Kante mit dem letzten Wort der Seite verbunden.
+
+In einem zweiten Schritt müssen nun die beiden `<pb/>`-Elementknoten zu einem neu einzuführenden `page`-Knoten zusammengeführt werden. Hierfür lassen wir uns im nächsten cypher-Query alle `<pb/>`-Knoten mit einer DtaID kleiner als 875 anzeigen, da diese vor dem `<pb/>`-Knoten der Seite 6 mit der DtaID 874 liegen:
 
 ~~~cypher
 MATCH (n:XmlTag {_name:'pb'})
@@ -334,7 +324,7 @@ RETURN pb1, w1, pb2, w2, page;
 
 ### Absätze
 
-Absätze werden im DTA-Basisformat mit dem `<p>`-Element eingefasst. Im Manusskript von Patzig finden sich insgesamt 238 mit dem `<p>`-Element eingefasste Textabschnitte[^0f28].
+Absätze werden im DTA-Basisformat mit dem `<p>`-Element eingefasst. Im Manuskript von Patzig finden sich insgesamt 238 mit dem `<p>`-Element eingefasste Textabschnitte[^0f28].
 
 ![XML-Auszug aus Patzig mit einem Absatz als Beispiel.](Bilder/TEI2Graph/p-xml-Beispiel.png)
 
@@ -358,7 +348,7 @@ RETURN n.type, count(n.type) AS Anzahl ORDER BY Anzahl DESC;
 ~~~
 
 |n.type|Anzahl|
-|:---------|--------:|
+|:-----------|--------:|
 |	session	|	62	|
 |	null	|	0	|
 
@@ -392,22 +382,18 @@ SET div:Session
 RETURN * LIMIT 20;
 ~~~
 
-### Zusammenfassung
-In diesem Kapitel wurden exemplarisch die XML-Strukturen für Zeilen (`lb`), Seiten (`pb`), Absätze (`p`) und Kapitel (`div`) in Graphstrukturen überführt, in denen jedes Element nur noch aus einem Knoten besteht. Mit diesem Knoten wird jeweils das erste und das letzte betroffene Wort mit einer `FIRST_CHILD_OF`- und einer `LAST_CHILD_OF`-Kante verknüpft. Damit entstehen offensichtlich überlappende Strukturen, was im Graphen aber kein Problem darstellt.
-
-
 ## Editorische Eingriffe
 
 ### Hinzufügungen und Tilgungen
 
 Die Elemente `<add>` und `<del>` werden für Kennzeichnung von Tilgungen und Hinzufügungen des Autors oder von späteren Bearbeitern verwendet.
 
-#### `<add>`-Element
+### `<add>`-Element
 
 Dabei können die Umstände der Änderungen beim `<add>`-Element mit dem \@place-Attribut näher beschrieben, welches die in der folgenden Tabelle angegebenen Werte annehmen darf[^a974]:
 
 |Element|\@place-Wert|Bedeutung
-|:---------|--------|:--------|
+|:---------|-----------|:----------------------------------------------|
 |`<add>`|superlinear|über der Zeile eingetragen
 |`<add>`|sublinear|unter der Zeile eingetragen
 |`<add>`|intralinear|innerhalb der Zeile eingetragen
@@ -423,19 +409,19 @@ RETURN n.place, count(n.place) AS Anzahl ORDER BY Anzahl DESC;
 ~~~
 
 |n.place|Anzahl|
-|-------|-----:|
+|--------------|-----------:|
 |across|436|
-|superlinear|268     |
-|intralinear|60      |
-|left       |16      |
-|sublinear  |2       |
+|superlinear|268 |
+|intralinear|60 |
+|left |16 |
+|sublinear |2 |
 
 #### `<del>`-Element
 
 Die mit dem `<del>`-Element gekennzeichneten Tilgungen können mit dem \@rendition-Attribut näher beschrieben werden, dessen mögliche Werte in der folgenden Tabelle angegeben sind[^cb71].
 
 |Element|\@rendition-Wert|Bedeutung
-|:---------|--------|:--------|
+|:-------|---------------|:-----------------------------------------------|
 |`<del>`|#ow|Tilgung durch Überschreibung des ursprünglichen Textes
 |`<del>`|#s|Tilgung durch Streichung
 |`<del>`|#erased|Tilgung durch Radieren, Auskratzen
@@ -454,7 +440,7 @@ ORDER BY Anzahl DESC;
 |#s|268|
 |#erased|60|
 
-#### Umbau von `<add>`- und `<del>`-Elementen in einer `<subst>`-Umgebung
+### Umbau von `<add>`- und `<del>`-Elementen in einer `<subst>`-Umgebung
 
 Der Umbau wird an einem Beispieltext der Seite 32 des Patzig-Manuskripts durchgeführt[^148e].
 
@@ -475,7 +461,7 @@ MATCH
 RETURN *;
 ~~~
 
-Der Query gruppiert sich um den `s`-Knoten, der das `subst`-Element darstellt und es über die DtaID identifiziert. Vom `s`-Knoten ausgehend, folgt der Pfad einerseits über `FIRST_CHILD_OF`-Kanten zum `n3`-Knoten (add-Element) und zum `n2`-Knoten, der schließlich das Wort *seine* darstellt. Über die `LAST_CHILD_OF`-Kante geht es zum `n4`-Knoten (del-Element) zum  `n5`-Wortknoten, der das Wort *diese* darstellt. Im zweiten Teil des MATCH-Befehls wird der Pfad zwischen dem Wort *seine* und *diese* ermittelt und schließlich alles ausgegeben.
+Der Query gruppiert sich um den `s`-Knoten, der das `subst`-Element darstellt und es über die DtaID identifiziert. Vom `s`-Knoten ausgehend, folgt der Pfad einerseits über `FIRST_CHILD_OF`-Kanten zum `n3`-Knoten (add-Element) und zum `n2`-Knoten, der schließlich das Wort *seine* darstellt. Über die `LAST_CHILD_OF`-Kante geht es zum `n4`-Knoten (del-Element) zum `n5`-Wortknoten, der das Wort *diese* darstellt. Im zweiten Teil des MATCH-Befehls wird der Pfad zwischen dem Wort *seine* und *diese* ermittelt und schließlich alles ausgegeben.
 
 ![<subst>-Beispiel in der Graph-Ansicht. ](Bilder/TEI2Graph/subst-graph-1.png)
 
@@ -516,11 +502,12 @@ MATCH
 
 ![\<subst>-Beispiel nach dem Graph-Umbau. ](Bilder/TEI2Graph/subst-add-del-bearbeitet.png)
 
-
+## Zusammenfassung
+In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (`lb`), Seiten (`pb`), Absätze (`p`)), Struktur (Kapitel (`div`)) und editorische Eingriffe (`subst`, `add` und `del`) in Graphstrukturen überführt. Die entsprechenden Tags wurden in einen Annotationsknoten zusammengeführt. Mit diesem Knoten wird jeweils der erste und der letzte betroffene Wortknoten mit einer `FIRST_CHILD_OF`- und einer `LAST_CHILD_OF`-Kante verknüpft. Damit entstehen klare Annotationsstrukturen, die aber offensichtlich überlappen. Dies stellt im Graphen aber kein Problem dar.
 
 
 [^b20c]: Vgl. www.neo4j.com (abgerufen am 7.8.2017).
-[^dff9]: Die Graphdatenbank orientdb (http://orientdb.com/) bietet ein für Historiker sehr interessantes Feature, da sie als Datentyp für die Propertys von Knoten auch Datumsangaben im ISO-Format zulässt. Vgl. https://orientdb.com/docs/2.2/Managing-Dates.html (abgerufen am 7.8.2017).
+[^dff9]: Die Graphdatenbank orientdb (http://orientdb.com/) bietet ein für Historiker sehr interessantes Feature, da sie als Datentyp für die Properties von Knoten auch Datumsangaben im ISO-Format zulässt. Vgl. https://orientdb.com/docs/2.2/Managing-Dates.html (abgerufen am 7.8.2017).
 [^ed8a]: Wie die apoc-Bibliothek installiert und die Funktionen und Procedures verwendet werden können wird im [Kapitel für Fortgeschrittene](85-cypher-fuer-Fortgeschrittene.md) erklärt.
 [^4da1]: !!! Literaturhinweis ergänzen, Hans-Werner Bartz fragen.
 [^32a2]: Vgl. @DekkerHaentjensItmorejust2017.
@@ -533,7 +520,7 @@ MATCH
 
 [^28e2]: Vgl. zuletzt @DekkerHaentjensItmorejust2017.
 
-[^bb95]: @HuitfeldtMarkupTechnologyTextual2014, S. 161 sieht digitale Dokumente prinzipiell als lineare Sequenz von Zeichen
+[^bb95]: Beispielsweise sieht @HuitfeldtMarkupTechnologyTextual2014, S. 161, digitale Dokumente prinzipiell als lineare Sequenz von Zeichen.
 
 [^736a]: In FuD (http://fud.uni-trier.de/) werden Texte in Standoff-Markup auf Buchstabenebene ausgezeichnet, während beim DTA-Basisformat der Fokus auf der wortbasierten Auszeichung liegt (vgl. http://www.deutschestextarchiv.de/doku/basisformat/eeAllg.html).
 
@@ -548,3 +535,5 @@ MATCH
 [^cb71]: Vgl. hierzu http://deutschestextarchiv.de/doku/basisformat/msAddDel.html.
 
 [^148e]: Vgl. http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=zum&p=32.
+
+[^70f5]: Gotthilf Patzig: Vorträge über physische Geographie des Freiherrn Alexander von Humbold: gehalten im großen Hörsaale des Universitäts-Gebäudes zu Berlin im Wintersemester 1827/28 vom 3ten Novbr. 1827. bis 26 April 1828. Aus schriftlichen Notizen nach jedem Vortrage zusammengestellt vom Rechnungsrath Gotthilf Friedrich Patzig. Berlin 1827/28 (= Nachschrift der ‚Kosmos-Vorträge‘ Alexander von Humboldts in der Berliner Universität, 3.11.1827–26.4.1828), S. 9. In: Deutsches Textarchiv. Grundlage für ein Referenzkorpus der neuhochdeutschen Sprache. Herausgegeben von der Berlin-Brandenburgischen Akademie der Wissenschaften, Berlin 2007–2019. http://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13.
