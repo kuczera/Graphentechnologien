@@ -1,6 +1,6 @@
 ---
 title: Graphentechnologien in den Digitalen Geisteswissenschaften
-subtitle: Ein Studienbuch
+subtitle: Modellierung – Import – Analyse
 author:
 - Andreas Kuczera
 lang: de

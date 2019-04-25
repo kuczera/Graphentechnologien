@@ -54,9 +54,7 @@ Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten
 	}
 ```
 
-<<<<<<< HEAD
-=======
-Die folgende Abbildung zeigt beispielhaft den ersten Personeneintrag des obigen json-Beispiels von Ludold von Escherde als importierten Personenknoten im Graphen. 
+Die folgende Abbildung zeigt beispielhaft den ersten Personeneintrag des obigen json-Beispiels von Ludold von Escherde als importierten Personenknoten im Graphen.
 
 ![Personenknoten von Ludold von Escherde in der Graphdatenbank](Bilder/Germania-Sacra-Personenknoten-mit-Properties.png)
 
@@ -65,7 +63,6 @@ Unter dem Personenknoten werden die aus dem json importierten Properties aufgeli
 
 ### Klöster
 
->>>>>>> 2bb37b1cba58c4dd139f2c436eff1549e2c6b01f
 Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.  
 
 ```json
@@ -106,15 +103,13 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
  },
 ```
 
-<<<<<<< HEAD
 Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
 =======
-Die folgende Abbildung zeigt beispielhaft den ersten Klostereintrag des obigen json-Beispiels zum Adeligen Damenstift Neuburg als importierten Klosterknoten im Graphen. 
+Die folgende Abbildung zeigt beispielhaft den ersten Klostereintrag des obigen json-Beispiels zum Adeligen Damenstift Neuburg als importierten Klosterknoten im Graphen.
 
 ![Klosterknoten des Adeligen Damenstifts Neuburg in der Graphdatenbank](Bilder/Germania-Sacra-Klosterknoten.png)
 
-Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt. 
->>>>>>> 2bb37b1cba58c4dd139f2c436eff1549e2c6b01f
+Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
 
 Im ersten Abschnitt des Codebeispiels werden Indexe z.B. für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet, mit denen sichergestellt wird, das die IDs der Kloster- und Personenknosten jeweils nur einmal vorkommen können.
 
