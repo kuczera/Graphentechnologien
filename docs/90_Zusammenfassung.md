@@ -1,7 +1,7 @@
 ---
 title: Zusammenfassung
 layout: default
-order: 95
+order: 90
 contents: true
 ---
 
