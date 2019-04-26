@@ -107,7 +107,7 @@ FOREACH (x in druckorte |
 
 ## Zusammenfassung
 
-In diesem Abschnitt wurde die Analyse einer XML-Datei, die daraus resultierende Graphmodellierung und der Import des XMLs in die Graphdatenbank neo4j beschrieben. Für den Import wurden die Funktionen `apoc.load.xmlSimple` und `apoc.load.xml` aus der apoc-Bibliothek verwendet.
+In diesem Abschnitt wurde die Analyse einer XML-Datei, die daraus resultierende Graphmodellierung und der Import des XMLs in die Graphdatenbank neo4j beschrieben. Für den Import wurden die Funktionen `apoc.load.xmlSimple` und `apoc.load.xml` aus der apoc-Bibliothek verwendet. Der cypher-Code kann als Grundlage für weitere Importe von XML in die Graphdatenbank neo4j dienen.
 
 
 [^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen finden sich im Anhang im Abschnitt zur Die Apoc-Bibliothek.
