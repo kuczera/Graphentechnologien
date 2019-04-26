@@ -97,11 +97,11 @@ Mit diesen Queries lässt sich bei unbekannten Graphdatenbanken ein erster Über
 
 ## Zentralitätsalgorithmen in der historischen Netzwerkanalyse
 
-Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse der Personennetzwerke der Regesten Kaiser Heinrichs IV. verwendet.
+Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse der Personennetzwerke der Regesten Kaiser Heinrichs IV. verwendet. Im Zentrum steht hier zunächst die technische Anwendung. Die inhaltliche Analyse wird Gegenstand eines geplanten nächsten Kapitels sein.
 
 ### PageRank
 
-Was macht der PageRank-Algorithmus ?
+Der PagePageRank-Algorithmus bewertet und gewichtet eine Menge verknüpfter Knoten anhand ihrer Struktur.[^998a] Auf Grundlage der Verlinkunsstruktur wird dabei jedem Knoten ein Gewicht, der sog. PageRank zugeordnet.
 
 ~~~cyper
 CALL algo.pageRank.stream("IndexPerson", "APPEARS_WITH",
@@ -243,3 +243,5 @@ RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 [^9ea3]: Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs [Historisch-archäologische Netzwerkanalyse](https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/#/step-1) von Aline Deicke und Marjam Trautmann, der im Rahmen der [International Summer School](https://iss.adwmainz.net) in Mainz stattfand (abgerufen am 07.02.2019).
 
 [^d019]: Vgl. zu diesm Abschnitt [D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, S. 342-369](https://www.jstor.org/stable/2393394?origin=crossref&seq=1#metadata_info_tab_contents) (abgerufen am 07.02.2019).
+
+[^998a]: Zu PageRank vgl. [https://de.wikipedia.org/wiki/PageRank](https://de.wikipedia.org/wiki/PageRank).

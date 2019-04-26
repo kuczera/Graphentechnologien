@@ -78,10 +78,7 @@ Mit dem folgenden cypher-Query werden die Regestenknoten in der Graphdatenbank e
 
 ~~~cypher
 // Regestenknoten erstellen
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/
-1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/
-export?format=csv&id=1GLQIH9LA5btZc-VCRd-
-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
 CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary,
   archivalHistory:line.archival_history, date:line.date_string,  
   ident:line.identifier,  regnum:line.regnum,
@@ -272,8 +269,13 @@ MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2}
 CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
-### Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
-In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
+### Exkurs: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
+
+In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren.
+
+![Ausschnitt aus dem Register des Heftes 19 der Regesten Kaiser Friedrichs III.](Bilder/RI2Graph/ReggF3-Registerhierarchie.png)
+
+In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
 ![Ausschnitt der Entitätentabelle des Registers der Regesten Friedrichs III.](Bilder/RI2Graph/RegisterF3-Hierarchie.png)
 

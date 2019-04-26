@@ -117,8 +117,8 @@ Im ersten Abschnitt des Codebeispiels werden Indexe z.B. für die Property gnd v
 CREATE INDEX ON :Person(gnd);
 CREATE INDEX ON :Person(bezeichnung);
 CREATE INDEX ON :Kloster(Bistum);
-create constraint on (p:Person) assert p.id is unique;
-create constraint on (k:Kloster) assert k.id is unique;
+CREATE CONSTRAINT ON (p:Person) ASSERT p.id IS UNIQUE;
+CREATE CONSTRAINT ON (k:Kloster) ASSERT k.id IS UNIQUE;
 ```
 Der nächste Befehl importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
 
@@ -170,8 +170,13 @@ MERGE (pro)<-[pr:PROFESSION]-(p)
 RETURN count(pr);
 ```
 
+## Zusammenfassung
 
-(Dieser Abschnitt befindet sich in Bearbeitung)
+In diesem Abschnitt wurden die Prinzipien für den Import von json-Dateien am Beispiel der Daten des Projekts Germania Sacra vorgestellt.
+
+![Schema der importierten json-Daten (Quelle:Kuczera).)](Bilder/GS-Schema1.png)
+
+Im geplanten Folgekapitel werden die Analyse von json-Daten und der Import komplexerer json-Strukturen erläutert werden.
 
 [^eeaa]&#x3A; Zu diesem Abschnitt vgl. <http://www.germania-sacra.de/> (zuletzt abgerufen am 07.03.2019).
 
