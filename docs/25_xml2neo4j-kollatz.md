@@ -11,6 +11,7 @@ In diesem Kapitel wird der Import von strukturierten XML-Daten in die Graphdaten
 
 ## Das XML-Beispiel
 
+Das XML-Beispiel enthält eine Liste von Buchwerken (`<work>`) die in einer Sammlung (`<collection>`) zusammengefasst sind. Innerhalb der einzelnen Bücher-Einträge sind neben dem Titel noch Angaben zu Autoren, Kommentatoren und dem Druckort zu finden.
 In der folgenden Abbildung wird ein Auszug aus den Daten gezeigt.
 
 ![Auszug aus dem XML-Beispiel (Quelle: Kuczera)](./Bilder/kollatz-xml-Beispiel.png)
@@ -24,15 +25,15 @@ Das root-Element in den XML-Beispiel ist `<collection>`. Innerhalb von `<collect
 
 ## Knotentypen
 
-Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ `Werk` anzulegen, wie es auch im XML über das `<work>`-Element im XML modelliert ist. Die dem `<work>`-Element untergeordneten Elemente `<title>`, `<autor>`, `<kommentator> und `<druckort>` sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem `Titel`-Knoten ablegen, den Druckort in einem `Ortsknoten` und Autoren sowie Kommentatoren werden in `Personen`-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in allgemein gehaltenen Kategorien wie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
+Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ `Werk` anzulegen, wie es auch im XML über das `<work>`-Element im XML modelliert ist. Die dem `<work>`-Element untergeordneten Elemente `<title>`, `<autor>`, `<kommentator>` und `<druckort>` sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem `Titel`-Knoten ablegen, den Druckort in einem `Ortsknoten` und Autoren sowie Kommentatoren werden in `Personen`-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in der allgemein gehaltenen Kategorie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
 
 ## Kantentypen
 
 Nach den Knotentypen sind nun die Kantentypen festzulegen. Sie geben an, in welcher Beziehung die verschiedenen Knoten zueinander stehen. Sieht man sich die XML-Vorlage an, ergeben sich folgene Typen von Kanten:
 
-* GEDRUCKT_IN
-* AUTOR_VON
-* KOMMENTIERT_VON
+* `GEDRUCKT_IN`
+* `AUTOR_VON`
+* `KOMMENTIERT_VON`
 
 Mit der `GEDRUCKT_IN`-Kante werden ein Werk und ein Ort verbunden und damit angegeben, dass dieses Buch in jenem Ort gedruckt worden ist.
 
@@ -52,7 +53,7 @@ Im der folgenden Abbildung werden alle Knoten und Kanten des Beispiels gemeinsam
 
 Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Import.
 
-## Der Import mit apoc.load.xml
+## Der Import mit apoc.load.xmlSimple
 
 Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
 
@@ -74,9 +75,11 @@ UNWIND xmlFile._work as wdata
 		 MERGE (w1)-[:GEDRUCKT_IN]->(o1));
 ~~~
 
-Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der jeweils ein Werk (das ist der Inhalt des *work*-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle *work*-Elemente der XML-Datei abgearbeitet sind.
+Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. die Zeilen 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der jeweils ein Werk (das ist der Inhalt des *work*-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle *work*-Elemente der XML-Datei abgearbeitet sind.
 
-Nach dem `UNWIND`-Befehl folgt als eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk`, für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind.
+Nach dem `UNWIND`-Befehl folgt eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk` für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind. In der gleichen Weise wird anschließend mit den Angaben zu Autor, Kommentator (die beide Personenknoten ergeben) und mit dem Druckort verfahren. Mit der Erstellung bzw. Prüfung auf Existenz durch den `Merge`-Befehl werden gleichzeitig die `AUTOR_VON`-, `KOMMENTIERT_VON`-, und `GEDRUCKT_IN`-Kanten erstellt und der Graph vervollständigt.
+
+![Gesamtbild des importierten Graphen (Quelle: Kuczera).](Bilder/Kollatz-Druckernetzwerk.svg)
 
 Die Funktion apoc.loadxmlSimple ist inzwischen veraltet und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner aber dadurch in der Anwendung etwas komplizierter.
 
@@ -106,4 +109,4 @@ FOREACH (x in druckorte |
 
 
 
-[^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen zur Installation und die Dokumentation findet sich unter: [https://neo4j-contrib.github.io/neo4j-apoc-procedures/](https://neo4j-contrib.github.io/neo4j-apoc-procedures/). Die Dokumentation zu apoc.load.xml ist erreichbar unter [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml).
+[^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen finden sich im Anhang im Abschnitt zur Die Apoc-Bibliothek.
