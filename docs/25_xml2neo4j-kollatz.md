@@ -15,16 +15,16 @@ In der folgenden Abbildung wird ein Auszug aus den Daten gezeigt.
 
 ![Auszug aus dem XML-Beispiel (Quelle: Kuczera)](./Bilder/kollatz-xml-Beispiel.png)
 
-Das root-Element in den XML-Beispiel ist <collection>. Innerhalb der collection finden sich Angaben zu verschiedenen Büchern, die jeweils wieder mit einem <work>-Element zusammengefasst sind. Zu jedem Buch werden folgende Angaben gemacht:
+Das root-Element in den XML-Beispiel ist `<collection>`. Innerhalb von `<collection>` finden sich Angaben zu verschiedenen Büchern, die jeweils wieder mit einem `<work>`-Element zusammengefasst sind. Zu jedem Buch werden folgende Angaben gemacht:
 
-* Titel des Buches im <title>-Element
-* Autor(en) des Buches um <autor>-Element, ggf. durchnummeriert mit Zahlen in eckigen Klammern (z.B. [1])
-* Kommentator des Buches im <kommentator>-Element
-* Druckort des Buches im <druckort>-Element
+* Titel des Buches im `<title>`-Element
+* Autor(en) des Buches um `<autor>`-Element, ggf. durchnummeriert mit Zahlen in eckigen Klammern (z.B. [1])
+* Kommentator des Buches im `<kommentator>`-Element
+* Druckort des Buches im `<druckort>`-Element
 
 ## Knotentypen
 
-Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ `Werk` anzulegen, wie es auch im XML über das <work>-Element im XML modelliert ist. Die dem <work>-Element untergeordneten Elemente <title>, <autor>, <kommentator> und <druckort> sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem `Titel`-Knoten ablegen, den Druckort in einem `Ortsknoten` und Autoren sowie Kommentatoren werden in `Personen`-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in allgemein gehaltenen Kategorien wie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
+Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ `Werk` anzulegen, wie es auch im XML über das `<work>`-Element im XML modelliert ist. Die dem `<work>`-Element untergeordneten Elemente `<title>`, `<autor>`, `<kommentator> und `<druckort>` sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem `Titel`-Knoten ablegen, den Druckort in einem `Ortsknoten` und Autoren sowie Kommentatoren werden in `Personen`-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in allgemein gehaltenen Kategorien wie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
 
 ## Kantentypen
 
@@ -78,7 +78,7 @@ Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Die
 
 Nach dem `UNWIND`-Befehl folgt als eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk`, für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind.
 
-Die Funktion apoc.loadxmlSimple ist deprecated und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner gültig aber dadurch in der Anwendung etwas komplizierter.
+Die Funktion apoc.loadxmlSimple ist inzwischen veraltet und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner aber dadurch in der Anwendung etwas komplizierter.
 
 ~~~cypher
 CALL
@@ -101,6 +101,9 @@ FOREACH (x in druckorte |
    MERGE (o:Ort {name:x})
    MERGE (w)-[:GEDRUCKT_IN]->(o) );
 ~~~
+
+## Zusammenfassung
+
 
 
 [^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen zur Installation und die Dokumentation findet sich unter: [https://neo4j-contrib.github.io/neo4j-apoc-procedures/](https://neo4j-contrib.github.io/neo4j-apoc-procedures/). Die Dokumentation zu apoc.load.xml ist erreichbar unter [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_load_xml).
