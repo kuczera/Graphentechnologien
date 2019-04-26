@@ -419,10 +419,7 @@ Mit dem folgenden cypher-Query werden die Regestenknoten in der Graphdatenbank e
 
 \begin{verbatim}
 // Regestenknoten erstellen
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/
-1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/
-export?format=csv&id=1GLQIH9LA5btZc-VCRd-
-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
 CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary,
   archivalHistory:line.archival_history, date:line.date_string,  
   ident:line.identifier,  regnum:line.regnum,
@@ -659,9 +656,17 @@ MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2}
 CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 \end{verbatim}
 
-\subsection{Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.}\label{die-hierarchie-des-registers-der-regesten-kaiser-friedrichs-iii.}
+\subsection{Exkurs: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.}\label{exkurs-die-hierarchie-des-registers-der-regesten-kaiser-friedrichs-iii.}
 
-In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren. In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
+In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren.
+
+\begin{figure}
+\centering
+\includegraphics{Bilder/RI2Graph/ReggF3-Registerhierarchie.png}
+\caption{Ausschnitt aus dem Register des Heftes 19 der Regesten Kaiser Friedrichs III.}
+\end{figure}
+
+In diesen Fällen müssen die Hierarchien auch in der Graphdatenbank abgebildet werden, was durch zusätzliche Verweise auf die ggf. vorhandenen übergeordneten Registereinträge möglich wird.
 
 \begin{figure}
 \centering
@@ -1064,7 +1069,7 @@ In diesem Kapitel wird der Import von strukturierten XML-Daten in die Graphdaten
 
 \section{Das XML-Beispiel}\label{das-xml-beispiel}
 
-In der folgenden Abbildung wird ein Auszug aus den Daten gezeigt.
+Das XML-Beispiel enthält eine Liste von Buchwerken (\texttt{\textless{}work\textgreater{}}) die in einer Sammlung (\texttt{\textless{}collection\textgreater{}}) zusammengefasst sind. Innerhalb der einzelnen Bücher-Einträge sind neben dem Titel noch Angaben zu Autoren, Kommentatoren und dem Druckort zu finden. In der folgenden Abbildung wird ein Auszug aus den Daten gezeigt.
 
 \begin{figure}
 \centering
@@ -1072,27 +1077,23 @@ In der folgenden Abbildung wird ein Auszug aus den Daten gezeigt.
 \caption{Auszug aus dem XML-Beispiel (Quelle: Kuczera)}
 \end{figure}
 
-Das root-Element in den XML-Beispiel ist . Innerhalb der collection finden sich Angaben zu verschiedenen Büchern, die jeweils wieder mit einem -Element zusammengefasst sind. Zu jedem Buch werden folgende Angaben gemacht:
+Das root-Element in den XML-Beispiel ist \texttt{\textless{}collection\textgreater{}}. Innerhalb von \texttt{\textless{}collection\textgreater{}} finden sich Angaben zu verschiedenen Büchern, die jeweils wieder mit einem \texttt{\textless{}work\textgreater{}}-Element zusammengefasst sind. Zu jedem Buch werden folgende Angaben gemacht:
 
 \begin{itemize}
 \tightlist
 \item
-  Titel des Buches im
-
-  -Element
+  Titel des Buches im \texttt{\textless{}title\textgreater{}}-Element
 \item
-  Autor(en) des Buches um -Element, ggf. durchnummeriert mit Zahlen in eckigen Klammern (z.B. {[}1{]})
+  Autor(en) des Buches um \texttt{\textless{}autor\textgreater{}}-Element, ggf. durchnummeriert mit Zahlen in eckigen Klammern (z.B. {[}1{]})
 \item
-  Kommentator des Buches im -Element
+  Kommentator des Buches im \texttt{\textless{}kommentator\textgreater{}}-Element
 \item
-  Druckort des Buches im -Element
+  Druckort des Buches im \texttt{\textless{}druckort\textgreater{}}-Element
 \end{itemize}
 
 \section{Knotentypen}\label{knotentypen}
 
-Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ \texttt{Werk} anzulegen, wie es auch im XML über das -Element im XML modelliert ist. Die dem -Element untergeordneten Elemente
-
-, , und sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem \texttt{Titel}-Knoten ablegen, den Druckort in einem \texttt{Ortsknoten} und Autoren sowie Kommentatoren werden in \texttt{Personen}-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in allgemein gehaltenen Kategorien wie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
+Für die Modellierung dieser Datenstruktur in der Graphdatenbank müssen zunächst die verschiedenen Entitäten identifiziert werden um festzulegen, welche Knotentypen notwendig sind. Als erstes scheint es sinnvoll einen Knoten vom Typ \texttt{Werk} anzulegen, wie es auch im XML über das \texttt{\textless{}work\textgreater{}}-Element im XML modelliert ist. Die dem \texttt{\textless{}work\textgreater{}}-Element untergeordneten Elemente \texttt{\textless{}title\textgreater{}}, \texttt{\textless{}autor\textgreater{}}, \texttt{\textless{}kommentator\textgreater{}} und \texttt{\textless{}druckort\textgreater{}} sind für das Werk jeweils spezifisch. Den Titel eines Werkes können wir in einem \texttt{Titel}-Knoten ablegen, den Druckort in einem \texttt{Ortsknoten} und Autoren sowie Kommentatoren werden in \texttt{Personen}-Knoten gespeichert. Hier ist zu beachten das die identifizierten Entitäten, wie z.b. Personen nicht in Knotentypen gespeichert werden die ihre Rolle wieder geben (wie z.B. Autor oder Kommentator) sondern unabhängig von ihrer Rolle in der allgemein gehaltenen Kategorie Person. Im Graphen werden die verschiedenen Rollen, wie Autor oder Kommentator dann über die Kanten modelliert, was im nächsten Abschnitt näher erläutert wird.
 
 \section{Kantentypen}\label{kantentypen}
 
@@ -1101,11 +1102,11 @@ Nach den Knotentypen sind nun die Kantentypen festzulegen. Sie geben an, in welc
 \begin{itemize}
 \tightlist
 \item
-  GEDRUCKT\_IN
+  \texttt{GEDRUCKT\_IN}
 \item
-  AUTOR\_VON
+  \texttt{AUTOR\_VON}
 \item
-  KOMMENTIERT\_VON
+  \texttt{KOMMENTIERT\_VON}
 \end{itemize}
 
 Mit der \texttt{GEDRUCKT\_IN}-Kante werden ein Werk und ein Ort verbunden und damit angegeben, dass dieses Buch in jenem Ort gedruckt worden ist.
@@ -1142,7 +1143,7 @@ Im der folgenden Abbildung werden alle Knoten und Kanten des Beispiels gemeinsam
 
 Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Import.
 
-\section{Der Import mit apoc.load.xml}\label{der-import-mit-apoc.load.xml}
+\section{Der Import mit apoc.load.xmlSimple}\label{der-import-mit-apoc.load.xmlsimple}
 
 Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
 
@@ -1163,11 +1164,13 @@ UNWIND xmlFile._work as wdata
          MERGE (w1)-[:GEDRUCKT_IN]->(o1));
 \end{verbatim}
 
-Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet\footnote{Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen zur Installation und die Dokumentation findet sich unter: \url{https://neo4j-contrib.github.io/neo4j-apoc-procedures/}. Die Dokumentation zu apoc.load.xml ist erreichbar unter \url{https://neo4j-contrib.github.io/neo4j-apoc-procedures/\#_load_xml}.}. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. Zeile 1-4 des Codebeispiels). In der Variable \textbf{xmlFile} befindet sich nun diese Map-Struktur. In Zeile 5 folgt der \textbf{UNWIND}-Befehl, der jeweils ein Werk (das ist der Inhalt des \emph{work}-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle \emph{work}-Elemente der XML-Datei abgearbeitet sind.
+Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet\footnote{Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen finden sich im Anhang im Abschnitt zur Die Apoc-Bibliothek.}. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. die Zeilen 1-4 des Codebeispiels). In der Variable \textbf{xmlFile} befindet sich nun diese Map-Struktur. In Zeile 5 folgt der \textbf{UNWIND}-Befehl, der jeweils ein Werk (das ist der Inhalt des \emph{work}-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle \emph{work}-Elemente der XML-Datei abgearbeitet sind.
 
-Nach dem \texttt{UNWIND}-Befehl folgt als eine Gruppe von Befehlen, die immer wieder für jedes \emph{work}-Element ausgeführt werden. Als erstes wird mit dem \texttt{MERGE}-Befehl ein Knoten vom Typ \texttt{Werk}, für das Buch mit der Titelangabe in der Eigenschaft \texttt{name} erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren \emph{autor}-Elementen verzeichnet sind.
+Nach dem \texttt{UNWIND}-Befehl folgt eine Gruppe von Befehlen, die immer wieder für jedes \emph{work}-Element ausgeführt werden. Als erstes wird mit dem \texttt{MERGE}-Befehl ein Knoten vom Typ \texttt{Werk} für das Buch mit der Titelangabe in der Eigenschaft \texttt{name} erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren \emph{autor}-Elementen verzeichnet sind. In der gleichen Weise wird anschließend mit den Angaben zu Autor, Kommentator (die beide Personenknoten ergeben) und mit dem Druckort verfahren. Mit der Erstellung bzw. Prüfung auf Existenz durch den \texttt{Merge}-Befehl werden gleichzeitig die \texttt{AUTOR\_VON}-, \texttt{KOMMENTIERT\_VON}-, und \texttt{GEDRUCKT\_IN}-Kanten erstellt und der Graph vervollständigt.
 
-Die Funktion apoc.loadxmlSimple ist deprecated und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner gültig aber dadurch in der Anwendung etwas komplizierter.
+\textless{}\textgreater{}\includegraphics{Bilder/Kollatz-Druckernetzwerk.png}
+
+Die Funktion apoc.loadxmlSimple ist inzwischen veraltet und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner aber dadurch in der Anwendung etwas komplizierter.
 
 \begin{verbatim}
 CALL
@@ -1190,6 +1193,10 @@ FOREACH (x in druckorte |
    MERGE (o:Ort {name:x})
    MERGE (w)-[:GEDRUCKT_IN]->(o) );
 \end{verbatim}
+
+\section{Zusammenfassung}\label{zusammenfassung-2}
+
+In diesem Abschnitt wurde die Analyse einer XML-Datei, die daraus resultierende Graphmodellierung und der Import des XMLs in die Graphdatenbank neo4j beschrieben. Für den Import wurden die Funktionen \texttt{apoc.load.xmlSimple} und \texttt{apoc.load.xml} aus der apoc-Bibliothek verwendet. Der cypher-Code kann als Grundlage für weitere Importe von XML in die Graphdatenbank neo4j dienen.
 
 \chapter{Verwandtschaft im Graphen}\label{verwandtschaft-im-graphen}
 
@@ -1245,7 +1252,7 @@ Das Ergebnis zeigt, dass Berchar tatsächlich mit Karl dem Großen verwandt ist.
 \caption{Der kürzeste Pfad (shortestPath) von Karl zu Berchar.}
 \end{figure}
 
-\section{Zusammenfassung}\label{zusammenfassung-2}
+\section{Zusammenfassung}\label{zusammenfassung-3}
 
 Mit diesem Beispiel sind die interessanten Erschließungs- und Modellierungsperspektiven für die digitale Genealogie nur angedeutet. Mit Graphentechnologien lässt sich intuitive Datenmodellierung mit sehr flexiblen Erschließungs- und Abfragemöglichkeiten kombinieren.
 
@@ -1434,7 +1441,7 @@ Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen,
 \caption{Die Beispielzeile aus der TEIP5-Fassung des Faust}
 \end{figure}
 
-\section{Zusammenfassung}\label{zusammenfassung-3}
+\section{Zusammenfassung}\label{zusammenfassung-4}
 
 Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung von Goethes Faust in die Graphdatenbank neo4j vorgestellt. Die qualitativ hochwertigen Text-Quellen des Deutschen Textarchivs bieten in Verbindung mit Graphdatenbanken sehr interessante neue Möglichkeiten zur Auswertung der Texte. Durch Austausch des Links zur TCF-Fassung können auch andere Texte des DTA eingespielt werden. Am Ende wurde beispielhaft die TEI-P5-Fassung eingespielt um die gleiche Stelle in beiden Fassungen vergleichen zu können. Weitere Informationen zu XML im Graphen finden Sie im Kapitel zu \href{https://kuczera.github.io/Graphentechnologien/60_XML-Text-im-Graphen.html}{XML-Text im Graphen}.
 
@@ -2098,7 +2105,7 @@ MATCH
 \caption{\textless{}subst\textgreater{}-Beispiel nach dem Graph-Umbau.}
 \end{figure}
 
-\section{Zusammenfassung}\label{zusammenfassung-4}
+\section{Zusammenfassung}\label{zusammenfassung-5}
 
 In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (\texttt{lb}), Seiten (\texttt{pb}), Absätze (\texttt{p})), Struktur (Kapitel (\texttt{div})) und editorische Eingriffe (\texttt{subst}, \texttt{add} und \texttt{del}) in Graphstrukturen überführt. Die entsprechenden Tags wurden in einen Annotationsknoten zusammengeführt. Mit diesem Knoten wird jeweils der erste und der letzte betroffene Wortknoten mit einer \texttt{FIRST\_CHILD\_OF}- und einer \texttt{LAST\_CHILD\_OF}-Kante verknüpft. Damit entstehen klare Annotationsstrukturen, die aber offensichtlich überlappen. Dies stellt im Graphen aber kein Problem dar.
 
@@ -2225,8 +2232,8 @@ Im ersten Abschnitt des Codebeispiels werden Indexe z.B. für die Property gnd v
 CREATE INDEX ON :Person(gnd);
 CREATE INDEX ON :Person(bezeichnung);
 CREATE INDEX ON :Kloster(Bistum);
-create constraint on (p:Person) assert p.id is unique;
-create constraint on (k:Kloster) assert k.id is unique;
+CREATE CONSTRAINT ON (p:Person) ASSERT p.id IS UNIQUE;
+CREATE CONSTRAINT ON (k:Kloster) ASSERT k.id IS UNIQUE;
 \end{verbatim}
 
 Der nächste Befehl importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
@@ -2279,19 +2286,27 @@ MERGE (pro)<-[pr:PROFESSION]-(p)
 RETURN count(pr);
 \end{verbatim}
 
-(Dieser Abschnitt befindet sich in Bearbeitung)
+\section{Zusammenfassung}\label{zusammenfassung-6}
+
+In diesem Abschnitt wurden die Prinzipien für den Import von json-Dateien am Beispiel der Daten des Projekts Germania Sacra vorgestellt.
+
+\begin{figure}
+\centering
+\includegraphics{Bilder/GS-Schema1.png}
+\caption{Schema der importierten json-Daten (Quelle:Kuczera).)}
+\end{figure}
+
+Im geplanten Folgekapitel werden die Analyse von json-Daten und der Import komplexerer json-Strukturen erläutert werden.
 
 {[}\^{}eeaa{]}: Zu diesem Abschnitt vgl. \url{http://www.germania-sacra.de/} (zuletzt abgerufen am 07.03.2019).
 
 \chapter{Netzwerkanalyse mit neo4j}\label{netzwerkanalyse-mit-neo4j}
 
-(Dieser Abschnitt befindet sich in Bearbeitung)
-
 \section{Grundlagen zur Netzwerkanalyse}\label{grundlagen-zur-netzwerkanalyse}
 
 \subsection{Vorbemerkungen}\label{vorbemerkungen}
 
-Bei der Netzwerkanalyse handelt es sich um einen relationalen Forschungsansatz, bei dem Methoden aus der Graphen- und Netzwerktheorie sowie der Statistik zur Anwendung kommen.\footnote{Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs \href{https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/\#/step-1}{Historisch-archäologische Netzwerkanalyse} von Aline Deicke und Marjam Trautmann, der im Rahmen der \href{https://iss.adwmainz.net}{International Summer School} in Mainz stattfand (abgerufen am 07.02.2019).} Es werden Beziehungen (\textbf{Kanten}) von Entitäten (\textbf{Knoten}) in einem Netzwerk (\textbf{Graph}) untersucht. Weitere wichtige Begriffe sind die \textbf{Dyade} als kleinste mögliche Analyseeinheit eines Netzwerkes. Sie umfasst alle möglichen Beziehungen zwischen zwei Knoten. Eine \textbf{Triade} bezieht alle möglichen Beziehungen zwischen drei Knoten mit ein. Bei einer \textbf{Clique} sind mindestens drei Knoten vollständig miteinander verbunden. Als \textbf{Geodätischer Abstand} (in neo4j \emph{shortest path}) wird die kürzeste Verbindung zwischen zwei Knoten bezeichnet.
+Bei der Netzwerkanalyse handelt es sich um einen relationalen Forschungsansatz, bei dem Methoden aus der Graphen- und Netzwerktheorie sowie der Statistik zur Anwendung kommen.\footnote{Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs \href{https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/\#/step-1}{Historisch-archäologische Netzwerkanalyse} von Aline Deicke und Marjam Trautmann, der im Rahmen der \href{https://iss.adwmainz.net}{International Summer School} in Mainz stattfand (abgerufen am 07.02.2019).} Aus den bisherigen Abschnitten sind Beziehungen (\textbf{Kanten}) von Entitäten (\textbf{Knoten}) in einem Netzwerk (\textbf{Graph}) bereits bekannt. Weitere wichtige Begriffe sind die \textbf{Dyade} als kleinste mögliche Analyseeinheit eines Netzwerkes. Sie umfasst alle möglichen Beziehungen zwischen zwei Knoten. Eine \textbf{Triade} bezieht alle möglichen Beziehungen zwischen drei Knoten mit ein. Bei einer \textbf{Clique} sind mindestens drei Knoten vollständig miteinander verbunden. Als \textbf{Geodätischer Abstand} (in neo4j \emph{shortest path}) wird die kürzeste Verbindung zwischen zwei Knoten bezeichnet.
 
 \subsection{Überblick zu den Netzwerkmaßen}\label{uxfcberblick-zu-den-netzwerkmauxdfen}
 
@@ -2354,8 +2369,6 @@ Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Ne
 
 Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneinträgen im Register in den Regesten. Da die hier vorgestellten Netzwerkanalyse-Algorithmen nur mit unimodalen Netzwerken arbeiten können, also Netzwerken, die nur Knoten eines Typs enthalten, muss die Regestendaten entsprechend erweitert werden. Dabei wird davon ausgegangen, dass zwei Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben. Diese Verbindung wird durch eine \texttt{APPEARS\_WITH}-Kante dargestellt, da die gemeinsame Rolle im Regest nicht näher qualifiziert werden kann.
 
-\section{Vorbereitung der Datenbank}\label{vorbereitung-der-datenbank}
-
 Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel \href{20_Regestenmodellierung-im-Graphen.md}{Regestenmodellierung im Graphen} beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, \texttt{APPEARS\_WITH}-Kanten erstellt.
 
 \begin{verbatim}
@@ -2366,9 +2379,9 @@ CREATE (n1)-[k:APPEARS_WITH]->(n2)
 SET k.count = c;
 \end{verbatim}
 
-\section{Explorative Datenanalyse oder was ist in der Datenbank darin}\label{explorative-datenanalyse-oder-was-ist-in-der-datenbank-darin}
+\section{Explorative Datenanalyse oder was ist in der Datenbank}\label{explorative-datenanalyse-oder-was-ist-in-der-datenbank}
 
-Zeigt alle Knoten und ihre Häufigkeiten
+Mit den in diesem Abschnitt vorstellten Queries lassen sich Graphen explorativ erfassen. Mit dem folgenden Query findet man alle im Graph vorkommenden Typen von Knoten und die jeweiligen Häufigkeiten.
 
 \begin{verbatim}
 CALL db.labels()
@@ -2380,7 +2393,7 @@ RETURN label, value.count as count
 ORDER BY label;
 \end{verbatim}
 
-Zeigt alle Verknüpfungen und ihre Häufigkeiten in der Datenbank
+Der nächste Query führt die gleiche Untersuchung für die in der Graphdatenbank vorhanden Kantentypen durch.
 
 \begin{verbatim}
 CALL db.relationshipTypes()
@@ -2392,11 +2405,15 @@ RETURN relationshipType, value.count AS count
 ORDER BY relationshipType;
 \end{verbatim}
 
+Mit diesen Queries lässt sich bei unbekannten Graphdatenbanken ein erster Überblick zur statistischen Verteilung von Knoten- und Kantentypen erstellen.
+
 \section{Zentralitätsalgorithmen in der historischen Netzwerkanalyse}\label{zentralituxe4tsalgorithmen-in-der-historischen-netzwerkanalyse}
+
+Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse der Personennetzwerke der Regesten Kaiser Heinrichs IV. verwendet. Im Zentrum steht hier zunächst die technische Anwendung. Die inhaltliche Analyse wird Gegenstand eines geplanten nächsten Kapitels sein.
 
 \subsection{PageRank}\label{pagerank}
 
-Was macht der PageRank-Algorithmus ?
+Der PagePageRank-Algorithmus bewertet und gewichtet eine Menge verknüpfter Knoten anhand ihrer Struktur.\footnote{Zu PageRank vgl. \url{https://de.wikipedia.org/wiki/PageRank}.} Auf Grundlage der Verlinkunsstruktur wird dabei jedem Knoten ein Gewicht, der sog. PageRank zugeordnet.
 
 \begin{verbatim}
 CALL algo.pageRank.stream("IndexPerson", "APPEARS_WITH",
@@ -2532,7 +2549,7 @@ MATCH (c:IndexPerson) WHERE id(c) = nodeC
 RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 \end{verbatim}
 
-\chapter{Zusammenfassung}\label{zusammenfassung-5}
+\chapter{Zusammenfassung}\label{zusammenfassung-7}
 
 An Hand der verschiedenen Beispiel konnte gezeigt werden, dass Graphentechnologien hervorragend für die Modellierung, Speicherung und Analyse hochvernetzter Daten geeignet ist. Und die Beispiele konnten auch zeigen, dass die digitalen Geisteswissenschaften reich an hochvernetzten Daten sind. Gleichzeitig lassen sich mit dem einer Mind-Map sehr ähnlichen Modell Forschungsdaten und Forschungsfragestellungen tatsächlich in einer Weise modellieren, die dem menschlichen Denken sehr nahe kommt. Damit können Graphentechnologien gleichsam als Brücke zwischen den geisteswissenschaftlichen Fachdisziplinen und den informationstechnologischen Herausforderungen und Perspektiven des digitalen Zeitalters dienen.
 
