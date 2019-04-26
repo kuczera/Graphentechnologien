@@ -51,7 +51,7 @@ womit die Dichte des Netzwerks 0,4 beträgt.
 * Der größte **Eigenvektor** besteht zwischen den Knoten D, F und G.
 * Die Knoten F und G sind **strukturell äquivalent**.
 
-Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Netzwerkanalyse-Algorithmen auf eine aufbereitete Graphdatenbank der Regesten Kaiser Heinrichs IV. angewendet und deren Ergebnisse kritisch reflektiert.
+Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Netzwerkanalyse-Algorithmen auf eine aufbereitete Graphdatenbank der Regesten Kaiser Heinrichs IV. angewendet.
 
 ## Die Register der Regesta Imperii
 
@@ -219,12 +219,6 @@ RETURN p.name1 AS name, triangles, coefficient
 ORDER BY triangles DESC;
 ~~~
 
-
-~~~cypher
-
-~~~
-
-
 ~~~cypher
 CALL algo.labelPropagation.stream("IndexPerson", "APPEARS_WITH", {direction: "OUTGOING", iterations: 10}) YIELD nodeId, label
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
@@ -239,6 +233,9 @@ MATCH (b:IndexPerson) WHERE id(b) = nodeB
 MATCH (c:IndexPerson) WHERE id(c) = nodeC
 RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 ~~~
+
+## Zusammenfassung
+In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graphdatenbank mit den Regesten Kaiser Heinrichs IV. für die Anwendung von Netzwerkanalyse-Algorithmen vorbereitet. Im zweiten Abschnitt wurden dann cypher-Queries für verschiedenen Netzwerkalgorithmen aufgelistet. In einem weitern geplanten Kapitel werden die Ergebnisse dieser Algorithmen qualitativ ausgewertet.
 
 [^9ea3]: Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs [Historisch-archäologische Netzwerkanalyse](https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/#/step-1) von Aline Deicke und Marjam Trautmann, der im Rahmen der [International Summer School](https://iss.adwmainz.net) in Mainz stattfand (abgerufen am 07.02.2019).
 
