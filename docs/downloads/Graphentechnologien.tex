@@ -2363,7 +2363,7 @@ Die folgende Abbildung zeigt einen kleinen Beispielgraphen, an dem einige Zentra
   Die Knoten F und G sind \textbf{strukturell äquivalent}.
 \end{itemize}
 
-Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Netzwerkanalyse-Algorithmen auf eine aufbereitete Graphdatenbank der Regesten Kaiser Heinrichs IV. angewendet und deren Ergebnisse kritisch reflektiert.
+Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Netzwerkanalyse-Algorithmen auf eine aufbereitete Graphdatenbank der Regesten Kaiser Heinrichs IV. angewendet.
 
 \section{Die Register der Regesta Imperii}\label{die-register-der-regesta-imperii}
 
@@ -2532,9 +2532,6 @@ ORDER BY triangles DESC;
 \end{verbatim}
 
 \begin{verbatim}
-\end{verbatim}
-
-\begin{verbatim}
 CALL algo.labelPropagation.stream("IndexPerson", "APPEARS_WITH", {direction: "OUTGOING", iterations: 10}) YIELD nodeId, label
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
 RETURN p.name1 AS Name, label ORDER BY label DESC;
@@ -2549,7 +2546,11 @@ MATCH (c:IndexPerson) WHERE id(c) = nodeC
 RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 \end{verbatim}
 
-\chapter{Zusammenfassung}\label{zusammenfassung-7}
+\section{Zusammenfassung}\label{zusammenfassung-7}
+
+In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graphdatenbank mit den Regesten Kaiser Heinrichs IV. für die Anwendung von Netzwerkanalyse-Algorithmen vorbereitet. Im zweiten Abschnitt wurden dann cypher-Queries für verschiedenen Netzwerkalgorithmen aufgelistet. In einem weitern geplanten Kapitel werden die Ergebnisse dieser Algorithmen qualitativ ausgewertet.
+
+\chapter{Zusammenfassung}\label{zusammenfassung-8}
 
 An Hand der verschiedenen Beispiel konnte gezeigt werden, dass Graphentechnologien hervorragend für die Modellierung, Speicherung und Analyse hochvernetzter Daten geeignet ist. Und die Beispiele konnten auch zeigen, dass die digitalen Geisteswissenschaften reich an hochvernetzten Daten sind. Gleichzeitig lassen sich mit dem einer Mind-Map sehr ähnlichen Modell Forschungsdaten und Forschungsfragestellungen tatsächlich in einer Weise modellieren, die dem menschlichen Denken sehr nahe kommt. Damit können Graphentechnologien gleichsam als Brücke zwischen den geisteswissenschaftlichen Fachdisziplinen und den informationstechnologischen Herausforderungen und Perspektiven des digitalen Zeitalters dienen.
 
