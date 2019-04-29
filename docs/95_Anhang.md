@@ -124,7 +124,11 @@ Mit dem Befehl `apoc.text.regexGroups` ist es möglich, reguläre Ausrücke zum 
 Beispiel: Überlieferung des Regest [RI III,2,3 n. 3](http://www.regesta-imperii.de/id/1051-02-02_1_0_3_2_3_3_3):
 
 ~~~
-Herim. Aug. 1051 (<link http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php?kurztitel=pertz,_hermann_von_reichenau>SS 5, 129</link>); vgl. Wibert, V. Leonis IX. II, 7 (<link http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php?kurztitel=watterich,_pontificum_romanorum_vitae>Watterich 1, 159</link>).
+Herim. Aug. 1051 (<link http://opac.regesta-imperii.de/lang_de/
+kurztitelsuche_r.php?kurztitel=pertz,_hermann_von_reichenau>SS 5, 129</link>);
+vgl. Wibert, V. Leonis IX. II, 7 (<link
+http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php? 
+kurztitel=watterich,_pontificum_romanorum_vitae>Watterich 1, 159</link>).
 ~~~
 
 Mit dem folgenden Query werden in den Überlieferungsteilen der Regesten Kaiser Heinrichs IV. die Verlinkungen der Litereratur rausgesucht und für jeden Link per MERGE ein Knoten erzeugt. Anschließend werden die neu erstellen Knoten mit den jeweiligen Regesten über eine `REFERENCES`-Kante verbunden.

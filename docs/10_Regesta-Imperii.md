@@ -52,7 +52,7 @@ Allein die Einträge in den Registern der Regesten Kaiser Friedrichs III. sind �
 
 In der folgenden Abbildung sind die in den Registern des Regestenbandes von Joseph Chmel gewonnenen 1zu1-Beziehungen mit Gephi visualisiert.[^ce4b]
 
-![Personennetzwerk aus den Registern der Regesten Chmels.](Bilder/Chmelvisualisierung-v2.png)
+![Personennetzwerk aus den Registern der Regesten Chmels, erstellt mit Gephi (Quelle: Kuczera).](Bilder/Chmelvisualisierung-v2.png)
 
 Bei der Analyse ergaben sich aber verschiedene Probleme. Zum einen werden in den Registern auch Kanzleibeamte genannt, die mit der eigentlichen Urkundenhandlung gar nichts zu tun hatten sondern später lediglich ihr Kürzel auf der Urkunde hinterließen. Dies mag archivgeschichtlich interessant sein, für die Urkundenhandlung ist es aber irrelevant. Ein zweites Problem ist der Aufbau des Registers, in dem Orte und Personen in einem Register zusammengefasst werden. Zum einen handelt es sich hierdurch nicht mehr um ein reines Personennetzwerk sondern um ein gemischtes Personen- und Ortsnetzwerk. Zum anderen überragen die über sehr lange Zeit bestehenden Orte, die in ihrer Lebensdauer begrenzten natürlichen Personen in den Netzwerkstrukturen. Schließlich zeigte sich, dass die Algrithmen zur Netzwerkanalyse mit zeitbehaftenen Daten (wie Regesten mit ihrem Ausstellungsdatum) nur schlecht umgehen konnten.
 

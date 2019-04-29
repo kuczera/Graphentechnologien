@@ -1,11 +1,11 @@
 ---
-title: Das DTA im Graphen
+title: Das Deutsche Textarchiv im Graphen
 layout: default
 order: 45
 contents: true
 ---
 
-# Das DTA im Graphen
+# Das Deutsche Textarchiv im Graphen
 
 In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheidet sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
 
