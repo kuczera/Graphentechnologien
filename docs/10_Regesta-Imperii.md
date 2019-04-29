@@ -5,13 +5,13 @@ order: 10
 contents: true
 ---
 
+# Das Projekt Regesta Imperii oder “Wie suchen Onlinenutzer Regesten”
+
 # Inhalt
 {:.no_toc}
 
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
-
-# Das Projekt Regesta Imperii oder “Wie suchen Onlinenutzer Regesten”
 
 ## Das Projekt Regesta Imperii
 

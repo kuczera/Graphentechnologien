@@ -5,13 +5,13 @@ order: 1
 contents: true
 ---
 
+# Einleitung
+
 # Inhalt
 {:.no_toc}
 
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
-
-# Einleitung
 
 ## Warum ein Buch über Graphentechnologien  in den digitalen Geisteswissenschaften?
 
