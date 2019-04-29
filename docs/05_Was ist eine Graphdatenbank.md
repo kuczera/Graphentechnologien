@@ -5,6 +5,12 @@ order: 5
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Was ist eine Graphdatenbank
 
 In den seit den 70er Jahren etablierten, relationalen Datenbanken werden die Daten in Tabellen abgespeichert, die untereinander über Schlüssel oder Schlüsseltabellen verknüpft sind.

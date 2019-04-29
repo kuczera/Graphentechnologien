@@ -5,6 +5,12 @@ order: 20
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Regestenmodellierung im Graphen
 
 ## Wie kommen die Regesten in den Graphen

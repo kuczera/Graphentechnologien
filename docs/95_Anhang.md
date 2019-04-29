@@ -5,6 +5,12 @@ order: 85
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Anhang
 
 In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen bei der Verwendung von Graphdatenbanken in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
@@ -127,7 +133,7 @@ Beispiel: Überlieferung des Regest [RI III,2,3 n. 3](http://www.regesta-imperii
 Herim. Aug. 1051 (<link http://opac.regesta-imperii.de/lang_de/
 kurztitelsuche_r.php?kurztitel=pertz,_hermann_von_reichenau>SS 5, 129</link>);
 vgl. Wibert, V. Leonis IX. II, 7 (<link
-http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php? 
+http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php?
 kurztitel=watterich,_pontificum_romanorum_vitae>Watterich 1, 159</link>).
 ~~~
 

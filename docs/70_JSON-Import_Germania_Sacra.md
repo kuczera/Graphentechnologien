@@ -5,6 +5,12 @@ order: 70
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # JSON Import mit den Daten der Germania Sacra
 
 (Dieser Abschnitt befindet sich in Bearbeitung)

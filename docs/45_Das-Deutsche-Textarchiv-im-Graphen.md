@@ -5,6 +5,12 @@ order: 45
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Das Deutsche Textarchiv im Graphen
 
 In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheidet sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
