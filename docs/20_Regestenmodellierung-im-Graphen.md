@@ -423,7 +423,7 @@ RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
 |n.lemma|ANZAHL|
-|---|---|
+|----------------------|------------|
 |werden|145|
 |schenken|133|
 |bestätigen|109|
@@ -475,7 +475,7 @@ RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 
 
 |p.name1|l.lemma|Anzahl|
-|:----------------------------------------------------------|-----------:|---:|
+|:-----------------------------------------------------|------------:|------:|
 | ... | ... | ... |
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|schenken|21|
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|bestätigen|9|
