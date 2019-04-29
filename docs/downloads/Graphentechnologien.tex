@@ -297,7 +297,7 @@ In der folgenden Abbildung sind die in den Registern des Regestenbandes von Jose
 \begin{figure}
 \centering
 \includegraphics{Bilder/Chmelvisualisierung-v2.png}
-\caption{Personennetzwerk aus den Registern der Regesten Chmels.}
+\caption{Personennetzwerk aus den Registern der Regesten Chmels, erstellt mit Gephi (Quelle: Kuczera).}
 \end{figure}
 
 Bei der Analyse ergaben sich aber verschiedene Probleme. Zum einen werden in den Registern auch Kanzleibeamte genannt, die mit der eigentlichen Urkundenhandlung gar nichts zu tun hatten sondern später lediglich ihr Kürzel auf der Urkunde hinterließen. Dies mag archivgeschichtlich interessant sein, für die Urkundenhandlung ist es aber irrelevant. Ein zweites Problem ist der Aufbau des Registers, in dem Orte und Personen in einem Register zusammengefasst werden. Zum einen handelt es sich hierdurch nicht mehr um ein reines Personennetzwerk sondern um ein gemischtes Personen- und Ortsnetzwerk. Zum anderen überragen die über sehr lange Zeit bestehenden Orte, die in ihrer Lebensdauer begrenzten natürlichen Personen in den Netzwerkstrukturen. Schließlich zeigte sich, dass die Algrithmen zur Netzwerkanalyse mit zeitbehaftenen Daten (wie Regesten mit ihrem Ausstellungsdatum) nur schlecht umgehen konnten.
@@ -643,7 +643,8 @@ LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAU
 AS line
 MATCH (from:IndexPlace {registerId:line.ID})
 MATCH (to:Regesta {regnum:line.regnum2})
-CREATE (from)-[:PLACE_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
+CREATE (from)-[:PLACE_IN {regnum:line.regnum,
+  name1:line.name1, name2:line.name2}]->(to);
 \end{verbatim}
 
 Mit zwei \texttt{MATCH}-Befehlen wird jeweils das Regest und der Registereintrag aufgerufen und mit dem \texttt{CREATE}-Befehl eine \texttt{PLACE\_IN}-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten \texttt{name1} und \texttt{name2} erhält. Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten angelegt:
@@ -652,8 +653,10 @@ Mit zwei \texttt{MATCH}-Befehlen wird jeweils das Regest und der Registereintrag
 // PERSON_IN-Kanten für Person erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2147130316"
 AS line
-MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2})
-CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
+MATCH (from:IndexPerson {registerId:line.ID}),
+(to:Regesta {regnum:line.regnum2})
+CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1,
+  name2:line.name2}]->(to);
 \end{verbatim}
 
 \subsection{Exkurs: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.}\label{exkurs-die-hierarchie-des-registers-der-regesten-kaiser-friedrichs-iii.}
@@ -900,102 +903,102 @@ RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 
 \begin{longtable}[]{@{}lrr@{}}
 \toprule
-\begin{minipage}[b]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.70\columnwidth}\raggedright\strut
 p.name1\strut
-\end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedleft\strut
 l.lemma\strut
 \end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft\strut
 Anzahl\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 \ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 \ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 \ldots{}\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 schenken\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 21\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 bestätigen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 9\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 verleihen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 4\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 erlassen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 2\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 übertragen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 2\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 ermäßigen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 2\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 gestatten\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 2\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 vollziehen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 1\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 nehmen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 1\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 mindern\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 1\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 setzen\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 1\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.06\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.70\columnwidth}\raggedright\strut
 \ldots{}\strut
-\end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedleft\strut
 \ldots{}\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 \ldots{}\strut
@@ -1168,7 +1171,11 @@ Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet\footnote{Di
 
 Nach dem \texttt{UNWIND}-Befehl folgt eine Gruppe von Befehlen, die immer wieder für jedes \emph{work}-Element ausgeführt werden. Als erstes wird mit dem \texttt{MERGE}-Befehl ein Knoten vom Typ \texttt{Werk} für das Buch mit der Titelangabe in der Eigenschaft \texttt{name} erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren \emph{autor}-Elementen verzeichnet sind. In der gleichen Weise wird anschließend mit den Angaben zu Autor, Kommentator (die beide Personenknoten ergeben) und mit dem Druckort verfahren. Mit der Erstellung bzw. Prüfung auf Existenz durch den \texttt{Merge}-Befehl werden gleichzeitig die \texttt{AUTOR\_VON}-, \texttt{KOMMENTIERT\_VON}-, und \texttt{GEDRUCKT\_IN}-Kanten erstellt und der Graph vervollständigt.
 
-\textless{}\textgreater{}\includegraphics{Bilder/Kollatz-Druckernetzwerk.png}
+\begin{figure}
+\centering
+\includegraphics{Bilder/Kollatz-Druckernetzwerk.png}
+\caption{Gesamtbild des importierten Graphen (Quelle: Kuczera).}
+\end{figure}
 
 Die Funktion apoc.loadxmlSimple ist inzwischen veraltet und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner aber dadurch in der Anwendung etwas komplizierter.
 
@@ -1200,7 +1207,7 @@ In diesem Abschnitt wurde die Analyse einer XML-Datei, die daraus resultierende 
 
 \chapter{Verwandtschaft im Graphen}\label{verwandtschaft-im-graphen}
 
-In diesem Kapitel wird am Beispiel eines Ausschnitts der Daten des Projekts \textbf{Nomen et Gens}\footnote{Informationen zum Projekt „Nomen et Gens`` finden Sie unter \url{http://www.neg.uni-tuebingen.de/} (abgerufen am 10.08.2018).} die Modellierung von Verwandtschaft in der Graphdatenbank neo4j dargestellt.\footnote{Dieses Kapitel geht in großen Teilen zurück auf meinem Aufsatz Graphentechnologien in den Digitalen Geisteswissenschaften, in: ABI Technik 2017; 37(3): 179--196, \url{https://doi.org/10.1515/abitech-2017-0042}. URL: \url{https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf}, insbesondere die Seiten 179 bis 182 und wurde nur geringfügig ergänzt.}
+In diesem Kapitel wird am Beispiel eines Ausschnitts der Daten des Projekts \textbf{Nomen et Gens}\footnote{Informationen zum Projekt „Nomen et Gens`` finden Sie unter \url{http://www.neg.uni-tuebingen.de/} (abgerufen am 10.08.2018).} die Modellierung von Verwandtschaft in der Graphdatenbank neo4j dargestellt.\footnote{Dieses Kapitel geht in großen Teilen zurück auf meinem Aufsatz Graphentechnologien in den Digitalen Geisteswissenschaften, in: ABI Technik 2017; 37(3): 179--196, \url{https://doi.org/10.1515/abitech-2017-0042}. URL: \url{https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf}, insbesondere die Seiten 179 bis 182 und wurde nur geringfügig ergänzt. Herrn Prof.~Dr.~Steffen Patzold danke ich herzlich für die Erlaubnis, die Nomen et Gens Daten im Rahmen dieser Publikation zu verwenden (mit Mail vom 22.01.2019).}
 
 \section{Das Projekt Nomen et Gens}\label{das-projekt-nomen-et-gens}
 
@@ -1216,7 +1223,7 @@ Vor diesem Hintergrund bot es sich an, die Personen und die zugehörigen Verwand
 \caption{Erste Importergebnisse}
 \end{figure}
 
-Die Abbildung zeigt die ersten Ergebnisse des Datenbankimports. Aus der Visualisierung werden die zahlreichen redundanten Beziehungen deutlich, die in der Folge zu neuen Modellierungsansätzen für die Verwandtschaftsbeziehungen führten. Ergebnis der Überlegungen war die Reduzierung der möglichen Verwandtschaftsbeziehungen auf die zwei Kantentypen \texttt{KIND} und \texttt{VERHEIRATET\_MIT}. Dabei wird eine Kante vom Typ \texttt{KIND} für eine Eltern-Kind-Beziehung nur einmal vergeben, während eine Kante vom Typ \texttt{VERHEIRATET\_MIT} immer zweifach in jeweils umgekehrter Richtung angelegt wird. Dies ergibt sich aus der Überlegung, dass eine Eltern-Kind-Beziehung gerichtet ist und zwar in unserem Fall vom Elternteil zum Kind hin, während eine \texttt{VERHEIRATET\_MIT}-Beziehung ungerichtet ist: Wenn eine Person mit einer anderen Person verheiratet ist, ist die andere Personen automatisch auch mit der ersten verheiratet. Da im Property-Graph-Modell von neo4j jede Kante genau eine Richtung haben muss, wird die \texttt{VERHEIRATET\_MIT}-Kante zweimal in jeweils unterschiedliche Richtung angelegt, während bei der hierarchischen Eltern-Kind-Beziehung eine Kante ausreicht.
+Die Abbildung zeigt die ersten Ergebnisse des Datenbankimports. Aus der Visualisierung werden die zahlreichen redundanten Beziehungen deutlich, die in der Folge zu neuen Modellierungsansätzen für die Verwandtschaftsbeziehungen führten. Ergebnis der Überlegungen war die Reduzierung der möglichen Verwandtschaftsbeziehungen auf die zwei Kantentypen \texttt{KIND} und \texttt{VERHEIRATET\_MIT}. Dabei wird eine Kante vom Typ \texttt{KIND} für eine Elternteil-Kind-Beziehung nur einmal vergeben, während eine Kante vom Typ \texttt{VERHEIRATET\_MIT} immer zweifach in jeweils umgekehrter Richtung angelegt wird. Dies ergibt sich aus der Überlegung, dass eine Elternteil-Kind-Beziehung gerichtet ist und zwar in unserem Fall vom Elternteil zum Kind hin, während eine \texttt{VERHEIRATET\_MIT}-Beziehung ungerichtet ist: Wenn eine Person mit einer anderen Person verheiratet ist, ist die andere Personen automatisch auch mit der ersten verheiratet. Da im Property-Graph-Modell von neo4j jede Kante genau eine Richtung haben muss, wird die \texttt{VERHEIRATET\_MIT}-Kante zweimal in jeweils unterschiedliche Richtung angelegt, während bei der hierarchischen Elternteil-Kind-Beziehung eine Kante ausreicht.
 
 \begin{figure}
 \centering
@@ -1234,7 +1241,7 @@ Im folgenden Beispiel soll das Potential der Graphmodellierung von Verwandtschaf
 \caption{Berchar in der Nomen-et-Gens-Datenbank}
 \end{figure}
 
-In der Graphdatenbank neo4j wird für eine solche Fragestellung eine Shortest\_Path-Abfrage verwendet, die den kürzesten möglichen Weg zwischen zwei Knoten zurück liefert, sofern es einen gibt. Der folgende cypher-Befehl liefert den Pfad zwischen dem Personenknoten Karls des Großen mit der NeG-ID 7404 und dem Personenknoten von Berchar mit der NeG-ID 7119. Dabei wird die Länge des abzufragenden Pfades auf 15 Kanten begrenzt.
+In der Graphdatenbank neo4j wird für eine solche Fragestellung eine Shortest\_Path-Abfrage verwendet, die den kürzesten möglichen Weg zwischen zwei Knoten zurück liefert, sofern es einen gibt. Der folgende cypher-Befehl liefert den Pfad zwischen dem Personenknoten Karls des Großen mit der NeG-ID \texttt{7404} und dem Personenknoten von Berchar mit der NeG-ID \texttt{7119}. Dabei wird die Länge des abzufragenden Pfades auf 15 Kanten begrenzt.
 
 \begin{verbatim}
 // shortest_path-Abfrage von Karl dem Großen zu Berchar
@@ -1256,7 +1263,7 @@ Das Ergebnis zeigt, dass Berchar tatsächlich mit Karl dem Großen verwandt ist.
 
 Mit diesem Beispiel sind die interessanten Erschließungs- und Modellierungsperspektiven für die digitale Genealogie nur angedeutet. Mit Graphentechnologien lässt sich intuitive Datenmodellierung mit sehr flexiblen Erschließungs- und Abfragemöglichkeiten kombinieren.
 
-\chapter{Das DTA im Graphen}\label{das-dta-im-graphen}
+\chapter{Das Deutsche Textarchiv im Graphen}\label{das-deutsche-textarchiv-im-graphen}
 
 In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheidet sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
 
@@ -1762,7 +1769,7 @@ Ist eine Seitenzahl im Faksimile falsch wiedergegeben, so wird diese originalget
 \end{Highlighting}
 \end{Shaded}
 
-Das \texttt{\textless{}pb/\textgreater{}}-Element auf den Seiten 5 und 6 aus Patzig (http://www.deutschestextarchiv.de/book/view/patzig\_msgermfol841842\_1828/?hl=viel\&p=5)\footnote{Die Beispielseite findet sich unter http://www.deutschestextarchiv.de/book/view/patzig\_msgermfol841842\_1828/?p=5 abgerufen am 25.11.2017.}:
+Das \texttt{\textless{}pb/\textgreater{}}-Element auf den Seiten 5 und 6 aus Patzig (http://www.deutschestextarchiv.de/book/view/patzig\_msgermfol841842\_1828/ ?hl=viel\&p=5)\footnote{Die Beispielseite findet sich unter http://www.deutschestextarchiv.de/book/view/patzig\_msgermfol841842\_1828/?p=5 abgerufen am 25.11.2017.}:
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2183,25 +2190,29 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
    \DataTypeTok{"ort"}\FunctionTok{:} \StringTok{"Heidelberg"}\FunctionTok{,}
    \DataTypeTok{"bistum"}\FunctionTok{:} \StringTok{"Worms"}\FunctionTok{,}
    \DataTypeTok{"klosterid"}\FunctionTok{:} \DecValTok{20595}\FunctionTok{,}
-   \DataTypeTok{"Wikipedia"}\FunctionTok{:} \StringTok{"#http://de.wikipedia.org/wiki/Abtei_Neuburg#"}\FunctionTok{,}
+   \DataTypeTok{"Wikipedia"}\FunctionTok{:} \StringTok{"#http://de.wikipedia.org/wiki/}
+\StringTok{     Abtei_Neuburg#"}\FunctionTok{,}
    \DataTypeTok{"GND"}\FunctionTok{:} \StringTok{"#http://d-nb.info/gnd/4316849-8#"}\FunctionTok{,}
    \DataTypeTok{"GeonameID_Ortsname"}\FunctionTok{:} \DecValTok{2907911}\FunctionTok{,}
    \DataTypeTok{"Datum_von"}\FunctionTok{:} \DecValTok{1671}\FunctionTok{,}
    \DataTypeTok{"Datum_bis"}\FunctionTok{:} \DecValTok{1681}
  \FunctionTok{\}}\OtherTok{,}
  \FunctionTok{\{}
-   \DataTypeTok{"bezeichnung"}\FunctionTok{:} \StringTok{"Adeliges weltliches Chorfrauenstift St. Fridolin, Säckingen"}\FunctionTok{,}
+   \DataTypeTok{"bezeichnung"}\FunctionTok{:} \StringTok{"Adeliges weltliches Chorfrauenstift}
+\StringTok{     St. Fridolin, Säckingen"}\FunctionTok{,}
    \DataTypeTok{"ort"}\FunctionTok{:} \StringTok{"Bad Säckingen"}\FunctionTok{,}
    \DataTypeTok{"bistum"}\FunctionTok{:} \StringTok{"Konstanz"}\FunctionTok{,}
    \DataTypeTok{"klosterid"}\FunctionTok{:} \DecValTok{20381}\FunctionTok{,}
-   \DataTypeTok{"Wikipedia"}\FunctionTok{:} \StringTok{"#http://de.wikipedia.org/wiki/Damenstift_S%C3%A4ckingen#"}\FunctionTok{,}
+   \DataTypeTok{"Wikipedia"}\FunctionTok{:} \StringTok{"#http://de.wikipedia.org/wiki/}
+\StringTok{     Damenstift_S%C3%A4ckingen#"}\FunctionTok{,}
    \DataTypeTok{"GND"}\FunctionTok{:} \StringTok{"#http://d-nb.info/gnd/4343770-9#"}\FunctionTok{,}
    \DataTypeTok{"GeonameID_Ortsname"}\FunctionTok{:} \DecValTok{2953363}\FunctionTok{,}
    \DataTypeTok{"Datum_von"}\FunctionTok{:} \DecValTok{501}\FunctionTok{,}
    \DataTypeTok{"Datum_bis"}\FunctionTok{:} \DecValTok{1806}
  \FunctionTok{\}}\OtherTok{,}
  \FunctionTok{\{}
-   \DataTypeTok{"bezeichnung"}\FunctionTok{:} \StringTok{"Adliges Damenstift Frauenalb, zuvor Benediktinerinnenkloster"}\FunctionTok{,}
+   \DataTypeTok{"bezeichnung"}\FunctionTok{:} \StringTok{"Adliges Damenstift Frauenalb, zuvor}
+\StringTok{     Benediktinerinnenkloster"}\FunctionTok{,}
    \DataTypeTok{"ort"}\FunctionTok{:} \StringTok{"Marxzell"}\FunctionTok{,}
    \DataTypeTok{"bistum"}\FunctionTok{:} \StringTok{"Speyer"}\FunctionTok{,}
    \DataTypeTok{"klosterid"}\FunctionTok{:} \DecValTok{20195}\FunctionTok{,}
@@ -2244,11 +2255,16 @@ call apoc.load.json("https://seafile.rlp.net/f/456adda2cffc475ab755/?dl=1")
 yield value as all
 unwind all.persons as p
 CREATE (p1:Person {personBezeichnungPlural:p.person_bezeichnung_plural,
-    gso:p.person_gso, personOfficeId:p.person_office_id, name:p.person_name,
+    gso:p.person_gso,
+    personOfficeId:p.person_office_id,
+    name:p.person_name,
     gnd:p.person_gnd, anmerkung:p.person_anmerkung,
-    personVonVerbal:p.person_von_verbal, bezeichnung:p.person_bezeichnung,
-    personVon:p.person_von, personBisVerbal:p.person_bis_verbal,
-    personBis:p.person_bis, personNamensalternativen:p.person_namensalternativen,
+    personVonVerbal:p.person_von_verbal,
+    bezeichnung:p.person_bezeichnung,
+    personVon:p.person_von,
+    personBisVerbal:p.person_bis_verbal,
+    personBis:p.person_bis,
+    personNamensalternativen:p.person_namensalternativen,
     vorname:p.person_vorname})
 RETURN count(p1);
 \end{verbatim}
@@ -2257,7 +2273,8 @@ In diesem Query werden analog zu den Personen die Klöster mit den zugehörigen 
 
 \begin{verbatim}
 // Klosterknoten erstellen
-call apoc.load.json("https://seafile.rlp.net/f/91c3600003d54cc9ac83/?dl=1") yield value as all
+call apoc.load.json("https://seafile.rlp.net/f/91c3600003d54cc9ac83/?dl=1")
+yield value as all
 unwind all.kloster as k
 CREATE (kl:Kloster {ort:k.ort,
 GeonameIdOrtsname:k.GeonameID_Ortsname,
@@ -2372,7 +2389,8 @@ Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneint
 Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel \href{20_Regestenmodellierung-im-Graphen.md}{Regestenmodellierung im Graphen} beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, \texttt{APPEARS\_WITH}-Kanten erstellt.
 
 \begin{verbatim}
-MATCH (n1:IndexPerson)-[r1:PERSON_IN]->(:Regesta)<-[r2:PERSON_IN]-(n2:IndexPerson)
+MATCH (n1:IndexPerson)-[r1:PERSON_IN]->
+(:Regesta)<-[r2:PERSON_IN]-(n2:IndexPerson)
 WHERE id(n1) <> id(n2)
 WITH n1, count(r1) AS c, n2
 CREATE (n1)-[k:APPEARS_WITH]->(n2)
@@ -2532,7 +2550,9 @@ ORDER BY triangles DESC;
 \end{verbatim}
 
 \begin{verbatim}
-CALL algo.labelPropagation.stream("IndexPerson", "APPEARS_WITH", {direction: "OUTGOING", iterations: 10}) YIELD nodeId, label
+CALL algo.labelPropagation.stream("IndexPerson",
+"APPEARS_WITH", {direction: "OUTGOING", iterations: 10})
+YIELD nodeId, label
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
 RETURN p.name1 AS Name, label ORDER BY label DESC;
 \end{verbatim}
@@ -2662,11 +2682,21 @@ MERGE (t)<-[:ABSCHLUSS]-(p)
 );
 \end{verbatim}
 
-Der Query nimmt die Liste von Abschlüssen jeweils beim Komma auseinander, erstellt mit dem \texttt{MERGE}-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten. Zu beachten ist, dass die im CSV-Feld gemeinsam genannten Begriffe konsistent benannt sein müssen.
+Der Query trennt die Liste von Abschlüssen jeweils beim Komma, erstellt mit dem \texttt{MERGE}-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten. Zu beachten ist, dass die im CSV-Feld vorhandenen Begriffe konsistent benannt sein müssen.
 
 \section{Regluäre Ausdrücke}\label{regluuxe4re-ausdruxfccke}
 
-Mit Apoc ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
+Mit dem Befehl \texttt{apoc.text.regexGroups} ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
+
+Beispiel: Überlieferung des Regest \href{http://www.regesta-imperii.de/id/1051-02-02_1_0_3_2_3_3_3}{RI III,2,3 n. 3}:
+
+\begin{verbatim}
+Herim. Aug. 1051 (<link http://opac.regesta-imperii.de/lang_de/
+kurztitelsuche_r.php?kurztitel=pertz,_hermann_von_reichenau>SS 5, 129</link>);
+vgl. Wibert, V. Leonis IX. II, 7 (<link
+http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php? 
+kurztitel=watterich,_pontificum_romanorum_vitae>Watterich 1, 159</link>).
+\end{verbatim}
 
 Mit dem folgenden Query werden in den Überlieferungsteilen der Regesten Kaiser Heinrichs IV. die Verlinkungen der Litereratur rausgesucht und für jeden Link per MERGE ein Knoten erzeugt. Anschließend werden die neu erstellen Knoten mit den jeweiligen Regesten über eine \texttt{REFERENCES}-Kante verbunden.
 
@@ -2713,7 +2743,7 @@ return x.item, x.count order by x.count desc
 
 \section{\texorpdfstring{\texttt{MERGE} schlägt fehl da eine Property NULL ist}{MERGE schlägt fehl da eine Property NULL ist}}\label{merge-schluxe4gt-fehl-da-eine-property-null-ist}
 
-Der \texttt{MERGE}-Befehl entspricht in der Syntax dem \texttt{CREATE}-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten überprüft. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der \texttt{MERGE}-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
+Der \texttt{MERGE}-Befehl entspricht in der Syntax dem \texttt{CREATE}-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten verglichen. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der \texttt{MERGE}-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
 
 Gerade beim Import von CSV-Daten leistet der \texttt{MERGE}-Befehl in der Regel sehr gute Dienste, da man mit ihm bereits beim Import einer Tabelle weitere Knotentypen anlegen und verlinken kann. Oft kommt es aber vor, dass man sich nicht sicher ist, ob eine entsprechende Property in allen Fällen existiert. Hier bietet es sich an, vor dem \texttt{MERGE}-Befehl mit einer \texttt{WHERE}-Clause die Existenz der Property zu überprüfen.
 
@@ -2733,6 +2763,21 @@ MATCH (p:Person {pid:line.ID_Person})
 MERGE (o:Ort {ortsname:line.Herkunft})
 MERGE (p)-[:HERKUNFT]->(o);
 \end{verbatim}
+
+\section{\texorpdfstring{Der \texttt{WITH}-Befehl}{Der WITH-Befehl}}\label{der-with-befehl}
+
+Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.\footnote{Hierzu vgl. https://de.wikipedia.org/wiki/Deklarative\_Programmierung zuletzt abgerufen am 12.6.2018.} Hier hilft oft der \texttt{WITH}-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
+
+\begin{verbatim}
+LOAD CSV WITH HEADERS FROM "file:///import.csv" AS line
+CREATE (p:Person {pid:line.ID_Person, name:line.Name, herkunft:line.Herkunft})
+WITH line, p
+WHERE line.Herkunft IS NOT NULL
+MERGE (o:Ort {ortsname:line.Herkunft})
+MERGE (p)-[:HERKUNFT]->(o);
+\end{verbatim}
+
+Der \texttt{LOAD\ CSV}-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den \texttt{CREATE}-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende \texttt{WITH}-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
 \section{Knoten hat bestimmte Kante nicht}\label{knoten-hat-bestimmte-kante-nicht}
 
@@ -2755,21 +2800,6 @@ WITH n1.text as text1, n2.text as text2, n3.text as text3, count(*) as count
 WHERE count > 1 // evtl höherer Wert hier
 RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
 \end{verbatim}
-
-\section{\texorpdfstring{Der \texttt{WITH}-Befehl}{Der WITH-Befehl}}\label{der-with-befehl}
-
-Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.\footnote{Hierzu vgl. https://de.wikipedia.org/wiki/Deklarative\_Programmierung zuletzt abgerufen am 12.6.2018.} Hier hilft oft der \texttt{WITH}-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
-
-\begin{verbatim}
-LOAD CSV WITH HEADERS FROM "file:///import.csv" AS line
-CREATE (p:Person {pid:line.ID_Person, name:line.Name, herkunft:line.Herkunft})
-WITH line, p
-WHERE line.Herkunft IS NOT NULL
-MERGE (o:Ort {ortsname:line.Herkunft})
-MERGE (p)-[:HERKUNFT]->(o);
-\end{verbatim}
-
-Der \texttt{LOAD\ CSV}-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den \texttt{CREATE}-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende \texttt{WITH}-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
 \section{Die Apoc-Bibliothek}\label{die-apoc-bibliothek}
 
@@ -2811,36 +2841,36 @@ Beispielbefehl: call apoc.xml.import(``URL'',\{createNextWordRelationships: true
 
 \begin{longtable}[]{@{}ll@{}}
 \toprule
-\begin{minipage}[b]{0.13\columnwidth}\raggedright\strut
+\begin{minipage}[b]{0.32\columnwidth}\raggedright\strut
 Kantentyp\strut
-\end{minipage} & \begin{minipage}[b]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.62\columnwidth}\raggedright\strut
 Beschreibung\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
-\begin{minipage}[t]{0.13\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 :IS\_CHILD\_OF\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.62\columnwidth}\raggedright\strut
 Verweis auf eingeschachteltes Xml-Element\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.13\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 :FIRST\_CHILD\_OF\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.62\columnwidth}\raggedright\strut
 Verweis auf das erste untergeordnete Element\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.13\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 :NEXT\_SIBLING\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.62\columnwidth}\raggedright\strut
 Verweis auf das nächste Xml-Element auf der gleichen Ebene\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.13\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 :NEXT\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.62\columnwidth}\raggedright\strut
 Erzeugt eine lineare Kette durch das gesamte XML-Dokument und gibt so die Serialität des XMLs wieder\strut
 \end{minipage}\tabularnewline
-\begin{minipage}[t]{0.13\columnwidth}\raggedright\strut
+\begin{minipage}[t]{0.32\columnwidth}\raggedright\strut
 :NEXT\_WORD\strut
-\end{minipage} & \begin{minipage}[t]{0.17\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.62\columnwidth}\raggedright\strut
 Verbindet Wortknoten zu einer Kette von Wortknoten. Wird nur erzeugt, wenn createNextWordRelationships:true gesetzt wird\strut
 \end{minipage}\tabularnewline
 \bottomrule
