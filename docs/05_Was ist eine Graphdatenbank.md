@@ -7,6 +7,12 @@ contents: true
 
 # Was ist eine Graphdatenbank
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 In den seit den 70er Jahren etablierten, relationalen Datenbanken werden die Daten in Tabellen abgespeichert, die untereinander über Schlüssel oder Schlüsseltabellen verknüpft sind.
 In Graphdatenbanken werden die Daten dagegen in Knoten und Kanten gespeichert.
 ![Beispielgraph](Bilder/Beispielgraph.png)

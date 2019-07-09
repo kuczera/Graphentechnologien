@@ -5,6 +5,11 @@ order: 80
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
 
 # Netzwerkanalyse mit neo4j
 
@@ -60,7 +65,8 @@ Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneint
 Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel [Regestenmodellierung im Graphen](20_Regestenmodellierung-im-Graphen.md) beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, `APPEARS_WITH`-Kanten erstellt.
 
 ~~~cypher
-MATCH (n1:IndexPerson)-[r1:PERSON_IN]->(:Regesta)<-[r2:PERSON_IN]-(n2:IndexPerson)
+MATCH (n1:IndexPerson)-[r1:PERSON_IN]->
+(:Regesta)<-[r2:PERSON_IN]-(n2:IndexPerson)
 WHERE id(n1) <> id(n2)
 WITH n1, count(r1) AS c, n2
 CREATE (n1)-[k:APPEARS_WITH]->(n2)
@@ -220,7 +226,9 @@ ORDER BY triangles DESC;
 ~~~
 
 ~~~cypher
-CALL algo.labelPropagation.stream("IndexPerson", "APPEARS_WITH", {direction: "OUTGOING", iterations: 10}) YIELD nodeId, label
+CALL algo.labelPropagation.stream("IndexPerson",
+"APPEARS_WITH", {direction: "OUTGOING", iterations: 10})
+YIELD nodeId, label
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
 RETURN p.name1 AS Name, label ORDER BY label DESC;
 ~~~

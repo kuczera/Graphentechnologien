@@ -5,6 +5,12 @@ order: 60
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Graph-Refactoring mit DTA-XML
 
 ## Modellierungsüberlegungen
@@ -225,7 +231,9 @@ Ist eine Seitenzahl im Faksimile falsch wiedergegeben, so wird diese originalget
 ~~~
 
 
-Das `<pb/>`-Element auf den Seiten 5 und 6 aus Patzig (http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=viel&p=5)[^3fd9]:
+Das `<pb/>`-Element auf den Seiten 5 und 6 aus Patzig
+(http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/
+?hl=viel&p=5)[^3fd9]:
 
 ~~~xml
 ... Abwe&#x017F;enheit vom heimi&#x017F;chen Boden ent-<lb/>

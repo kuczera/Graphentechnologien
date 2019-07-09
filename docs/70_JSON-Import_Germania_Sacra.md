@@ -5,6 +5,12 @@ order: 70
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # JSON Import mit den Daten der Germania Sacra
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
@@ -73,25 +79,29 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
    "ort": "Heidelberg",
    "bistum": "Worms",
    "klosterid": 20595,
-   "Wikipedia": "#http://de.wikipedia.org/wiki/Abtei_Neuburg#",
+   "Wikipedia": "#http://de.wikipedia.org/wiki/
+	 Abtei_Neuburg#",
    "GND": "#http://d-nb.info/gnd/4316849-8#",
    "GeonameID_Ortsname": 2907911,
    "Datum_von": 1671,
    "Datum_bis": 1681
  },
  {
-   "bezeichnung": "Adeliges weltliches Chorfrauenstift St. Fridolin, Säckingen",
+   "bezeichnung": "Adeliges weltliches Chorfrauenstift
+	 St. Fridolin, Säckingen",
    "ort": "Bad Säckingen",
    "bistum": "Konstanz",
    "klosterid": 20381,
-   "Wikipedia": "#http://de.wikipedia.org/wiki/Damenstift_S%C3%A4ckingen#",
+   "Wikipedia": "#http://de.wikipedia.org/wiki/
+	 Damenstift_S%C3%A4ckingen#",
    "GND": "#http://d-nb.info/gnd/4343770-9#",
    "GeonameID_Ortsname": 2953363,
    "Datum_von": 501,
    "Datum_bis": 1806
  },
  {
-   "bezeichnung": "Adliges Damenstift Frauenalb, zuvor Benediktinerinnenkloster",
+   "bezeichnung": "Adliges Damenstift Frauenalb, zuvor
+	 Benediktinerinnenkloster",
    "ort": "Marxzell",
    "bistum": "Speyer",
    "klosterid": 20195,
@@ -120,6 +130,7 @@ CREATE INDEX ON :Kloster(Bistum);
 CREATE CONSTRAINT ON (p:Person) ASSERT p.id IS UNIQUE;
 CREATE CONSTRAINT ON (k:Kloster) ASSERT k.id IS UNIQUE;
 ```
+
 Der nächste Befehl importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
 
 ```cypher
@@ -128,11 +139,16 @@ call apoc.load.json("https://seafile.rlp.net/f/456adda2cffc475ab755/?dl=1")
 yield value as all
 unwind all.persons as p
 CREATE (p1:Person {personBezeichnungPlural:p.person_bezeichnung_plural,
-	gso:p.person_gso, personOfficeId:p.person_office_id, name:p.person_name,
+	gso:p.person_gso,
+	personOfficeId:p.person_office_id,
+	name:p.person_name,
 	gnd:p.person_gnd, anmerkung:p.person_anmerkung,
-	personVonVerbal:p.person_von_verbal, bezeichnung:p.person_bezeichnung,
-	personVon:p.person_von, personBisVerbal:p.person_bis_verbal,
-	personBis:p.person_bis, personNamensalternativen:p.person_namensalternativen,
+	personVonVerbal:p.person_von_verbal,
+	bezeichnung:p.person_bezeichnung,
+	personVon:p.person_von,
+	personBisVerbal:p.person_bis_verbal,
+	personBis:p.person_bis,
+	personNamensalternativen:p.person_namensalternativen,
 	vorname:p.person_vorname})
 RETURN count(p1);
 ```
@@ -141,7 +157,8 @@ In diesem Query werden analog zu den Personen die Klöster mit den zugehörigen 
 
 ```cypher
 // Klosterknoten erstellen
-call apoc.load.json("https://seafile.rlp.net/f/91c3600003d54cc9ac83/?dl=1") yield value as all
+call apoc.load.json("https://seafile.rlp.net/f/91c3600003d54cc9ac83/?dl=1")
+yield value as all
 unwind all.kloster as k
 CREATE (kl:Kloster {ort:k.ort,
 GeonameIdOrtsname:k.GeonameID_Ortsname,

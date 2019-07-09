@@ -5,6 +5,12 @@ order: 20
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Regestenmodellierung im Graphen
 
 ## Wie kommen die Regesten in den Graphen
@@ -255,7 +261,8 @@ LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAU
 AS line
 MATCH (from:IndexPlace {registerId:line.ID})
 MATCH (to:Regesta {regnum:line.regnum2})
-CREATE (from)-[:PLACE_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
+CREATE (from)-[:PLACE_IN {regnum:line.regnum,
+  name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
 Mit zwei `MATCH`-Befehlen wird jeweils das Regest und der Registereintrag aufgerufen und mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` erhält.
@@ -265,8 +272,10 @@ Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten ange
 // PERSON_IN-Kanten für Person erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE/export?format=csv&id=12T-RD1Ct4aAUNNNxipjMmHe9F1NmryI1gf8_SJ4RCEE&gid=2147130316"
 AS line
-MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2})
-CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
+MATCH (from:IndexPerson {registerId:line.ID}),
+(to:Regesta {regnum:line.regnum2})
+CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1,
+  name2:line.name2}]->(to);
 ~~~
 
 ## Exkurs 2: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
@@ -420,7 +429,7 @@ RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
 |n.lemma|ANZAHL|
-|---|---|
+|----------------------|------------|
 |werden|145|
 |schenken|133|
 |bestätigen|109|
@@ -472,7 +481,7 @@ RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 
 
 |p.name1|l.lemma|Anzahl|
-|:---|---:|---:|
+|:-----------------------------------------------------|------------:|------:|
 | ... | ... | ... |
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|schenken|21|
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|bestätigen|9|

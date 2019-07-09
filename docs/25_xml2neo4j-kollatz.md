@@ -5,6 +5,12 @@ order: 25
 contents: true
 ---
 
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
+
 # Import von strukturierten XML-Daten in neo4j
 
 In diesem Kapitel wird der Import von strukturierten XML-Daten in die Graphdatenbank neo4j beschrieben. Strukturiert meint hierbei, dass es sich nicht um mixed-content handelt, beim dem Text und Auszeichnung gemischt vorliegen können, sondern um Daten in einer datenbank-ähnlichen Struktur. Die Daten stammen aus einem Projekt meines Kollegen Thomas Kollatz, der sie mir freundlicherweise zur Verfügung gestellt hat. Ziel des Kapitels ist es, zunächst die Struktur der XML-Daten im Graphen zu analysieren, dann ein Graphmodell zu entwickeln und anschließend den Import durchzuführen.
@@ -79,7 +85,7 @@ Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Die
 
 Nach dem `UNWIND`-Befehl folgt eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk` für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind. In der gleichen Weise wird anschließend mit den Angaben zu Autor, Kommentator (die beide Personenknoten ergeben) und mit dem Druckort verfahren. Mit der Erstellung bzw. Prüfung auf Existenz durch den `Merge`-Befehl werden gleichzeitig die `AUTOR_VON`-, `KOMMENTIERT_VON`-, und `GEDRUCKT_IN`-Kanten erstellt und der Graph vervollständigt.
 
-<>![Gesamtbild des importierten Graphen (Quelle: Kuczera).](Bilder/Kollatz-Druckernetzwerk.png)
+![Gesamtbild des importierten Graphen (Quelle: Kuczera).](Bilder/Kollatz-Druckernetzwerk.png)
 
 Die Funktion apoc.loadxmlSimple ist inzwischen veraltet und wird von der Funktion apoc.loadxml abgelöst. Diese ist allgemeiner aber dadurch in der Anwendung etwas komplizierter.
 

@@ -1,9 +1,15 @@
 ---
 title: Anhang
 layout: default
-order: 85
+order: 95
 contents: true
 ---
+
+# Inhalt
+{:.no_toc}
+
+* Will be replaced with the ToC, excluding the "Contents" header
+{:toc}
 
 # Anhang
 
@@ -114,12 +120,22 @@ MERGE (t)<-[:ABSCHLUSS]-(p)
 );
 ~~~
 
-Der Query nimmt die Liste von Abschlüssen jeweils beim Komma auseinander, erstellt mit dem `MERGE`-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten.
-Zu beachten ist, dass die im CSV-Feld gemeinsam genannten Begriffe konsistent benannt sein müssen.
+Der Query trennt die Liste von Abschlüssen jeweils beim Komma, erstellt mit dem `MERGE`-Befehl einen Knoten für den Abschluss (falls noch nicht vorhanden) und verlinkt diesen Knoten dann mit dem Personenknoten.
+Zu beachten ist, dass die im CSV-Feld vorhandenen Begriffe konsistent benannt sein müssen.
 
 ## Regluäre Ausdrücke
 
-Mit Apoc ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
+Mit dem Befehl `apoc.text.regexGroups` ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
+
+Beispiel: Überlieferung des Regest [RI III,2,3 n. 3](http://www.regesta-imperii.de/id/1051-02-02_1_0_3_2_3_3_3):
+
+~~~
+Herim. Aug. 1051 (<link http://opac.regesta-imperii.de/lang_de/
+kurztitelsuche_r.php?kurztitel=pertz,_hermann_von_reichenau>SS 5, 129</link>);
+vgl. Wibert, V. Leonis IX. II, 7 (<link
+http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php?
+kurztitel=watterich,_pontificum_romanorum_vitae>Watterich 1, 159</link>).
+~~~
 
 Mit dem folgenden Query werden in den Überlieferungsteilen der Regesten Kaiser Heinrichs IV. die Verlinkungen der Litereratur rausgesucht und für jeden Link per MERGE ein Knoten erzeugt. Anschließend werden die neu erstellen Knoten mit den jeweiligen Regesten über eine `REFERENCES`-Kante verbunden.
 
@@ -167,7 +183,7 @@ return x.item, x.count order by x.count desc
 
 ## `MERGE` schlägt fehl da eine Property NULL ist
 
-Der `MERGE`-Befehl entspricht in der Syntax dem `CREATE`-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten überprüft. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der `MERGE`-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
+Der `MERGE`-Befehl entspricht in der Syntax dem `CREATE`-Befehl, überprüft aber bei jedem Aufruf, ob der zu erstellende Knoten bereits in der Datenbank existiert. Bei dieser Überprüfung werden alle Propertys des Knoten verglichen. Falls also ein vorhandener Knoten eine Property nicht enthält, wird ein weiterer Knoten erstellt. Umgekehrt endet der `MERGE`-Befehl mit einer Fehlermeldung, wenn eine der zu prüfenden Propertys NULL ist.
 
 Gerade beim Import von CSV-Daten leistet der `MERGE`-Befehl in der Regel sehr gute Dienste, da man mit ihm bereits beim Import einer Tabelle weitere Knotentypen anlegen und verlinken kann. Oft kommt es aber vor, dass man sich nicht sicher ist, ob eine entsprechende Property in allen Fällen existiert. Hier bietet es sich an, vor dem `MERGE`-Befehl mit einer `WHERE`-Clause die Existenz der Property zu überprüfen.
 
@@ -187,6 +203,21 @@ MATCH (p:Person {pid:line.ID_Person})
 MERGE (o:Ort {ortsname:line.Herkunft})
 MERGE (p)-[:HERKUNFT]->(o);
 ~~~
+
+## Der `WITH`-Befehl
+
+Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
+
+~~~cypher
+LOAD CSV WITH HEADERS FROM "file:///import.csv" AS line
+CREATE (p:Person {pid:line.ID_Person, name:line.Name, herkunft:line.Herkunft})
+WITH line, p
+WHERE line.Herkunft IS NOT NULL
+MERGE (o:Ort {ortsname:line.Herkunft})
+MERGE (p)-[:HERKUNFT]->(o);
+~~~
+
+Der `LOAD CSV`-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den `CREATE`-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende `WITH`-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
 ## Knoten hat bestimmte Kante nicht
 
@@ -210,20 +241,18 @@ WHERE count > 1 // evtl höherer Wert hier
 RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
 ~~~
 
-## Der `WITH`-Befehl
+## Liste von Briefknoten nach Datum verketten
 
-Da cypher eine deklarative und keine imperative Sprache ist gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
+Gegeben sei eine Menge von Briefknoten, die das Absendedatum in der Property sendDate abgespeichert haben. Der folgende Query verkettet die Briefe in der Reihenfolge des Absendedatums mit NEXT_LETTER-Kanten.
 
 ~~~cypher
-LOAD CSV WITH HEADERS FROM "file:///import.csv" AS line
-CREATE (p:Person {pid:line.ID_Person, name:line.Name, herkunft:line.Herkunft})
-WITH line, p
-WHERE line.Herkunft IS NOT NULL
-MERGE (o:Ort {ortsname:line.Herkunft})
-MERGE (p)-[:HERKUNFT]->(o);
+MATCH (n:Brief) 
+WITH n ORDER BY n.sendDate
+WITH collect(n) as briefe
+CALL apoc.nodes.link(briefe, "NEXT_LETTER")
+RETURN count(*)
 ~~~
 
-Der `LOAD CSV`-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den `CREATE`-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende `WITH`-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
 ## Die Apoc-Bibliothek
 
@@ -266,7 +295,7 @@ return node;
 
 
 |Kantentyp|Beschreibung|
-|---------|------------|
+|------------------------|------------------------------------------------|
 |:IS_CHILD_OF|Verweis auf eingeschachteltes Xml-Element|
 |:FIRST_CHILD_OF|Verweis auf das erste untergeordnete Element|
 |:NEXT_SIBLING|Verweis auf das nächste Xml-Element auf der gleichen Ebene|
