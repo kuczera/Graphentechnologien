@@ -169,7 +169,7 @@ SET d.isoEndDate = date(d.endDate);
 
 Zunächst werden mit dem `MATCH`-Befehl alle Regestenknoten aufgerufen. Anschließend wird für jeden Regestenknoten aus der String-Property `startDate` die Datumsproperty `isoStartDate` berechnet und im Regestenknoten abgespeichert. Mit Hilfe der Property können dann Datumsangaben und Zeiträume abgefragt werden (Beispiel hierzu unten in der Auswertung).
 
-## Exkurs: Herrscherhandeln in den Regesta Imperii
+## Exkurs 1: Herrscherhandeln in den Regesta Imperii
 
 Bisher wurden beim Import der Regesten in den Graphen nur die in den Online-Regesten bereits angelegten Angaben importiert. Im folgenden Schritt werden nun in einem kleinen Exkurs die Regestentexte selbst analysiert und anschließend die Graphdatenbank um eine weitere Informationsebene ergänzt.
 Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Verb im Regest das Herrscherhandeln beschrieben. Um dies auch digital auswerten zu können, haben wir in einem kleinen Testprojekt mit Hilfe des [Stuttgart-München Treetaggers](http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/)[^29b0] aus jedem Regest das erste Verb extrahiert und normalisiert. Die Ergebnisse sind in folgender [Tabelle](https://docs.google.com/spreadsheets/d/1nlbZmQYcT1E3Z58yPmcnulcNQc1e3111Di-4huhV-FY/edit?usp=sharing) einsehbar. Diese Tabelle wird mit dem folgenden cypher-Query in die Graphdatenbank eingelesen.
@@ -269,7 +269,7 @@ MATCH (from:IndexPerson {registerId:line.ID}), (to:Regesta {regnum:line.regnum2}
 CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1, name2:line.name2}]->(to);
 ~~~
 
-### Exkurs: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
+## Exkurs 2: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
 
 In anderen Registern der Regesta Imperii, wie beispielsweise den Regesten Kaiser Friedrichs III., sind teilweise fünf oder mehr Hierarchiestufen vorhanden, die jeweils auch Entitäten repräsentieren.
 
