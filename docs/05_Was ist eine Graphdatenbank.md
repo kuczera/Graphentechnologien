@@ -13,6 +13,8 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+[Dieser Abschnitt ist in Bearbeitung]
+
 # Vorbemerkung
 
 Dieser Abschnitt gibt eine kurze Einführung zu Graphen.[^b72e] Gegenüber relationalen Datenbanken, in denen die Daten in  Tabellen abgelegt und verknüpft sind, werden in Graphen Knoten für die Speicherung der Daten verwendet und diese dann mit Kanten in Relation gesetzt. Aber auch in relationalen Datenbanken kann man natürlich Daten verknüpfen. Wo liegt also der eigentliche Vorteil.
@@ -47,19 +49,43 @@ Auch wenn Graphen ihren Ursprung in der Mathematik haben so sind sie doch ein pr
 
 ![Graphen und nicht Graphen](Bilder/GraphsNotGraphs.png)
 
-Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 3, Bild 2-1
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 3, Bild 1-2
 
 In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie im Bild rechts. Es geht um Informationen, die durch Knoten und Kanten dargestellt werden, wie links im Bild. Der linke Graph sagt beispielsweise aus, dass Person A mit Person B zusammenlebt und verheiratet ist. Person B gehört gleichzeitig ein Auto, dass von Person A gefahren wird. Hier werden in einfachen Schritten Informationen aus der "realen Welt" abgebildet. In den nächsten Abschnitten geht es nun um die Konzepte dahintert.
 
-![Graphen und nicht Graphen](Bilder/SimpleGraph.png)
+# Theorien und Konzepte
 
-![Graphen und nicht Graphen](Bilder/GraphsNotGraphs.png)
+![Beispiel für einen Labeled-Property-Graphen](Bilder/Graph-Algorithms/16-2-1-LabeledPropertyGraph.png)
 
-![Graphen und nicht Graphen](Bilder/GraphsNotGraphs.png)
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 16, Bild 2-1
+
+# Graphtypen und Strukturen
+
+![Einfache Graphtypen](Bilder/Graph-Algorithms/17-2-2-TypesOfGraphs.png)
+
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 17, Bild 2-2
+
+![Zufalls-, Small-World- und Scale-Free-Graphen](Bilder/Graph-Algorithms/17-2-3-RandomSmallWorldScaleFree.png)
+
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 17, Bild 2-3
+
+![Verbundene und nichverbundene Graphen](Bilder/Graph-Algorithms/19-2-4-DisConnected.png)
+
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 19, Bild 2-4
+
+![Ungewichteter Grap](Bilder/unweightedGraphs.svg)
+
+Quelle: Kuczera
+
+![Gewichteter Graph](Bilder/weightedGraphs.svg)
+
+Quelle: Kuczera
+
+
+
+
 
 # Graph Analyse
-
-[Dieser Abschnitt ist in Bearbeitung]
 
 
 # Installation und Start

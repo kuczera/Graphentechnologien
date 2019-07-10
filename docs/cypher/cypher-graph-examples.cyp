@@ -9,3 +9,12 @@ CREATE (A:Person {name:'Node A'})-[:RELATION]->(B:Person {name:'Node B'})-[:RELA
 // MultiGraph
 MATCH (n) DETACH DELETE n;
 CREATE (A:Person {name:'Node A'})-[:RELATION]->(B:Person {name:'Node B'})-[:RELATION]->(C:Person {name:'Node C'})-[:RELATION]->(D:Person {name:'Node D'})-[:RELATION]->(A);
+
+
+// Weighted
+MATCH (n) DETACH DELETE n;
+CREATE (D:Person {name:'Node D'})-[:RELATION {weight:'30'}]->(B:Person {name:'Node B'})-[:RELATION {weight:'50'}]->(C:Person {name:'Node C'})-[:RELATION {weight:'10'}]->(A:Person {name:'Node A'})-[:RELATION {weight:'70'}]->(E:Person {name:'Node E'})
+CREATE (D)-[:RELATION {weight:'90'}]->(C)
+;
+
+// Unweighted
