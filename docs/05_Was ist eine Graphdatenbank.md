@@ -77,7 +77,7 @@ In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
 |Gewichtete und ungewichtete Graphen|Gibt es (domänen-spezifische) Werte für Wichtungen an Knoten und Kanten|Werte machen den Graphen reicher an Informationen; Viele Algoritmen benötigen gewichtende Werte|
 |Gerichtete und ungerichtete Graphen|Ist eine Verbindung hierarchisch oder gegenseitig|Die Richtung einer Kante sind für viele Auswertungen von Relevanz|
 |Zyklische und nicht zyklische Graphen|||
-|Graphdichte|Das Verhältnis von Kanten zu Knotenzahl|Extrem dichte oder extrem dünne Graphen können die Analyse erschweren. Ggf. können Änderungen an der Modellierung helfen|
+|Graphdichte|Das Verhältnis von Kanten zu Knotenzahl|Extrem dichte oder extrem dünne Graphen können die Analyse erschweren. Ggf. können Änderungen an der Modellierung helfen, sofern es die Domäne zulässt|
 |Monopartite, bipartite, and k-partite Graphen|Gibt es einen, zwei oder mehrere Knotentypen|Mehr Knotentypen erleichtern in den Geisteswissenschaften die Modellierung, Graphalgorithmen arbeiten oft aber nur mit einem Knotentyp|
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 18-19.
