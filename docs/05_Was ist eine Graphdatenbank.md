@@ -126,7 +126,7 @@ Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. We
 
 In einem ungerichteten Graphen geht eine Beziehungen immer in beide Richtungen (beispielsweise EHEPARTNER_VON). In einem gerichteten Graphen haben Beziehungen eine Richtung. Betrachtet man einen Knoten gibt es eingehende Kanten, die auf den Knoten zeigen und ausgehende Kanten, die von dem Knoten ausgehen. Mit der Angabe von Richtung wird eine zusätzliche Informationsdimension hinzugefügt. Angenommen im linken Beispiel der folgenden Abbildung würden die Knoten Personen und die ungerichtete Kante ihre gegenseitige Freundschaft darstellen. Damit ergibt sich, dass Person A mit Person B befreundet ist.
 
-![Gerichtete und ungerichtete Graphen](Bilder/Graph-Algorithms/Graph-Algorithms/21-2-7-UnDirected.png)
+![Gerichtete und ungerichtete Graphen](Bilder/Graph-Algorithms/21-2-7-UnDirected.png)
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 21, Bild 2-7.
 
@@ -134,7 +134,7 @@ Erweitern wir das Beispiel für die rechte Abbildung, so das die Freundschafts-K
 
 Auch bei der Modellierung von Verwandtschaft kommen gerichtete und ungerichtete Verbindungen vor.
 
-![Verwandtschaft im Graphen mit gerichteten und ungerichteten Kanten](Bilder/Nomen_et_Gens.svg)
+![Verwandtschaft im Graphen mit gerichteten und ungerichteten Kanten](Bilder/NomenEtGensBeispiel1.svg)
 
 In der Graphdatenbank neo4j müssen Kanten eine Richtung haben. Ungerichtete Beziehungen kann man mit zwei Kanten vom gleichen Typ aber unterschiedlicher Richtung zwischen einem Knotenpaar modellieren. Im Verwandtschaftsbeispiel sind die zwei Personenknoten der Eltern mit zwei EHEPARTNER_VON-Kanten unterschiedlicher Richtung verbunden. Es handelt sich um eine ungerichtete Beziehung, da es rechtlich nicht möglich ist, dass eine Person mit einer anderen Person verheiratet umgekehrt aber nicht. Für die Eltern-Kind-Beziehung reicht eine Kante, da diese Beziehung hierarchisch ist.
 
