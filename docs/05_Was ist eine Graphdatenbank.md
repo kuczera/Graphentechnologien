@@ -28,7 +28,7 @@ Graphen gehen zurück auf die erste Hälfte des 18 Jahrhunderts. 1736 löste Leo
 
 ![EulerscheBruecken](Bilder/Eulersche-Brücken.png)
 
-Quelle: [http://oreilly.com/catalog/errata.csp?isbn=9781492047681/](Needham/Hodler 2019), S. 2
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 2, Bild 1-1.
 
 Euler kam zu der Einsicht, dass nur die Verbindungen relevant sind und legte damit den Grundstein für die Graphtheorie und ihre Mathematik. Er zeigte, dass das Brückenproblem nicht lösbar war, da zu jedem Stadtbereich eine ungerade Anzahl von Brücken führte, es dürfe aber nur zwei Ufer mit einer ungeraden Anzahl geben.[^bfe5]
 
@@ -43,13 +43,19 @@ Knoten und Kanten können also noch zusätzliche Eigenschaften besitzen, in dene
 
 # Graph und nicht Graph
 
-Auch wenn Graphen ihren Ursprung in der Mathematik haben so sind sie doch ein pragmatisches Werkzeug um Informationen zu modellierung und zu analysieren.
+Auch wenn Graphen ihren Ursprung in der Mathematik haben so sind sie doch ein pragmatisches Werkzeug um Informationen zu modellieren und zu analysieren.
 
 ![Graphen und nicht Graphen](Bilder/GraphsNotGraphs.png)
 
-Quelle: [http://oreilly.com/catalog/errata.csp?isbn=9781492047681/](Needham/Hodler 2019), S. 3
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 3, Bild 2-1
 
 In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie im Bild rechts. Es geht um Informationen, die durch Knoten und Kanten dargestellt werden, wie links im Bild. Der linke Graph sagt beispielsweise aus, dass Person A mit Person B zusammenlebt und verheiratet ist. Person B gehört gleichzeitig ein Auto, dass von Person A gefahren wird. Hier werden in einfachen Schritten Informationen aus der "realen Welt" abgebildet. In den nächsten Abschnitten geht es nun um die Konzepte dahintert.
+
+![Graphen und nicht Graphen](Bilder/SimpleGraph.png)
+
+![Graphen und nicht Graphen](Bilder/GraphsNotGraphs.png)
+
+![Graphen und nicht Graphen](Bilder/GraphsNotGraphs.png)
 
 # Graph Analyse
 
@@ -60,7 +66,7 @@ In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie
 
 Informationen zur Installation von neo4j finden Sie auf den Dokumentationsseiten unter [https://neo4j.com/docs/operations-manual/current/installation/](https://neo4j.com/docs/operations-manual/current/installation/). Für den normalen Nutzer empfiehlt sich die Installation von [neo4j-Desktop](https://neo4j.com/download/). Unter [https://neo4j.com/blog/this-week-in-neo4j-getting-started-with-neo4j-desktop-and-browser-graphileon-personal-edition-intuitive-detections-research-with-neo4j/?ref=twitter#features-1](https://neo4j.com/blog/this-week-in-neo4j-getting-started-with-neo4j-desktop-and-browser-graphileon-personal-edition-intuitive-detections-research-with-neo4j/?ref=twitter#features-1) finden sich Videos, in denen die Installation von [neo4j-Desktop](https://www.youtube.com/watch?v=8yWhuUnPapw) und erste Schritte im [neo4j-Browser](https://www.youtube.com/watch?v=rQTximyaETA) erklärt werden.
 
-[^b72e]: Dieser Abschnitt beruht auf dem Kaptiel Introduction des Buches Graph Algorithms: Practical Examples in Apache Spark and Neo4j von Mark Needham und Amy E. Hodler, O'Reilly Media 2019 (http://oreilly.com/catalog/errata.csp?isbn=9781492047681), S. xiii-xv und S. 1-10.
+[^b72e]: Dieser Abschnitt beruht auf dem Kaptiel Introduction des Buches Graph Algorithms: Practical Examples in Apache Spark and Neo4j von Mark Needham und Amy E. Hodler, O'Reilly Media 2019 (https://www.oreilly.com/library/view/graph-algorithms/9781492047674/), S. xiii-xv und S. 1-10.
 
 [^caa8]: Vgl. https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem.
 
