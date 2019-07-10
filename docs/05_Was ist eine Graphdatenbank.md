@@ -69,6 +69,20 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 17, Bild 2-3
 
+In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
+
+|Graphattribute|Unterschiede|Überlegungen zum Algorithms|
+|----------|------------|-------------------------------------------------|
+|Verbundene und nichtverbundene Graphen|Gibt es einen Pfad (Länge egal) zwischen zwei beliebigen Knoten eines Graphen|Knoteninseln können zu unvorhergesehenem Verhalten, wie Abbruch oder Auslassen von Knoteninseln|
+|Gewichtete und ungewichtete Graphen|Gibt es (domänen-spezifische) Werte für Wichtungen an Knoten und Kanten|Werte machen den Graphen reicher an Informationen; Viele Algoritmen benötigen gewichtende Werte|
+|Gerichtete und ungerichtete Graphen|Ist eine Verbindung hierarchisch oder gegenseitig|Die Richtung einer Kante sind für viele Auswertungen von Relevanz|
+|Zyklische und nicht zyklische Graphen|||
+|Graphdichte|Das Verhältnis von Kanten zu Knotenzahl|Extrem dichte oder extrem dünne Graphen können die Analyse erschweren. Ggf. können Änderungen an der Modellierung helfen|
+|Monopartite, bipartite, and k-partite Graphen|Gibt es einen, zwei oder mehrere Knotentypen|Mehr Knotentypen erleichtern in den Geisteswissenschaften die Modellierung, Graphalgorithmen arbeiten oft aber nur mit einem Knotentyp|
+
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 18-19.
+
+
 Sind in einem Graphen mehrere Gruppen von verbundenen Knoten vorhanden und es gibt zwischen den Gruppen keine Verbindungen, handelt es sich um nichtverbundene Graphen.
 ![Nichtverbundener Graph](Bilder/disconnectedGraph.svg)
 Das Beispiel zeigt einen Graphen mit Personen und ihren Verwandtschaftsbeziehungen. Es gibt mehrere Stammbäume, die nicht miteinander verbunden sind.
@@ -77,13 +91,11 @@ Das folgende Bild zeigt einen verbundenen Graphen, bei dem alle Knoten mindesten
 ![Verbundener Graph](Bilder/connectedGraph.svg)
 Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Text-Datei als XML-Baum importiert wurde. Da es sich bei jeder XML-Datei um einen Baum handelt und jeder XML-Knoten Teil dieses Baumes ist, gibt es keine nichtverbundenen Teile.
 
-Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 19, Bild 2-4
-
-![Ungewichteter Grap](Bilder/unweightedGraphs.svg)
+![Ungewichteter Graph](Bilder/unWeightedGraph.svg)
 
 Quelle: Kuczera
 
-![Gewichteter Graph](Bilder/weightedGraphs.svg)
+![Gewichteter Graph](Bilder/weightedGraph.svg)
 
 Quelle: Kuczera
 

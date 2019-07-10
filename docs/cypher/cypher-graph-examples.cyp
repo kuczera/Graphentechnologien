@@ -13,8 +13,8 @@ CREATE (A:Person {name:'Node A'})-[:RELATION]->(B:Person {name:'Node B'})-[:RELA
 
 // Weighted
 MATCH (n) DETACH DELETE n;
-CREATE (D:Person {name:'Node D'})-[:RELATION {weight:'30'}]->(B:Person {name:'Node B'})-[:RELATION {weight:'50'}]->(C:Person {name:'Node C'})-[:RELATION {weight:'10'}]->(A:Person {name:'Node A'})-[:RELATION {weight:'70'}]->(E:Person {name:'Node E'})
-CREATE (D)-[:RELATION {weight:'90'}]->(C)
+CREATE (D:Person {name:'Node D'})-[:RELATION {weight:'RELATION: 30'}]->(B:Person {name:'Node B'})-[:RELATION {weight:'RELATION: 50'}]->(C:Person {name:'Node C'})-[:RELATION {weight:'RELATION: 10'}]->(A:Person {name:'Node A'})-[:RELATION {weight:'RELATION: 70'}]->(E:Person {name:'Node E'})
+CREATE (D)-[:RELATION {weight:'RELATION: 90'}]->(C)
 ;
 
 // Unweighted
