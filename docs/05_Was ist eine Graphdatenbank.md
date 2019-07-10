@@ -82,6 +82,7 @@ In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 18-19.
 
+## Verbundene und nichtverbundene Graphen
 
 Sind in einem Graphen mehrere Gruppen von verbundenen Knoten vorhanden und es gibt zwischen den Gruppen keine Verbindungen, handelt es sich um nichtverbundene Graphen.
 ![Nichtverbundener Graph](Bilder/disconnectedGraph.svg)
@@ -91,15 +92,19 @@ Das folgende Bild zeigt einen verbundenen Graphen, bei dem alle Knoten mindesten
 ![Verbundener Graph](Bilder/connectedGraph.svg)
 Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Text-Datei als XML-Baum importiert wurde. Da es sich bei jeder XML-Datei um einen Baum handelt und jeder XML-Knoten Teil dieses Baumes ist, gibt es keine nichtverbundenen Teile.
 
-![Ungewichteter Graph](Bilder/unWeightedGraph.svg)
+## Gewichtete und ungewichtete Graphen
 
+In ungewichteten Graphen besitzen die Kanten keinen Wert zu Wichtung.
+
+![Ungewichteter Graph](Bilder/unWeightedGraph.svg)
 Quelle: Kuczera
+
+Im Graphen werden Beziehungen zwischen Personen abgebildet. Über die Intensität der Beziehungen wird nichts gesagt. In der folgenden Abbildung wurde den Beziehungen zwischen jeweils ein Wert zwischen 0 und 100 zugeordnet.
 
 ![Gewichteter Graph](Bilder/weightedGraph.svg)
-
 Quelle: Kuczera
 
-
+Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. Werte für Wichtungen können beispielsweise Entfernungen, Kosten, Kapazitäten oder auch domänenspezifische Priorisierungen sein.
 
 
 
