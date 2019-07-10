@@ -109,11 +109,13 @@ Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Text-
 In ungewichteten Graphen besitzen die Kanten keinen Wert zu Wichtung.
 
 ![Ungewichteter Graph](Bilder/unWeightedGraph.svg)
+
 Quelle: Kuczera
 
 Im Graphen werden Beziehungen zwischen Personen abgebildet. Über die Intensität der Beziehungen wird nichts gesagt. In der folgenden Abbildung wurde den Beziehungen zwischen jeweils ein Wert zwischen 0 und 100 zugeordnet.
 
 ![Gewichteter Graph](Bilder/weightedGraph.svg)
+
 Quelle: Kuczera
 
 Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. Werte für Wichtungen können beispielsweise Entfernungen, Kosten, Kapazitäten oder auch domänenspezifische Priorisierungen sein.
