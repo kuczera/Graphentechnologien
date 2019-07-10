@@ -69,7 +69,13 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 17, Bild 2-3
 
-![Verbundene und nichverbundene Graphen](Bilder/Graph-Algorithms/19-2-4-DisConnected.png)
+Sind in einem Graphen mehrere Gruppen von verbundenen Knoten vorhanden und es gibt zwischen den Gruppen keine Verbindungen, handelt es sich um nichtverbundene Graphen.
+![Nichtverbundener Graph](Bilder/disConnectedGraph.svg)
+Das Beispiel zeigt einen Graphen mit Personen und ihren Verwandtschaftsbeziehungen. Es gibt mehrere Stammbäume, die nicht miteinander verbunden sind.
+
+Das folgende Bild zeigt einen verbundenen Graphen, bei dem alle Knoten mindestens eine Kante haben und jeder Knoten jeden anderen über einen Pfad erreichen kann.
+![Verbundener Graph](Bilder/connectedGraph.svg)
+Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Datei als XML-Baum importiert wurde. Da es sich bei jeder XML-Datei um einen Baum handelt und jeder XML-Knoten Teil dieses Baumes ist, gibt es keine nichtverbundenen Teile.
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 19, Bild 2-4
 
