@@ -1,11 +1,11 @@
 ---
-title: Einführung zu Graphen
+title: Einführung und Theorie
 layout: default
 order: 5
 contents: true
 ---
 
-# Einführung zu Graphen
+# Einführung und Theorie
 
 # Inhalt
 {:.no_toc}
@@ -16,6 +16,8 @@ contents: true
 # Vorbemerkung
 
 Dieser Abschnitt gibt eine kurze Einführung zu Graphen.[^b72e] Gegenüber relationalen Datenbanken, in denen die Daten in  Tabellen abgelegt und verknüpft sind, werden in Graphen Knoten für die Speicherung der Daten verwendet und diese dann mit Kanten in Relation gesetzt. Aber auch in relationalen Datenbanken kann man natürlich Daten verknüpfen. Wo liegt also der eigentliche Vorteil.
+![Beispielgraph](Bilder/directTransitive.svg)
+(Quelle: Kuczera)
 Der wirkliche Mehrwert bei Graphdatenbanken ergibt sich aus gerichteten und transitiven Beziehungen. Hat A eine direkte Kante zu B und B eine direkte Kante zu C dann ist A zwar nicht direkt sonder transitiv mit C verbunden.
 Gerade wenn ein Graph sehr viele verschiedene solcher transitiven Verbindungen hat lassen sich Muster und Verbindungen identifizieren die in relationalen Modellen oft unentdeckt bleiben. Darüber hinaus bietet der Graph eine optimale Ausgangslage für anschließende Netzwerkanalyse des gesamten Graphen oder von ausgewählten Subgraphen.
 War es in den digitalen Geisteswissenschaften bis vor einigen Jahren noch höchste Priorität überhaupt digitale Forschungsdaten bereitzustellen ist es heute die Herausforderung Daten in ihrem Kontext zu erfassen. Hierfür lassen sich Graphdatenbanken hervorragend nutzen.
