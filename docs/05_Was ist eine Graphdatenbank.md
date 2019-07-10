@@ -43,7 +43,9 @@ Der Beispielgraph zeigt oben einen <b>Knoten (engl. Nodes)</b>	vom Typ Person mi
 
 Knoten und Kanten können also noch zusätzliche Eigenschaften besitzen, in denen weitere Informationen gespeichert sind. Diese Eigenschaften sind spezifisch für die jeweiligen Knotentypen. So sieht man in der Abbildung, dass die beiden Knoten vom Typ Person jeweils noch die Eigenschaft Namen haben, deren Wert dann die Namen der Person angibt, während der Knoten vom Typ Buch die Eigenschaft Titel trägt, in dem der Titel des Buches abgespeichert wird.
 
-# Graph und nicht Graph
+# Graphtypen und Strukturen
+
+## Graph und nicht Graph
 
 Auch wenn Graphen ihren Ursprung in der Mathematik haben so sind sie doch ein pragmatisches Werkzeug um Informationen zu modellieren und zu analysieren.
 
@@ -53,7 +55,7 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 
 In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie im Bild rechts. Es geht um Informationen, die durch Knoten und Kanten dargestellt werden, wie links im Bild.
 
-# Labeled Property Graph
+## Labeled Property Graph
 
 Einen Graphen in denen die Knoten und Kanten Typen (Labels) und Eigenschaften (Properties) besitzen nennt man "Labeled Property Graph" (LPG).
 
@@ -64,7 +66,7 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 
 Der o.a. Graph sagt beispielsweise aus, dass der Knoten A mit dem Label Person und den zugehörigen Properties (name:'Dan', born etc.) mit Person B zusammenlebt und verheiratet ist. Person B gehört gleichzeitig ein Auto (mit der Property Marke: 'Volvo'), dass von Person A gefahren wird. Hier werden in einfachen Schritten Informationen aus der "realen Welt" abgebildet. In den nächsten Abschnitten geht es nun um die Konzepte dahintert.
 
-# Graphtypen und Strukturen
+## Einfache Graphtypen
 
 In der folgenden Abbildung sind verschiedene Graphtypen abgebildet. Im Beispiel links ist ein einfacher Graph dargestellt, in dem jedes Knotenpaar nur eine Verbindung haben kann.
 
@@ -77,14 +79,14 @@ Im mittleren Beispiel sind mehrere Verbindungen zwischen Knotenpaaren möglich. 
 Die folgende Abbildung zeigt links ein Beispiel für einen zufälligen Graphen, aus dem sich keine hierarichischen oder strukturellen Informationen ablesen lassen.
 ![Zufalls-, Small-World- und Scale-Free-Graphen](Bilder/Graph-Algorithms/17-2-3-RandomSmallWorldScaleFree.png)
 
-Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 17, Bild 2-3
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 17, Bild 2-3.
 
 In der mittleren Abbildung ein Small-World-Graph abgebildet, der lokal stark geclustert ist und eine geringe durchschnittliche Pfadlänge hat. Die rechte Abbildung zeigt ein skalenfreies Netzwerk, wie es das Word-Wide-Web eines ist.
 
 In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
 
 |Graphattribute|Unterschiede|Überlegungen zum Algorithms|
-|----------|------------|-------------------------------------------------|
+|-----------|--------------|-------------------------------------------------|
 |Verbundene und nichtverbundene Graphen|Gibt es einen Pfad (Länge egal) zwischen zwei beliebigen Knoten eines Graphen|Knoteninseln können zu unvorhergesehenem Verhalten, wie Abbruch oder Auslassen von Knoteninseln|
 |Gewichtete und ungewichtete Graphen|Gibt es (domänen-spezifische) Werte für Wichtungen an Knoten und Kanten|Werte machen den Graphen reicher an Informationen; Viele Algoritmen benötigen gewichtende Werte|
 |Gerichtete und ungerichtete Graphen|Ist eine Verbindung hierarchisch oder gegenseitig|Die Richtung einer Kante sind für viele Auswertungen von Relevanz|
@@ -120,7 +122,21 @@ Quelle: Kuczera
 
 Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. Werte für Wichtungen können beispielsweise Entfernungen, Kosten, Kapazitäten oder auch domänenspezifische Priorisierungen sein.
 
+## Gerichtete und ungerichtete Graphen
 
+In einem ungerichteten Graphen geht eine Beziehungen immer in beide Richtungen (beispielsweise EHEPARTNER_VON). In einem gerichteten Graphen haben Beziehungen eine Richtung. Betrachtet man einen Knoten gibt es eingehende Kanten, die auf den Knoten zeigen und ausgehende Kanten, die von dem Knoten ausgehen. Mit der Angabe von Richtung wird eine zusätzliche Informationsdimension hinzugefügt. Angenommen im linken Beispiel der folgenden Abbildung würden die Knoten Personen und die ungerichtete Kante ihre gegenseitige Freundschaft darstellen. Damit ergibt sich, dass Person A mit Person B befreundet ist.
+
+![Gerichtete und ungerichtete Graphen](Bilder/Graph-Algorithms/Graph-Algorithms/21-2-7-UnDirected.png)
+
+Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 21, Bild 2-7.
+
+Erweitern wir das Beispiel für die rechte Abbildung, so das die Freundschafts-Kanten gerichtet sind, so wird es einerseite möglich, zu zeigen, dass Person D für Person A freundschaftliche Gefühle hegt, die A aber nicht erwidert. Nehmen wir noch eine Wichtung der Freundschafskanten hinzu, könnte man modellieren, dass die freundschaftlichen Gefühle von Person C gegenüber A mit 0,8 gewichtet sind, umgekehrt die Zuneigung von Person A zu Person C aber nur mit 0,3 gewichtet sind.
+
+Auch bei der Modellierung von Verwandtschaft kommen gerichtete und ungerichtete Verbindungen vor.
+
+![Verwandtschaft im Graphen mit gerichteten und ungerichteten Kanten](Bilder/Nomen_et_Gens.svg)
+
+In der Graphdatenbank neo4j müssen Kanten eine Richtung haben. Ungerichtete Beziehungen kann man mit zwei Kanten vom gleichen Typ aber unterschiedlicher Richtung zwischen einem Knotenpaar modellieren. Im Verwandtschaftsbeispiel sind die zwei Personenknoten der Eltern mit zwei EHEPARTNER_VON-Kanten unterschiedlicher Richtung verbunden. Es handelt sich um eine ungerichtete Beziehung, da es rechtlich nicht möglich ist, dass eine Person mit einer anderen Person verheiratet umgekehrt aber nicht. Für die Eltern-Kind-Beziehung reicht eine Kante, da diese Beziehung hierarchisch ist.
 
 # Graph Analyse
 
