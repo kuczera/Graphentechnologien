@@ -1,3 +1,5 @@
+
+
 ---
 title: Anhang
 layout: default
@@ -246,7 +248,7 @@ RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
 Gegeben sei eine Menge von Briefknoten, die das Absendedatum in der Property sendDate abgespeichert haben. Der folgende Query verkettet die Briefe in der Reihenfolge des Absendedatums mit NEXT_LETTER-Kanten.
 
 ~~~cypher
-MATCH (n:Brief) 
+MATCH (n:Brief)
 WITH n ORDER BY n.sendDate
 WITH collect(n) as briefe
 CALL apoc.nodes.link(briefe, "NEXT_LETTER")
