@@ -5,21 +5,14 @@ order: 5
 contents: true
 ---
 
-# Einführung und Theorie
-
-# Inhalt
-{:.no_toc}
-
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
-
-[Dieser Abschnitt ist in Bearbeitung]
 
 # Vorbemerkung
 
 Dieser Abschnitt gibt eine kurze Einführung zu Graphen.[^b72e] Gegenüber relationalen Datenbanken, in denen die Daten in  Tabellen abgelegt und verknüpft sind, werden in Graphen Knoten für die Speicherung der Daten verwendet und diese dann mit Kanten in Relation gesetzt. Aber auch in relationalen Datenbanken kann man natürlich Daten verknüpfen. Wo liegt also der eigentliche Vorteil.
-![Beispielgraph](Bilder/directTransitive.svg)
+
+![Beispielgraph](Bilder/directTransitive.png)
 (Quelle: Kuczera)
+
 Der wirkliche Mehrwert bei Graphdatenbanken ergibt sich aus gerichteten und transitiven Beziehungen. Hat A eine direkte Kante zu B und B eine direkte Kante zu C dann ist A zwar nicht direkt sonder transitiv mit C verbunden.
 Gerade wenn ein Graph sehr viele verschiedene solcher transitiven Verbindungen hat lassen sich Muster und Verbindungen identifizieren die in relationalen Modellen oft unentdeckt bleiben. Darüber hinaus bietet der Graph eine optimale Ausgangslage für anschließende Netzwerkanalyse des gesamten Graphen oder von ausgewählten Subgraphen.
 War es in den digitalen Geisteswissenschaften bis vor einigen Jahren noch höchste Priorität überhaupt digitale Forschungsdaten bereitzustellen ist es heute die Herausforderung Daten in ihrem Kontext zu erfassen. Hierfür lassen sich Graphdatenbanken hervorragend nutzen.
@@ -28,7 +21,7 @@ War es in den digitalen Geisteswissenschaften bis vor einigen Jahren noch höchs
 
 Graphen gehen zurück auf die erste Hälfte des 18 Jahrhunderts. 1736 löste Leonhard Euler das "Königsberger Brückenproblem", das fragte ob es möglich sei, die 4 durch den Fluß getrennten Stadtbereiche, die über 7 Brücken verbunden waren jeweils einmal zu besuchen, ohne eine der Brücken zweimal zu nutzen.[^caa8]
 
-![EulerscheBruecken](Bilder/Eulersche-Brücken.png)
+![EulerscheBruecken](Bilder/Eulersche-Bruecken.png)
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 2, Bild 1-1.
 
@@ -99,24 +92,24 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 ## Verbundene und nichtverbundene Graphen
 
 Sind in einem Graphen mehrere Gruppen von verbundenen Knoten vorhanden und es gibt zwischen den Gruppen keine Verbindungen, handelt es sich um nichtverbundene Graphen.
-![Nichtverbundener Graph](Bilder/disconnectedGraph.svg)
+![Nichtverbundener Graph](Bilder/disconnectedGraph.png)
 Das Beispiel zeigt einen Graphen mit Personen und ihren Verwandtschaftsbeziehungen. Es gibt mehrere Stammbäume, die nicht miteinander verbunden sind.
 
 Das folgende Bild zeigt einen verbundenen Graphen, bei dem alle Knoten mindestens eine Kante haben und jeder Knoten jeden anderen über einen Pfad erreichen kann.
-![Verbundener Graph](Bilder/connectedGraph.svg)
+![Verbundener Graph](Bilder/connectedGraph.png)
 Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Text-Datei als XML-Baum importiert wurde. Da es sich bei jeder XML-Datei um einen Baum handelt und jeder XML-Knoten Teil dieses Baumes ist, gibt es keine nichtverbundenen Teile.
 
 ## Gewichtete und ungewichtete Graphen
 
 In ungewichteten Graphen besitzen die Kanten keinen Wert zu Wichtung.
 
-![Ungewichteter Graph](Bilder/unWeightedGraph.svg)
+![Ungewichteter Graph](Bilder/unWeightedGraph.png)
 
 Quelle: Kuczera
 
 Im Graphen werden Beziehungen zwischen Personen abgebildet. Über die Intensität der Beziehungen wird nichts gesagt. In der folgenden Abbildung wurde den Beziehungen zwischen jeweils ein Wert zwischen 0 und 100 zugeordnet.
 
-![Gewichteter Graph](Bilder/weightedGraph.svg)
+![Gewichteter Graph](Bilder/weightedGraph.png)
 
 Quelle: Kuczera
 
@@ -127,15 +120,13 @@ Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. We
 In einem ungerichteten Graphen geht eine Beziehungen immer in beide Richtungen (beispielsweise EHEPARTNER_VON). In einem gerichteten Graphen haben Beziehungen eine Richtung. Betrachtet man einen Knoten gibt es eingehende Kanten, die auf den Knoten zeigen und ausgehende Kanten, die von dem Knoten ausgehen. Mit der Angabe von Richtung wird eine zusätzliche Informationsdimension hinzugefügt. Angenommen im linken Beispiel der folgenden Abbildung würden die Knoten Personen und die ungerichtete Kante ihre gegenseitige Freundschaft darstellen. Damit ergibt sich, dass Person A mit Person B befreundet ist.
 
 ![Gerichtete und ungerichtete Graphen](Bilder/Graph-Algorithms/21-2-7-UnDirected.png)
-
 (Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 21, Bild 2-7)
 
 Erweitern wir das Beispiel für die rechte Abbildung, so das die Freundschafts-Kanten gerichtet sind, so wird es einerseite möglich, zu zeigen, dass Person D für Person A freundschaftliche Gefühle hegt, die A aber nicht erwidert. Nehmen wir noch eine Wichtung der Freundschafskanten hinzu, könnte man modellieren, dass die freundschaftlichen Gefühle von Person C gegenüber A mit 0,8 gewichtet sind, umgekehrt die Zuneigung von Person A zu Person C aber nur mit 0,3 gewichtet sind.
 
 Auch bei der Modellierung von Verwandtschaft kommen gerichtete und ungerichtete Verbindungen vor.
 
-![Verwandtschaft im Graphen mit gerichteten und ungerichteten Kanten](Bilder/NomenEtGensBeispiel1.svg)
-
+![Verwandtschaft im Graphen mit gerichteten und ungerichteten Kanten](Bilder/NomenEtGensBeispiel1.png)
 (Quelle: Kuczera)
 
 In der Graphdatenbank neo4j müssen Kanten eine Richtung haben. Ungerichtete Beziehungen kann man mit zwei Kanten vom gleichen Typ aber unterschiedlicher Richtung zwischen einem Knotenpaar modellieren. Im Verwandtschaftsbeispiel sind die zwei Personenknoten der Eltern mit zwei EHEPARTNER-Kanten unterschiedlicher Richtung verbunden. Es handelt sich um eine ungerichtete Beziehung, da es rechtlich nicht möglich ist, dass eine Person mit einer anderen Person verheiratet umgekehrt aber nicht. Für die Eltern-Kind-Beziehung reicht eine Kante, da diese Beziehung hierarchisch ist.
