@@ -5,20 +5,10 @@ author:
 - Andreas Kuczera
 lang: de
 ---
----
-title: Einleitung
-layout: default
-order: 1
-contents: true
----
 
 # Einleitung
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 ## Warum ein Buch über Graphentechnologien  in den digitalen Geisteswissenschaften?
 
@@ -54,15 +44,11 @@ Für Fragen und Rückmeldungen stehe ich gerne zur Verfügung und wünsche beim 
 Gießen, im August 2018
 
 Andreas Kuczera
----
-title: Einführung und Theorie
-layout: default
-order: 5
-contents: true
----
 
 
-# Vorbemerkung
+# Einführung und Theorie
+
+## Einführung zu Graphen
 
 Dieser Abschnitt gibt eine kurze Einführung zu Graphen.[^b72e] Gegenüber relationalen Datenbanken, in denen die Daten in  Tabellen abgelegt und verknüpft sind, werden in Graphen Knoten für die Speicherung der Daten verwendet und diese dann mit Kanten in Relation gesetzt. Aber auch in relationalen Datenbanken kann man natürlich Daten verknüpfen. Wo liegt also der eigentliche Vorteil.
 
@@ -73,7 +59,7 @@ Der wirkliche Mehrwert bei Graphdatenbanken ergibt sich aus gerichteten und tran
 Gerade wenn ein Graph sehr viele verschiedene solcher transitiven Verbindungen hat lassen sich Muster und Verbindungen identifizieren die in relationalen Modellen oft unentdeckt bleiben. Darüber hinaus bietet der Graph eine optimale Ausgangslage für anschließende Netzwerkanalyse des gesamten Graphen oder von ausgewählten Subgraphen.
 War es in den digitalen Geisteswissenschaften bis vor einigen Jahren noch höchste Priorität überhaupt digitale Forschungsdaten bereitzustellen ist es heute die Herausforderung Daten in ihrem Kontext zu erfassen. Hierfür lassen sich Graphdatenbanken hervorragend nutzen.
 
-# Herkunft und Idee
+## Herkunft und Idee
 
 Graphen gehen zurück auf die erste Hälfte des 18 Jahrhunderts. 1736 löste Leonhard Euler das "Königsberger Brückenproblem", das fragte ob es möglich sei, die 4 durch den Fluß getrennten Stadtbereiche, die über 7 Brücken verbunden waren jeweils einmal zu besuchen, ohne eine der Brücken zweimal zu nutzen.[^caa8]
 
@@ -92,9 +78,9 @@ Der Beispielgraph zeigt oben einen <b>Knoten (engl. Nodes)</b>	vom Typ Person mi
 
 Knoten und Kanten können also noch zusätzliche Eigenschaften besitzen, in denen weitere Informationen gespeichert sind. Diese Eigenschaften sind spezifisch für die jeweiligen Knotentypen. So sieht man in der Abbildung, dass die beiden Knoten vom Typ Person jeweils noch die Eigenschaft Namen haben, deren Wert dann die Namen der Person angibt, während der Knoten vom Typ Buch die Eigenschaft Titel trägt, in dem der Titel des Buches abgespeichert wird.
 
-# Graphtypen und Strukturen
+## Graphtypen und Strukturen
 
-## Graph und nicht Graph
+### Graph und nicht Graph
 
 Auch wenn Graphen ihren Ursprung in der Mathematik haben so sind sie doch ein pragmatisches Werkzeug um Informationen zu modellieren und zu analysieren.
 
@@ -104,7 +90,7 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 
 In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie im Bild rechts. Es geht um Informationen, die durch Knoten und Kanten dargestellt werden, wie links im Bild.
 
-## Labeled Property Graph
+### Labeled Property Graph
 
 Einen Graphen in denen die Knoten und Kanten Typen (Labels) und Eigenschaften (Properties) besitzen nennt man "Labeled Property Graph" (LPG).
 
@@ -115,7 +101,7 @@ Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](N
 
 Der o.a. Graph sagt beispielsweise aus, dass der Knoten A mit dem Label Person und den zugehörigen Properties (name:'Dan', born etc.) mit Person B zusammenlebt und verheiratet ist. Person B gehört gleichzeitig ein Auto (mit der Property Marke: 'Volvo'), dass von Person A gefahren wird. Hier werden in einfachen Schritten Informationen aus der "realen Welt" abgebildet. In den nächsten Abschnitten geht es nun um die Konzepte dahintert.
 
-## Einfache Graphtypen
+### Einfache Graphtypen
 
 In der folgenden Abbildung sind verschiedene Graphtypen abgebildet. Im Beispiel links ist ein einfacher Graph dargestellt, in dem jedes Knotenpaar nur eine Verbindung haben kann.
 
@@ -145,7 +131,7 @@ In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 18-19.
 
-## Verbundene und nichtverbundene Graphen
+### Verbundene und nichtverbundene Graphen
 
 Sind in einem Graphen mehrere Gruppen von verbundenen Knoten vorhanden und es gibt zwischen den Gruppen keine Verbindungen, handelt es sich um nichtverbundene Graphen.
 ![Nichtverbundener Graph](Bilder/disconnectedGraph.png)
@@ -155,7 +141,7 @@ Das folgende Bild zeigt einen verbundenen Graphen, bei dem alle Knoten mindesten
 ![Verbundener Graph](Bilder/connectedGraph.png)
 Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Text-Datei als XML-Baum importiert wurde. Da es sich bei jeder XML-Datei um einen Baum handelt und jeder XML-Knoten Teil dieses Baumes ist, gibt es keine nichtverbundenen Teile.
 
-## Gewichtete und ungewichtete Graphen
+### Gewichtete und ungewichtete Graphen
 
 In ungewichteten Graphen besitzen die Kanten keinen Wert zu Wichtung.
 
@@ -171,7 +157,7 @@ Quelle: Kuczera
 
 Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. Werte für Wichtungen können beispielsweise Entfernungen, Kosten, Kapazitäten oder auch domänenspezifische Priorisierungen sein.
 
-## Gerichtete und ungerichtete Graphen
+### Gerichtete und ungerichtete Graphen
 
 In einem ungerichteten Graphen geht eine Beziehungen immer in beide Richtungen (beispielsweise EHEPARTNER_VON). In einem gerichteten Graphen haben Beziehungen eine Richtung. Betrachtet man einen Knoten gibt es eingehende Kanten, die auf den Knoten zeigen und ausgehende Kanten, die von dem Knoten ausgehen. Mit der Angabe von Richtung wird eine zusätzliche Informationsdimension hinzugefügt. Angenommen im linken Beispiel der folgenden Abbildung würden die Knoten Personen und die ungerichtete Kante ihre gegenseitige Freundschaft darstellen. Damit ergibt sich, dass Person A mit Person B befreundet ist.
 
@@ -187,11 +173,11 @@ Auch bei der Modellierung von Verwandtschaft kommen gerichtete und ungerichtete 
 
 In der Graphdatenbank neo4j müssen Kanten eine Richtung haben. Ungerichtete Beziehungen kann man mit zwei Kanten vom gleichen Typ aber unterschiedlicher Richtung zwischen einem Knotenpaar modellieren. Im Verwandtschaftsbeispiel sind die zwei Personenknoten der Eltern mit zwei EHEPARTNER-Kanten unterschiedlicher Richtung verbunden. Es handelt sich um eine ungerichtete Beziehung, da es rechtlich nicht möglich ist, dass eine Person mit einer anderen Person verheiratet umgekehrt aber nicht. Für die Eltern-Kind-Beziehung reicht eine Kante, da diese Beziehung hierarchisch ist.
 
-# Installation und Start
+## Installation und Start
 
 Informationen zur Installation von neo4j finden Sie auf den Dokumentationsseiten unter [https://neo4j.com/docs/operations-manual/current/installation/](https://neo4j.com/docs/operations-manual/current/installation/). Für den normalen Nutzer empfiehlt sich die Installation von [neo4j-Desktop](https://neo4j.com/download/). Unter [https://neo4j.com/blog/this-week-in-neo4j-getting-started-with-neo4j-desktop-and-browser-graphileon-personal-edition-intuitive-detections-research-with-neo4j/?ref=twitter#features-1](https://neo4j.com/blog/this-week-in-neo4j-getting-started-with-neo4j-desktop-and-browser-graphileon-personal-edition-intuitive-detections-research-with-neo4j/?ref=twitter#features-1) finden sich Videos, in denen die Installation von [neo4j-Desktop](https://www.youtube.com/watch?v=8yWhuUnPapw) und erste Schritte im [neo4j-Browser](https://www.youtube.com/watch?v=rQTximyaETA) erklärt werden.
 
-# Zusammenfassung
+## Zusammenfassung
 
 In diesem Kapitel wurde kurz auf die Ursprünge von Graphen eingegangen und verschiedene Typen von Graphen vorgestellt. Festzuhalten ist, dass es sich in den Digitalen Geisteswissenschaften in der Regel um Mischformen der vorgestellen Graphtypen handelt. Je nach Domäne werden Graphen hoher Dichte, mit vielen Knotentypen oder auch hierarchischen Strukturen benötigt. Modelle in den Digitalten Geisteswissenschaften haben meist mehrere Knotentypen und viele Kantentypen. Dies macht wiederum die direkte Anwendung von Graph-Algoritmen schwierig, so dass Graph-Transformationen notwendig werden können.
 
@@ -200,20 +186,11 @@ In diesem Kapitel wurde kurz auf die Ursprünge von Graphen eingegangen und vers
 [^caa8]: Vgl. https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem.
 
 [^bfe5]: Vgl. https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem.
----
-title: Das Projekt Regesta Imperii oder "Wie suchen Onlinenutzer Regesten"
-layout: default
-order: 10
-contents: true
----
+
 
 # Das Projekt Regesta Imperii oder “Wie suchen Onlinenutzer Regesten”
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 ## Das Projekt Regesta Imperii
 
@@ -295,18 +272,10 @@ In diesem Kapitel wurde zunächst das Akademieprojekt Regesta Imperii vorgestell
 [^6155]: Der cypher-Befehl zur Erstellung der 1zu1-Beziehungen lautet: *MATCH (n1:Registereintrag)-[:GENANNT_IN]->(r:Regest)<-[:GENANNT_IN]-(n2:Registereintrag)
 MERGE (n1)-[:KNOWS]->(n2);* Dabei werden die gerichteten `KNOWS`-Kanten jeweils in beide Richtungen erstellt.
 Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOWS]->() RETURN count(p);* Für die Bestimmung der 1zu1-Beziehungen muss der Wert noch durch 2 geteilt werden.
----
-title: Regestenmodellierung im Graphen
-layout: default
-order: 20
-contents: true
----
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
+
+
 
 # Regestenmodellierung im Graphen
 
@@ -383,7 +352,7 @@ Mit dem folgenden cypher-Query werden die Regestenknoten in der Graphdatenbank e
 // Regestenknoten erstellen
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE/export?format=csv&id=1GLQIH9LA5btZc-VCRd-8f9BjiylDvwu29FwMwksBbrE&gid=2138530170" AS line
 CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary,
-  archivalHistory:line.archival_history, date:line.date_string,  
+  archivalHistory:line.archival_history, date:line.date_string,
   ident:line.identifier,  regnum:line.regnum,
   origPlaceOfIssue:line.locality_string, startDate:line.start_date,
   endDate:line.end_date})
@@ -881,18 +850,8 @@ Mit folgendem Befehl lassen sich die `KNOWS`-Kanten zählen: *MATCH p=()-[r:KNOW
 [^0153]: Die den Regesten Kaiser Heinrichs IV. umfassen folgende Bände: Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 1. Lief.: 1056 (1050) – 1065, bearb. von Struve, Tilman - Köln (u.a.) (1984). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 2. Lief.: 1065–1075, bearb. von Struve, Tilman unter Mitwirkung von Lubich, Gerhard und Jäckel, Dirk - Köln (u.a.) (2010). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 3. Lief.: 1076–1085, bearb. von Lubich, Gerhard nach Vorarbeiten von Struve, Tilman unter Mitwirkung von Jäckel, Dirk - Köln (u.a.) (2016). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 4. Lief.: 1086–1105/06, bearb. von Lubich, Gerhard nach Vorarbeiten von Brauch, Daniel unter Mitwirkung von Weber, Matthias - Köln (u.a.) (2016). Böhmer, J. F., Regesta Imperii III. Salisches Haus 1024-1125. Tl. 2: 1056-1125. 3. Abt.: Die Regesten des Kaiserreichs unter Heinrich IV. 1056 (1050) - 1106. 5. Lief.: Die Regesten Rudolfs von Rheinfelden, Hermanns von Salm und Konrads (III.). Verzeichnisse, Register, Addenda und Corrigenda, bearbeitet von Lubich, Gerhard unter Mitwirkung von Junker, Cathrin; Klocke, Lisa und Keller, Markus - Köln (u.a.) (2018).
 
 [^29b0]: Zum Treetagger vgl. http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/.
----
-title: Import von strukturierten XML-Daten in neo4j
-layout: default
-order: 25
-contents: true
----
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Import von strukturierten XML-Daten in neo4j
 
@@ -1000,18 +959,8 @@ In diesem Abschnitt wurde die Analyse einer XML-Datei, die daraus resultierende 
 
 
 [^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen finden sich im Anhang im Abschnitt zur Die Apoc-Bibliothek.
----
-title: Verwandtschaft im Graphen
-layout: default
-order: 30
-contents: true
----
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Verwandtschaft im Graphen
 
@@ -1059,18 +1008,8 @@ Mit diesem Beispiel sind die interessanten Erschließungs- und Modellierungspers
 [^a768]: Dieses Kapitel geht in großen Teilen zurück auf meinem Aufsatz Graphentechnologien in den Digitalen Geisteswissenschaften, in: ABI Technik 2017; 37(3): 179–196, [https://doi.org/10.1515/abitech-2017-0042](https://doi.org/10.1515/abitech-2017-0042). URL: [https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf](https://www.degruyter.com/downloadpdf/j/abitech.2017.37.issue-3/abitech-2017-0042/abitech-2017-0042.pdf), insbesondere die Seiten 179 bis 182 und wurde nur geringfügig ergänzt. Herrn Prof. Dr. Steffen Patzold danke ich herzlich für die Erlaubnis, die Nomen et Gens Daten im Rahmen dieser Publikation zu verwenden (mit Mail vom 22.01.2019).
 
 [^cca7]: Informationen zum Projekt „Nomen et Gens“ finden Sie unter [http://www.neg.uni-tuebingen.de/](http://www.neg.uni-tuebingen.de/) (abgerufen am 10.08.2018).
----
-title: Das Deutsche Textarchiv im Graphen
-layout: default
-order: 45
-contents: true
----
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Das Deutsche Textarchiv im Graphen
 
@@ -1242,18 +1181,7 @@ Im vorliegenden Kapitel wurden die Schritte für den Import der DTA-TCF-Fassung 
 [^0235]: Zu __constraints__ vgl. [https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/](https://neo4j.com/docs/developer-manual/current/cypher/schema/constraints/)
 
 [^f332]: Vgl. zu diesem Beispiel [http://deutschestextarchiv.de/book/view/goethe_faust01_1808?p=11](http://deutschestextarchiv.de/book/view/goethe_faust01_1808?p=11).
----
-title: Graph-Refactoring mit DTA-XML
-layout: default
-order: 60
-contents: true
----
 
-# Inhalt
-{:.no_toc}
-
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Graph-Refactoring mit DTA-XML
 
@@ -1286,7 +1214,7 @@ Mit dem folgenden Befehl wird die Patzig-Mitschrift in die Graphdatenbank import
 
 ~~~cypher
 CALL apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',
-	{createNextWordRelationships:true}) 	
+	{createNextWordRelationships:true})
 	yield node return node;
 ~~~
 
@@ -1789,18 +1717,7 @@ In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (`l
 [^148e]: Vgl. http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=zum&p=32.
 
 [^70f5]: Gotthilf Patzig: Vorträge über physische Geographie des Freiherrn Alexander von Humbold: gehalten im großen Hörsaale des Universitäts-Gebäudes zu Berlin im Wintersemester 1827/28 vom 3ten Novbr. 1827. bis 26 April 1828. Aus schriftlichen Notizen nach jedem Vortrage zusammengestellt vom Rechnungsrath Gotthilf Friedrich Patzig. Berlin 1827/28 (= Nachschrift der ‚Kosmos-Vorträge‘ Alexander von Humboldts in der Berliner Universität, 3.11.1827–26.4.1828), S. 9. In: Deutsches Textarchiv. Grundlage für ein Referenzkorpus der neuhochdeutschen Sprache. Herausgegeben von der Berlin-Brandenburgischen Akademie der Wissenschaften, Berlin 2007–2019. http://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13.
----
-title: JSON Import mit den Daten der Germania Sacra
-layout: default
-order: 70
-contents: true
----
 
-# Inhalt
-{:.no_toc}
-
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # JSON Import mit den Daten der Germania Sacra
 
@@ -1860,7 +1777,7 @@ Unter dem Personenknoten werden die aus dem json importierten Properties aufgeli
 
 ### Klöster
 
-Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.  
+Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.
 
 ```json
 {"kloster":
@@ -1989,18 +1906,8 @@ Im geplanten Folgekapitel werden die Analyse von json-Daten und der Import kompl
 [^eeaa]&#x3A; Zu diesem Abschnitt vgl. <http://www.germania-sacra.de/> (zuletzt abgerufen am 07.03.2019).
 
 [^c866]: Der in diesem Kapitel verwendete json-Dump wurde freundlicherweise direkt vom Projekt Germania Sacra zur Verfügung gestellt und die Verwendung in dieser Veröffentlichung sowie die weitere Verwendung genehmigt.
----
-title: Netzwerkanalyse mit neo4j
-layout: default
-order: 80
-contents: true
----
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Netzwerkanalyse mit neo4j
 
@@ -2241,30 +2148,14 @@ In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graph
 [^d019]: Vgl. zu diesm Abschnitt [D. Krackhardt, Assessing the Political Landscape: Structure, Cognition, and Power in Organizations. Administrative Science Quarterly 35, 2, 1990, S. 342-369](https://www.jstor.org/stable/2393394?origin=crossref&seq=1#metadata_info_tab_contents) (abgerufen am 07.02.2019).
 
 [^998a]: Zu PageRank vgl. [https://de.wikipedia.org/wiki/PageRank](https://de.wikipedia.org/wiki/PageRank).
----
-title: Zusammenfassung
-layout: default
-order: 90
-contents: true
----
+
 
 # Zusammenfassung
 
 An Hand der verschiedenen Beispiel konnte gezeigt werden, dass Graphentechnologien hervorragend für die Modellierung, Speicherung und Analyse hochvernetzter Daten geeignet ist. Und die Beispiele konnten auch zeigen, dass die digitalen Geisteswissenschaften reich an hochvernetzten Daten sind. Gleichzeitig lassen sich mit dem einer Mind-Map sehr ähnlichen Modell Forschungsdaten und Forschungsfragestellungen tatsächlich in einer Weise modellieren, die dem menschlichen Denken sehr nahe kommt. Damit können Graphentechnologien gleichsam als Brücke zwischen den geisteswissenschaftlichen Fachdisziplinen und den informationstechnologischen Herausforderungen und Perspektiven des digitalen Zeitalters dienen.
 
 So gelingt es in den digitalen Geisteswissenschaften mit dem Graphenmodell bei der Modellierung und Strukturierung von Forschungsdaten und Forschungsfragestellung die Kluft zwischen Informatiker und Geisteswissenschaftler zu schließen, da der Graph eine für beide Seiten verständliche Plattform bietet. Für den Informatiker ist er hinreichend genau und berechenbar und für den Geisteswissenschafter wegen seiner Schema- und Hierarchiefreiheit ausreichend flexibel. Gerade diese Eigenschaften, mit denen sich die beiden zentralen Zweige der Digitalen Geisteswissenschaften vereinen lassen, machen Graphen zu einem Schlüsselkonzept der Geisteswissenschaften des 21. Jahrhunderts.
----
-title: Anhang
-layout: default
-order: 95
-contents: true
----
 
-# Inhalt
-{:.no_toc}
-
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Anhang
 
@@ -2501,7 +2392,7 @@ RETURN text1, text2, text3, count ORDER BY count DESC LIMIT 10
 Gegeben sei eine Menge von Briefknoten, die das Absendedatum in der Property sendDate abgespeichert haben. Der folgende Query verkettet die Briefe in der Reihenfolge des Absendedatums mit NEXT_LETTER-Kanten.
 
 ~~~cypher
-MATCH (n:Brief) 
+MATCH (n:Brief)
 WITH n ORDER BY n.sendDate
 WITH collect(n) as briefe
 CALL apoc.nodes.link(briefe, "NEXT_LETTER")
@@ -2661,79 +2552,3 @@ json-example
 [^03a5]: Hierzu vgl. https://de.wikipedia.org/wiki/Deklarative_Programmierung zuletzt abgerufen am 12.6.2018.
 
 [^81c5]: Zu diesem Abschnitt vgl. [https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly). Die Tabelle ist direkt übernommen und übersetzt worden. Die dort genannte Beispieldatei ist momentan nicht mehr erreichbar. Stattdessen kann folgende URL verwendet werden: https://seafile.rlp.net/f/55e80fc426fb451e9294/?dl=1
----
-title: Inhalt
-layout: default
-permalink: /contents/
-nav: true
-order: 2
----
-
-# Inhalt
-
-{% assign content_pages = site.pages | sort:"order" %}
-{% for my_page in content_pages %}
-  {% if my_page.contents %}
-  {{my_page.order}}. [{{ my_page.title }}]({{ my_page.url | prepend: site.github.url }})
-  {% endif %}
-{% endfor %}
----
-layout: page
-title: Impressum
-permalink: /credits/
-nav: true
-order: 5
----
-
-Verantwortlich:
-
-Dr. Andreas Kuczera
-
-Regesta Imperii
-
-Justus-Liebig Universität Gießen
-
-Historisches Institut, Mittelalter
-
-Otto-Behaghel-Str. 10
-
-D-35394 Gießen
-
-Haus C Raum 244a
-
-<mailto:andreas.kuczera@adwmainz.de>
-https://orcid.org/0000-0003-1020-507X
-www.graphentechnologien.de
-
-Letzte Aktualisierung: August 2018
-
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/Text" property="dct:title" rel="dct:type">Graphentechnologien in den Digitalen Geisteswissenschaften</span> von <a xmlns:cc="http://creativecommons.org/ns#" href="https://orcid.org/0000-0003-1020-507X" property="cc:attributionName" rel="cc:attributionURL">Andreas Kuczera</a> ist lizensiert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International Lizenz</a>.
----
-layout: default
-title: Info
-nav: true
-order: 1
----
-
-# Graphentechnologien in den digitalen Geisteswissenschaften
-## Modellierung – Import – Analyse
-
-### Andreas Kuczera
-
-Dieses Buch entsteht auf Github Pages als offenes Buchprojekt.[^2753] Neben einer Einführung in Graphentechnologien mit einem geisteswissenschaften Fokus werden beispielhaft Projekte aus dem Bereich der geisteswissenschaftlichen Grundlagenforschung in die Graphdatenbank neo4j importiert und anschließend verschiedene Modellierungsperspektiven geisteswissenschaftlicher Forschungsdaten im Graphen und die damit verbundenen Auswertungsmöglichkeiten diskutiert.
-
-Anstoß für das Buch waren zahlreiche Gespräche mit Kollinnen und Kollegen, die immer wieder anregten, meine vielfältigen Erfahrungen zu Modellierung, Import und Exploration von Graphdaten zu verschriftlichen. Allein die schnelle technische Entwicklung macht ein traditionelles Buchprojekt schwierig, so dass ich mich schließlich entschlossen habe, das Buch auf Github zu schreiben. Damit ist das  Buch schon jetzt in einer vorläufigen Fassung frei verfügbar unter  [https://kuczera.github.io/Graphentechnologien/](https://kuczera.github.io/Graphentechnologien/). Es handelt sich momentan um eine Arbeitsfassung, die in Kürze die Version 1.0 erreichen soll. Der Vorteil des offenen Buchkonzeptes ist es, flexibel auf neue technische Entwicklungen reagieren zu können und damit Querys und Code auf einem aktuellen und funktionsfähigen Stand zu halten. Andererseits sind alle Vorgängerversionen in git transparent abgespeichert und können bei Versionierungsfragen wieder aufgerufen werden.
-Für Rückmeldungen, Verbesserungsvorschläge und Hinweise bin ich dankbar. Für weitere Informationen sei auf die [Einleitung](01_Einleitung.md) verwiesen.
-
-Einzelne Abschnitte des Buches sind auch Gegenstand einer Lehreinheit zu Graphentechnologien in den digitalen Geisteswissenschaften im Rahmen des [mainzed](https://www.mainzed.org)-Studiengangs zur Digitalität in den Geistes- und Kulturwissenschaften.
-Die Slides der Lehreinheit stehen unter CC-BY-Lizenz und sind erreichbar unter:
-
-[https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/#/step-1](https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/#/step-1)
-
-Weitere Informationen zu Graphentechnologien in den Digitalen Geistes- und Sozialwissenschaften finden Sie auf den Seiten der AG-Graphentechnologien des Dhd-Verbandes: [https://graphentechnologien.hypotheses.org/](https://graphentechnologien.hypotheses.org/).
-
-[^2753]: Mit offenem Buchprojekt ist gemeint, dass auf Github der Arbeitsprozess mit allen Änderungen transparent nachvollziehbar ist.
-# Graphentechnologien in den digitalen Geisteswissenschaften
-Modellierung – Import – Exploration
-
-https://kuczera.github.io/Graphentechnologien/ 

@@ -5,11 +5,7 @@ order: 30
 contents: true
 ---
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Verwandtschaft im Graphen
 

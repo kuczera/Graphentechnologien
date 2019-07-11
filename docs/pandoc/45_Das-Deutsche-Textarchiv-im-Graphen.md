@@ -5,11 +5,7 @@ order: 45
 contents: true
 ---
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Das Deutsche Textarchiv im Graphen
 

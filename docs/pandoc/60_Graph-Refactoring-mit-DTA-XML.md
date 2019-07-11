@@ -5,11 +5,7 @@ order: 60
 contents: true
 ---
 
-# Inhalt
-{:.no_toc}
 
-* Will be replaced with the ToC, excluding the "Contents" header
-{:toc}
 
 # Graph-Refactoring mit DTA-XML
 
