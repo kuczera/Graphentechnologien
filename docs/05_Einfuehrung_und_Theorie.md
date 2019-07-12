@@ -1,5 +1,3 @@
-
-
 ---
 title: Einführung und Theorie
 layout: default
