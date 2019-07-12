@@ -3,7 +3,7 @@
 ---
 title: Einleitung
 layout: default
-order: 3
+order: 1
 contents: true
 ---
 
