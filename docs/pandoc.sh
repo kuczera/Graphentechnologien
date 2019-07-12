@@ -1,3 +1,7 @@
+Anleitung zur Erstellung eines PDFs des Github-Buches
+
+Ausgangspunkt ist das docs-Verzeichnis.
+
 rm pandoc/*
 cp *.md pandoc/
 rm pandoc/README.md
@@ -15,11 +19,11 @@ find . -name "allpages.txt" -type f | xargs sed -i -e '/{:toc}/d'
 cd ..
 cp pandoc/allpages.txt .
 
-alle Titelzeilen löschen:
+Mit diesem Befehl werden alle Titelzeilen gelöscht:
 
 sed -i '/---/,/^$/d' allpages.txt
 
-Wieder einfügen:
+Dann den Haupttitel wieder in allpages.txt einfügen:
 
 ---
 title: Graphentechnologien in den Digitalen Geisteswissenschaften
@@ -29,12 +33,14 @@ author:
 lang: de
 ---
 
-
+Jetzt kann mit pandoc das PDF erstellt werden:
 
 allpages:
 /usr/bin/pandoc -N --variable mainfont="Palatino" --variable sansfont="Helvetica" --variable monofont="Menlo" --variable fontsize=12pt --variable version=2.0 allpages.txt --toc -o allpages.pdf
 
 pandoc -N --variable mainfont="Palatino" --variable sansfont="Helvetica" --variable monofont="Menlo" --variable fontsize=12pt --variable version=2.0 allpages.txt --toc -o allpages.pdf
+
+Erstellung von PDFs der Einzelkapitel:
 
 Einführung und Theorie
 /usr/bin/pandoc -N --variable mainfont="Palatino" --variable sansfont="Helvetica" --variable monofont="Menlo" --variable fontsize=12pt --variable version=2.0 05_Einfuehrung_und_Theorie.md --toc -o 05_Einfuehrung_und_Theorie.pdf
