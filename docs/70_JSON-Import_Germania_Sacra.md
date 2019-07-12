@@ -1,5 +1,3 @@
-
-
 ---
 title: JSON Import mit den Daten der Germania Sacra
 layout: default

@@ -1,5 +1,3 @@
-
-
 ---
 title: Zusammenfassung
 layout: default

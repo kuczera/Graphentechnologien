@@ -1,5 +1,3 @@
-
-
 ---
 title: Graph-Refactoring mit DTA-XML
 layout: default

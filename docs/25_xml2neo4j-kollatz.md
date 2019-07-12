@@ -1,5 +1,3 @@
-
-
 ---
 title: Import von strukturierten XML-Daten in neo4j
 layout: default

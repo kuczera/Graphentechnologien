@@ -1,5 +1,3 @@
-
-
 ---
 title: Einleitung
 layout: default

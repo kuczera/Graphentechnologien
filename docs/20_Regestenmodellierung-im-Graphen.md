@@ -1,5 +1,3 @@
-
-
 ---
 title: Regestenmodellierung im Graphen
 layout: default

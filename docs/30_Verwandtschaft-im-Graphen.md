@@ -1,5 +1,3 @@
-
-
 ---
 title: Verwandtschaft im Graphen
 layout: default

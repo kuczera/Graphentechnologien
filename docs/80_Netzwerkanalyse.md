@@ -1,5 +1,3 @@
-
-
 ---
 title: Netzwerkanalyse mit neo4j
 layout: default

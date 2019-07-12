@@ -1,5 +1,3 @@
-
-
 ---
 title: Das Projekt Regesta Imperii oder "Wie suchen Onlinenutzer Regesten"
 layout: default

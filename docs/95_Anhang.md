@@ -1,5 +1,3 @@
-
-
 ---
 title: Anhang
 layout: default
