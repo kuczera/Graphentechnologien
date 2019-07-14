@@ -48,11 +48,11 @@ In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie
 
 ### Labeled Property Graph
 
-Einen Graphen in dem die Knoten und Kanten Typen (Labels) und Eigenschaften (Properties) besitzen nennt man "Labeled Property Graph" (LPG).
+Einen Graphen, in dem die Knoten und Kanten Typen (Labels) und Eigenschaften (Properties) besitzen, nennt man "Labeled Property Graph" (LPG).
 
 ![Beispiel für einen Labeled-Property-Graphen (Needham/Hodler 2019, S. 16, Bild 2-1)](Bilder/Graph-Algorithms/16-2-1-LabeledPropertyGraph.png)
 
-Der o.a. Graph sagt beispielsweise aus, dass der Knoten A mit dem Label Person und den zugehörigen Properties (name:'Dan', born etc.) mit Person B zusammenlebt und verheiratet ist. Person B gehört gleichzeitig ein Auto (mit der Property Marke: 'Volvo'), dass von Person A gefahren wird. Hier werden in einfachen Schritten Informationen aus der "realen Welt" abgebildet. In den nächsten Abschnitten geht es nun um die Konzepte dahintert.
+Der abgebildete Graph sagt beispielsweise aus, dass der Knoten links oben das Label "männliche Person" mit den zugehörigen Properties (name:'Dan', born etc.) trägt. Rechts daneben ist eine weibliche Person mit ihren Properties (name:'Ann', born: Dec 5, 1975) abgebildet. Die Kanten sagen aus, dass Ann am 1. Januar 2013 mit Dan zusammenlebte und seit Juli 2009 mit ihm verheiratet ist . Ann gehört gleichzeitig ein Auto (mit der Property Marke: 'Volvo'), das von Dan gefahren wird. Hier werden in einfachen Schritten Informationen aus der "realen Welt" abgebildet. In den nächsten Abschnitten geht es nun um die Konzepte dahinter.
 
 ### Einfache Graphtypen
 
@@ -65,9 +65,9 @@ Im mittleren Beispiel sind mehrere Verbindungen zwischen Knotenpaaren möglich. 
 Die folgende Abbildung zeigt links ein Beispiel für einen zufälligen Graphen, aus dem sich keine hierarichischen oder strukturellen Informationen ablesen lassen.
 ![Zufalls-, Small-World- und Scale-Free-Graphen (Needham/Hodler 2019, S. 17, Bild 2-3)](Bilder/Graph-Algorithms/17-2-3-RandomSmallWorldScaleFree.png)
 
-In der mittleren Abbildung ein Small-World-Graph abgebildet, der lokal stark geclustert ist und eine geringe durchschnittliche Pfadlänge hat. Die rechte Abbildung zeigt ein skalenfreies Netzwerk, wie es das Word-Wide-Web eines ist.
+In der mittleren Abbildung ein Small-World-Graph abgebildet, der lokal stark geclustert ist und eine geringe durchschnittliche Pfadlänge hat. Die rechte Abbildung zeigt ein skalenfreies Netzwerk, wie beispielsweise das Word-Wide-Web.
 
-In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
+In der folgenden Tabelle werden charakteristische Möglichkeiten zur Typisierung von Graphen gegenübergestellt.
 
 |Graphattribute|Unterschiede|Überlegungen zum Algorithms|
 |------------------|---------------------|------------------------------------|
@@ -76,7 +76,7 @@ In der folgenden Tabelle werden charakteristische Graphtypen gegenübergestellt.
 |Gerichtete und ungerichtete Graphen|Ist eine Verbindung hierarchisch oder gegenseitig|Die Richtung einer Kante sind für viele Auswertungen von Relevanz|
 |Zyklische und nicht zyklische Graphen|In zyklischen Graphen können Pfade können wieder zum Startknoten zurückkehren|Zyklische Graphen sind weit verbreitet. Bei der Auswertung mit Graphalgorithmen muss der Graph aber möglicherweise bearbeitet werden|
 |Graphdichte|Das Verhältnis von Kanten zu Knotenzahl|Extrem dichte oder extrem dünne Graphen können die Analyse erschweren. Ggf. können Änderungen an der Modellierung helfen, sofern es die Domäne zulässt|
-|Monopartite, bipartite, and k-partite Graphen|Gibt es einen, zwei oder mehrere Knotentypen|Mehr Knotentypen erleichtern in den Geisteswissenschaften die Modellierung, Graphalgorithmen arbeiten oft aber nur mit einem Knotentyp|
+|Monopartite, bipartite, und k-partite Graphen|Gibt es einen, zwei oder mehrere Knotentypen|Mehr Knotentypen erleichtern in den Geisteswissenschaften die Modellierung, Graphalgorithmen arbeiten oft aber nur mit einem Knotentyp|
 
 Quelle: [https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](Needham/Hodler 2019), S. 18-19.
 
@@ -96,7 +96,7 @@ Hier wird ein Ausschnitt aus einer Graphdatenbank gezeigt, in die eine XML-Text-
 
 ### Gewichtete und ungewichtete Graphen
 
-In ungewichteten Graphen besitzen die Kanten keinen Wert zu Wichtung.
+In ungewichteten Graphen besitzen die Kanten keinen Wert zu Gewichtung.
 
 ![Ungewichteter Graph (Quelle: Kuczera)](Bilder/unWeightedGraph.png)
 
@@ -108,11 +108,11 @@ Werden solche Angaben ergänzt, werden die Informationen im Graph wertvoller. We
 
 ### Gerichtete und ungerichtete Graphen
 
-In einem ungerichteten Graphen geht eine Beziehungen immer in beide Richtungen (beispielsweise EHEPARTNER_VON). In einem gerichteten Graphen haben Beziehungen eine Richtung. Betrachtet man einen Knoten gibt es eingehende Kanten, die auf den Knoten zeigen und ausgehende Kanten, die von dem Knoten ausgehen. Mit der Angabe von Richtung wird eine zusätzliche Informationsdimension hinzugefügt. Angenommen im linken Beispiel der folgenden Abbildung würden die Knoten Personen und die ungerichtete Kante ihre gegenseitige Freundschaft darstellen. Damit ergibt sich, dass Person A mit Person B befreundet ist.
+In einem ungerichteten Graphen geht eine Beziehungen immer in beide Richtungen (beispielsweise EHEPARTNER_VON). In einem gerichteten Graphen haben Beziehungen eine Richtung. Betrachtet man einen Knoten gibt es eingehende Kanten, die auf den Knoten zeigen und ausgehende Kanten, die von dem Knoten ausgehen. Mit der Angabe von Richtung wird eine zusätzliche Informationsdimension hinzugefügt. Angenommen im linken Beispiel der folgenden Abbildung würden die Knoten Personen und die ungerichtete Kante ihre gegenseitige Freundschaft darstellen. Daraus ergibt sich, dass Person A mit Person B befreundet ist.
 
 ![Gerichtete und ungerichtete Graphen (Needham/Hodler 2019, S. 21, Bild 2-7)](Bilder/Graph-Algorithms/21-2-7-UnDirected.png)
 
-Erweitern wir das Beispiel für die rechte Abbildung, so das die Freundschafts-Kanten gerichtet sind, so wird es einerseite möglich, zu zeigen, dass Person D für Person A freundschaftliche Gefühle hegt, die A aber nicht erwidert. Nehmen wir noch eine Wichtung der Freundschafskanten hinzu, könnte man modellieren, dass die freundschaftlichen Gefühle von Person C gegenüber A mit 0,8 gewichtet sind, umgekehrt die Zuneigung von Person A zu Person C aber nur mit 0,3 gewichtet sind.
+Erweitern wir das Beispiel für die rechte Abbildung, so dass die Freundschafts-Kanten gerichtet sind, so wird es möglich, zu zeigen, dass Person D für Person A freundschaftliche Gefühle hegt, die A aber nicht erwidert. Nehmen wir noch eine Wichtung der Freundschafskanten hinzu, könnte man modellieren, dass die freundschaftlichen Gefühle von Person C gegenüber A mit 0,8 gewichtet sind, umgekehrt die Zuneigung von Person A zu Person C aber nur mit 0,3.
 
 Auch bei der Modellierung von Verwandtschaft kommen gerichtete und ungerichtete Verbindungen vor.
 
@@ -127,7 +127,7 @@ Informationen zur Installation von neo4j finden Sie auf den Dokumentationsseiten
 
 ## Zusammenfassung
 
-In diesem Kapitel wurde kurz auf die Ursprünge von Graphen eingegangen und verschiedene Typen von Graphen vorgestellt. Festzuhalten ist, dass es sich in den Digitalen Geisteswissenschaften in der Regel um Mischformen der vorgestellen Graphtypen handelt. Je nach Domäne werden Graphen hoher Dichte, mit vielen Knotentypen oder auch hierarchischen Strukturen benötigt. Modelle in den Digitalten Geisteswissenschaften haben meist mehrere Knotentypen und viele Kantentypen. Dies macht wiederum die direkte Anwendung von Graph-Algoritmen schwierig, so dass Graph-Transformationen notwendig werden können.
+In diesem Kapitel wurde kurz auf die Ursprünge von Graphen eingegangen und verschiedene Typen von Graphen vorgestellt. Festzuhalten ist, dass es sich in den Digitalen Geisteswissenschaften in der Regel um Mischformen der vorgestellen Graphtypen handelt. Je nach Domäne werden Graphen hoher Dichte, mit vielen Knotentypen oder auch hierarchischen Strukturen benötigt. Modelle in den Digitalen Geisteswissenschaften haben meist mehrere Knotentypen und viele Kantentypen. Dies macht wiederum die direkte Anwendung von Graph-Algoritmen schwierig, so dass Graph-Transformationen notwendig werden können.
 
 [^b72e]: Dieser Abschnitt beruht in Teilen auf den Kapiteln "Introduction" und "Graph Theory and Concepts" des Buches Graph Algorithms: Practical Examples in Apache Spark and Neo4j von Mark Needham und Amy E. Hodler, O'Reilly Media 2019 (https://www.oreilly.com/library/view/graph-algorithms/9781492047674/), S. xiii-xv und S. 1-26.
 
