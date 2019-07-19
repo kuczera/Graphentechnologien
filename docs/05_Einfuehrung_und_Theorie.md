@@ -18,7 +18,7 @@ Dieser Abschnitt gibt eine kurze Einführung in Graphen.[^b72e] Gegenüber relat
 
 Der folgende kleine Beispielgraph modelliert einen Zusammenhang aus dem Frühmittelalter und erklärt kurz die Grundprinzipien in der geisteswissenschaftlichen Domäne.
 
-![Beispielgraph (Quelle: Kuczera)](Bilder/Beispielgraph.png)
+![Beispielgraph (Quelle: Kuczera)](Bilder/Beispielgraph.png "Beispielgraph")
 
 Der Beispielgraph zeigt oben einen <b>Knoten (engl. Node)</b> vom <b>Typ (engl. Label)</b> Person mit der Eigenschaft (engl. Property) Name. Diese hat den Wert "Karl der Große". Links unten ist ein weiter <b>Knoten</b> vom Typ Person mit dem Namen "Einhard". Rechts unten ist ein <b>Knoten</b> vom Typ Buch und dem Titel "Vita Karoli Magni" abgebildet. Die <b>Kanten</b> (engl. Edges) geben an, dass Karl der Große Einhard kannte, Einhard ca. 828-830 das Buch "Vita Karoli Magni" schrieb und Karl der Große in dem Buch vorkommt.
 
