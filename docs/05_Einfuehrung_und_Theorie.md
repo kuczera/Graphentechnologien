@@ -32,7 +32,7 @@ War es in den digitalen Geisteswissenschaften bis vor einigen Jahren noch höchs
 
 Graphen gehen zurück auf die erste Hälfte des 18 Jahrhunderts. 1736 löste Leonhard Euler das "Königsberger Brückenproblem", das fragte ob es möglich sei, die 4 durch den Fluss getrennten Stadtbereiche, die über 7 Brücken verbunden waren jeweils einmal zu besuchen, ohne eine der Brücken zweimal zu nutzen.[^caa8]
 
-![Das Eulersche Brückenproblem (Needham/Hodler 2019, S. 2, Bild 1-1)](Bilder/Eulersche-Bruecken.png)
+![Das Eulersche Brückenproblem (Needham/Hodler 2019, S. 2, Bild 1-1)](Bilder/Eulersche-Bruecken.png "Eulersche Brücken")
 
 Euler kam zu der Einsicht, dass nur die Verbindungen zwischen den 4 Bereichen der Stadt relevant sind und legte damit den Grundstein für die Graphtheorie und ihre Mathematik. Er zeigte, dass das Brückenproblem nicht lösbar war, da zu jedem Stadtbereich eine ungerade Anzahl von Brücken führte, es dürfe aber nur zwei Ufer mit einer ungeraden Anzahl geben.[^bfe5]
 
@@ -42,7 +42,7 @@ Euler kam zu der Einsicht, dass nur die Verbindungen zwischen den 4 Bereichen de
 
 Auch wenn Graphen ihren Ursprung in der Mathematik haben so sind sie doch ein pragmatisches Werkzeug um Informationen zu modellieren und zu analysieren.
 
-![Graphen und nicht Graphen (Needham/Hodler 2019, S. 3, Bild 1-2)](Bilder/Graph-Algorithms/02-1-2-GraphsNotGraphs.png)
+![Graphen und nicht Graphen (Needham/Hodler 2019, S. 3, Bild 1-2)](Bilder/Graph-Algorithms/02-1-2-GraphsNotGraphs.png "Graphen und nicht Graphen (Needham/Hodler 2019, S. 3, Bild 1-2)")
 
 In diesem Buch geht es nicht um Graphen im Sinne von Lösung von Gleichungen wie im Bild rechts. Es geht um Informationen, die durch Knoten und Kanten dargestellt werden, wie links im Bild.
 
