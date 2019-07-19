@@ -3,7 +3,7 @@ Anleitung zur Erstellung eines PDFs des Github-Buches
 Ausgangspunkt ist das docs-Verzeichnis.
 
 mkdir /tmp/pandoc/
-rm /tmp/pandoc/*
+cp -r Bilder/ /tmp/
 cp *.md /tmp/pandoc/
 rm /tmp/pandoc/README.md
 rm /tmp/pandoc/contents.md
@@ -17,11 +17,16 @@ find . -name "allpages.txt" -type f | xargs sed -i -e '/# Inhalt/d'
 find . -name "allpages.txt" -type f | xargs sed -i -e '/{:.no_toc}/d'
 find . -name "allpages.txt" -type f | xargs sed -i -e '/* Will be replaced with the ToC, excluding the "Contents" header/d'
 find . -name "allpages.txt" -type f | xargs sed -i -e '/{:toc}/d'
-cd ..
 
 Mit diesem Befehl werden alle Titelzeilen gelöscht:
 
 sed -i '/---/,/^$/d' allpages.txt
+
+cp /tmp/pandoc/allpages.txt /tmp/allpages.txt
+
+rm -r /tmp/pandoc/*
+
+rm -r /tmp/Bilder/
 
 Dann den Haupttitel wieder in allpages.txt einfügen:
 
