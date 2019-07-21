@@ -17,7 +17,7 @@ contents: true
 
 Das Projekt Regesta Imperii wurde von Johann-Friedrich Böhmer im Jahr 1829 begonnen. Ursprünglich als Vorarbeit zu den [Monumenta Germaniae Historica](https://www.mgh.de) angelegt wurde es mit einem erweitereten Regestenkonzept bald zu einem unverzichtbaren Grundlagenwerk. In den Regesta Imperii werden Inhaltsangaben von Urkunden erstellt, die rechtlich relevante Personen, Inhalte, Orte und Sachverhalte in deutscher Sprache zusammenfassen. Zeitlich umfassen sie den Rahmen von den [Karolingern](https://de.wikipedia.org/wiki/Karolinger) (7. Jahrhundert) bis Kaiser [Maximilian](https://de.wikipedia.org/wiki/Maximilian_I._(HRR)) (gestorben 1519).
 
-Beispielbild Urkunden
+![Urkunde zum Regest RI I n. 336, in: Regesta Imperii Online. URL: http://www.mgh.de/bibliothek/virtueller-lesesaal/ddkar/01/?p=XXXI](Bilder/Beispielurkunde.jpg)
 
 
 Ursprünglich von der DFG gefördert sind die Regesta Imperii heute Teil des Bund-Ländergeförderten Akademienprogramms und werden von der Akademie der Wissenschaften und der Literatur, Mainz, der Berlin-Brandenburgischen Akademie der Wissenschaften und der Akademie der Wissenschaften, Wien betreut.
