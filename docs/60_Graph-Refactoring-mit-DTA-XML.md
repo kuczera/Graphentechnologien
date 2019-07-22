@@ -327,7 +327,9 @@ MERGE
 RETURN pb1, w1, pb2, w2, page;
 ~~~
 
-![Die Seite wird modelliert mit dem `page`-Knoten #0005 der mit dem ersten Wort über eine `FIRST_CHILD_OF`- und mit dem letzten Wort der Seite über eine `LAST_CHILD_OF`-Kante verknüpft ist.[^f777]](Bilder/TEI2Graph/page-f0005.png)
+Die Seite wird modelliert mit dem `page`-Knoten #0005 der mit dem ersten Wort über eine `FIRST_CHILD_OF`- und mit dem letzten Wort der Seite über eine `LAST_CHILD_OF`-Kante verknüpft ist.[^f777]
+
+![Page-Knoten mit verbunden Wortknoten.](Bilder/TEI2Graph/page-f0005.png)
 
 
 ### Absätze
@@ -452,7 +454,7 @@ ORDER BY Anzahl DESC;
 
 Der Umbau wird an einem Beispieltext der Seite 32 des Patzig-Manuskripts durchgeführt[^148e].
 
-![<subst>-Beispiel in der XML-Ansicht. ](Bilder/TEI2Graph/subst-xml-Beispiel.png)
+![subst-Beispiel in der XML-Ansicht. ](Bilder/TEI2Graph/subst-xml-Beispiel.png)
 
 Im Graphen findet man die entsprechende Stelle mit folgendem cypher-Query.
 
@@ -471,7 +473,7 @@ RETURN *;
 
 Der Query gruppiert sich um den `s`-Knoten, der das `subst`-Element darstellt und es über die DtaID identifiziert. Vom `s`-Knoten ausgehend, folgt der Pfad einerseits über `FIRST_CHILD_OF`-Kanten zum `n3`-Knoten (add-Element) und zum `n2`-Knoten, der schließlich das Wort *seine* darstellt. Über die `LAST_CHILD_OF`-Kante geht es zum `n4`-Knoten (del-Element) zum `n5`-Wortknoten, der das Wort *diese* darstellt. Im zweiten Teil des MATCH-Befehls wird der Pfad zwischen dem Wort *seine* und *diese* ermittelt und schließlich alles ausgegeben.
 
-![<subst>-Beispiel in der Graph-Ansicht. ](Bilder/TEI2Graph/subst-graph-1.png)
+![subst-Beispiel in der Graph-Ansicht. ](Bilder/TEI2Graph/subst-graph-1.png)
 
 cyper-Query für den umgebaut
 
