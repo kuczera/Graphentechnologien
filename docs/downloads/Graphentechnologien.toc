@@ -1,0 +1,138 @@
+\select@language {ngerman}
+\contentsline {chapter}{\numberline {1}Einleitung}{6}{chapter.1}
+\contentsline {section}{\numberline {1.1}Warum ein Buch \IeC {\"u}ber Graphentechnologien in den digitalen Geisteswissenschaften?}{6}{section.1.1}
+\contentsline {section}{\numberline {1.2}Warum ein Buch auf github ?}{6}{section.1.2}
+\contentsline {section}{\numberline {1.3}Zum Aufbau des Buches}{7}{section.1.3}
+\contentsline {chapter}{\numberline {2}Einf\IeC {\"u}hrung und theoretische Grundlagen}{8}{chapter.2}
+\contentsline {section}{\numberline {2.1}Einf\IeC {\"u}hrung zu Graphen}{8}{section.2.1}
+\contentsline {section}{\numberline {2.2}Herkunft und Idee}{9}{section.2.2}
+\contentsline {section}{\numberline {2.3}Graphtypen und Strukturen}{10}{section.2.3}
+\contentsline {subsection}{\numberline {2.3.1}Graph und nicht Graph}{10}{subsection.2.3.1}
+\contentsline {subsection}{\numberline {2.3.2}Labeled Property Graph}{10}{subsection.2.3.2}
+\contentsline {subsection}{\numberline {2.3.3}Einfache Graphtypen}{11}{subsection.2.3.3}
+\contentsline {subsection}{\numberline {2.3.4}Verbundene und nichtverbundene Graphen}{13}{subsection.2.3.4}
+\contentsline {subsection}{\numberline {2.3.5}Gewichtete und ungewichtete Graphen}{16}{subsection.2.3.5}
+\contentsline {subsection}{\numberline {2.3.6}Gerichtete und ungerichtete Graphen}{16}{subsection.2.3.6}
+\contentsline {section}{\numberline {2.4}Installation und Start}{18}{section.2.4}
+\contentsline {section}{\numberline {2.5}Zusammenfassung}{19}{section.2.5}
+\contentsline {chapter}{\numberline {3}Das Projekt Regesta Imperii oder ``Wie suchen Onlinenutzer Regesten''}{20}{chapter.3}
+\contentsline {section}{\numberline {3.1}Das Projekt Regesta Imperii}{20}{section.3.1}
+\contentsline {section}{\numberline {3.2}Die Digitalisierung der Regesta Imperii}{22}{section.3.2}
+\contentsline {section}{\numberline {3.3}Wie suchen Online-Nutzer Regesten ?}{22}{section.3.3}
+\contentsline {section}{\numberline {3.4}Historische Netzwerkanalyse in den Registern}{24}{section.3.4}
+\contentsline {section}{\numberline {3.5}Zusammenfassung}{27}{section.3.5}
+\contentsline {chapter}{\numberline {4}Regestenmodellierung im Graphen}{30}{chapter.4}
+\contentsline {section}{\numberline {4.1}Wie kommen die Regesten in den Graphen}{30}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Import mit dem \texttt {LOAD\ CSV}-Befehl}{30}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Google-Docs f\IeC {\"u}r den CSV-Download}{32}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Regestenmodellierung im Graphen}{33}{subsection.4.1.3}
+\contentsline {subsection}{\numberline {4.1.4}Indexe Erstellen}{33}{subsection.4.1.4}
+\contentsline {subsection}{\numberline {4.1.5}Erstellen der Regestenknoten}{35}{subsection.4.1.5}
+\contentsline {subsection}{\numberline {4.1.6}Erstellen der Ausstellungsorte}{38}{subsection.4.1.6}
+\contentsline {subsection}{\numberline {4.1.7}Koordinaten der Ausstellungsorte}{40}{subsection.4.1.7}
+\contentsline {subsection}{\numberline {4.1.8}Ausstellungsdatum}{40}{subsection.4.1.8}
+\contentsline {section}{\numberline {4.2}Exkurs 1: Herrscherhandeln in den Regesta Imperii}{41}{section.4.2}
+\contentsline {section}{\numberline {4.3}Zitationsnetzwerke in den Regesta Imperii}{41}{section.4.3}
+\contentsline {section}{\numberline {4.4}Import der Registerdaten in die Graphdatenbank}{43}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Vorbereitung der Registerdaten}{43}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Import der Registerdaten in die Graphdatenbank}{45}{subsection.4.4.2}
+\contentsline {section}{\numberline {4.5}Exkurs 2: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.}{46}{section.4.5}
+\contentsline {section}{\numberline {4.6}Auswertungsperspektiven}{48}{section.4.6}
+\contentsline {subsection}{\numberline {4.6.1}Personennetzwerke in den Registern}{48}{subsection.4.6.1}
+\contentsline {subsubsection}{\numberline {4.6.1.1}Graf Robert II. von Flandern in seinem Netzwerk}{48}{subsubsection.4.6.1.1}
+\contentsline {subsubsection}{\numberline {4.6.1.2}Graf Robert II. von Flandern und Herzog Heinrich von Niederlothringen}{49}{subsubsection.4.6.1.2}
+\contentsline {subsection}{\numberline {4.6.2}Herrscherhandeln ausgez\IeC {\"a}hlt}{55}{subsection.4.6.2}
+\contentsline {subsection}{\numberline {4.6.3}Herrscherhandeln pro Ausstellungsort ausgez\IeC {\"a}hlt}{56}{subsection.4.6.3}
+\contentsline {subsection}{\numberline {4.6.4}Herrscherhandeln und Anwesenheit}{57}{subsection.4.6.4}
+\contentsline {subsection}{\numberline {4.6.5}Regesten 200 km rund um Augsburg}{58}{subsection.4.6.5}
+\contentsline {subsection}{\numberline {4.6.6}Welche Literatur wird am meisten zitiert}{58}{subsection.4.6.6}
+\contentsline {subsection}{\numberline {4.6.7}Der Import zusammengefasst}{59}{subsection.4.6.7}
+\contentsline {section}{\numberline {4.7}Zusammenfassung}{59}{section.4.7}
+\contentsline {chapter}{\numberline {5}Import von strukturierten XML-Daten in neo4j}{60}{chapter.5}
+\contentsline {section}{\numberline {5.1}Das XML-Beispiel}{60}{section.5.1}
+\contentsline {section}{\numberline {5.2}Knotentypen}{60}{section.5.2}
+\contentsline {section}{\numberline {5.3}Kantentypen}{62}{section.5.3}
+\contentsline {section}{\numberline {5.4}Der Import mit apoc.load.xmlSimple}{64}{section.5.4}
+\contentsline {section}{\numberline {5.5}Zusammenfassung}{67}{section.5.5}
+\contentsline {chapter}{\numberline {6}Verwandtschaft im Graphen}{68}{chapter.6}
+\contentsline {section}{\numberline {6.1}Das Projekt Nomen et Gens}{68}{section.6.1}
+\contentsline {section}{\numberline {6.2}Nomen et Gens im Graphen}{68}{section.6.2}
+\contentsline {section}{\numberline {6.3}Sind Berchar und Karl der Gro\IeC {\ss }e verwandt ?}{69}{section.6.3}
+\contentsline {section}{\numberline {6.4}Zusammenfassung}{71}{section.6.4}
+\contentsline {chapter}{\numberline {7}Das Deutsche Textarchiv im Graphen}{72}{chapter.7}
+\contentsline {section}{\numberline {7.1}Das deutsche Textarchiv}{72}{section.7.1}
+\contentsline {section}{\numberline {7.2}Die Downloadformate des DTA}{72}{section.7.2}
+\contentsline {section}{\numberline {7.3}Vorbereitungen}{74}{section.7.3}
+\contentsline {section}{\numberline {7.4}Import des TCF-Formats}{74}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}Tokenimport}{74}{subsection.7.4.1}
+\contentsline {subsection}{\numberline {7.4.2}Satzstrukturen}{74}{subsection.7.4.2}
+\contentsline {subsection}{\numberline {7.4.3}Lemmaimport}{75}{subsection.7.4.3}
+\contentsline {subsection}{\numberline {7.4.4}Beispielabfrage}{75}{subsection.7.4.4}
+\contentsline {section}{\numberline {7.5}Import der TEIP5-Fassung}{76}{section.7.5}
+\contentsline {section}{\numberline {7.6}Zusammenfassung}{76}{section.7.6}
+\contentsline {chapter}{\numberline {8}Graph-Refactoring mit DTA-XML}{78}{chapter.8}
+\contentsline {section}{\numberline {8.1}Modellierungs\IeC {\"u}berlegungen}{78}{section.8.1}
+\contentsline {section}{\numberline {8.2}Granularit\IeC {\"a}t des Modells -- Was ist ein Token ?}{78}{section.8.2}
+\contentsline {section}{\numberline {8.3}Import der DTA-XML-Daten}{80}{section.8.3}
+\contentsline {section}{\numberline {8.4}Erl\IeC {\"a}uterung der entstandenen Graphstrukturen}{81}{section.8.4}
+\contentsline {section}{\numberline {8.5}Das DTA-Basisformat im Graphen}{83}{section.8.5}
+\contentsline {section}{\numberline {8.6}Layoutstrukturen des Dokuments}{84}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Graphenmodellierung von Zeilen}{84}{subsection.8.6.1}
+\contentsline {subsection}{\numberline {8.6.2}Zeilenwechsel mit Worttrennungen}{86}{subsection.8.6.2}
+\contentsline {subsection}{\numberline {8.6.3}Seitenfall und Faksimilez\IeC {\"a}hlung}{89}{subsection.8.6.3}
+\contentsline {subsection}{\numberline {8.6.4}Abs\IeC {\"a}tze}{93}{subsection.8.6.4}
+\contentsline {subsection}{\numberline {8.6.5}Kapiteleinteilung}{93}{subsection.8.6.5}
+\contentsline {section}{\numberline {8.7}Editorische Eingriffe}{96}{section.8.7}
+\contentsline {subsection}{\numberline {8.7.1}Hinzuf\IeC {\"u}gungen und Tilgungen}{96}{subsection.8.7.1}
+\contentsline {subsection}{\numberline {8.7.2}\texttt {\textless {}add\textgreater {}}-Element}{96}{subsection.8.7.2}
+\contentsline {subsubsection}{\numberline {8.7.2.1}\texttt {\textless {}del\textgreater {}}-Element}{97}{subsubsection.8.7.2.1}
+\contentsline {subsection}{\numberline {8.7.3}Umbau von \texttt {\textless {}add\textgreater {}}- und \texttt {\textless {}del\textgreater {}}-Elementen in einer \texttt {\textless {}subst\textgreater {}}-Umgebung}{97}{subsection.8.7.3}
+\contentsline {section}{\numberline {8.8}Zusammenfassung}{99}{section.8.8}
+\contentsline {chapter}{\numberline {9}JSON Import mit den Daten der Germania Sacra}{101}{chapter.9}
+\contentsline {section}{\numberline {9.1}Das Projekt Germania Sacra}{101}{section.9.1}
+\contentsline {section}{\numberline {9.2}Germania Sacra JSON}{101}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Personen}{101}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Kl\IeC {\"o}ster}{103}{subsection.9.2.2}
+\contentsline {section}{\numberline {9.3}Zusammenfassung}{105}{section.9.3}
+\contentsline {chapter}{\numberline {10}Netzwerkanalyse mit neo4j}{107}{chapter.10}
+\contentsline {section}{\numberline {10.1}Grundlagen zur Netzwerkanalyse}{107}{section.10.1}
+\contentsline {subsection}{\numberline {10.1.1}Vorbemerkungen}{107}{subsection.10.1.1}
+\contentsline {subsection}{\numberline {10.1.2}\IeC {\"U}berblick zu den Netzwerkma\IeC {\ss }en}{107}{subsection.10.1.2}
+\contentsline {subsection}{\numberline {10.1.3}Beispiel: Zentralit\IeC {\"a}tsma\IeC {\ss }e}{108}{subsection.10.1.3}
+\contentsline {section}{\numberline {10.2}Die Register der Regesta Imperii}{109}{section.10.2}
+\contentsline {section}{\numberline {10.3}Explorative Datenanalyse oder was ist in der Datenbank}{110}{section.10.3}
+\contentsline {section}{\numberline {10.4}Zentralit\IeC {\"a}tsalgorithmen in der historischen Netzwerkanalyse}{110}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}PageRank}{110}{subsection.10.4.1}
+\contentsline {subsection}{\numberline {10.4.2}Degree Centrality}{111}{subsection.10.4.2}
+\contentsline {subsection}{\numberline {10.4.3}Betweenes Centrality}{111}{subsection.10.4.3}
+\contentsline {subsection}{\numberline {10.4.4}Closeness Centrality}{111}{subsection.10.4.4}
+\contentsline {section}{\numberline {10.5}Community Detection Algorithmen}{111}{section.10.5}
+\contentsline {subsection}{\numberline {10.5.1}Strongly Connected Components}{111}{subsection.10.5.1}
+\contentsline {subsection}{\numberline {10.5.2}Weakly Connected Components}{112}{subsection.10.5.2}
+\contentsline {subsection}{\numberline {10.5.3}Label Propagation}{112}{subsection.10.5.3}
+\contentsline {subsection}{\numberline {10.5.4}Louvain Modularity}{112}{subsection.10.5.4}
+\contentsline {subsection}{\numberline {10.5.5}Triangle count and Clustering Coefficient}{112}{subsection.10.5.5}
+\contentsline {section}{\numberline {10.6}Zusammenfassung}{113}{section.10.6}
+\contentsline {chapter}{\numberline {11}Zusammenfassung}{114}{chapter.11}
+\contentsline {chapter}{\numberline {12}Anhang}{115}{chapter.12}
+\contentsline {section}{\numberline {12.1}cypher-Dokumentation}{115}{section.12.1}
+\contentsline {section}{\numberline {12.2}Analyse der Graphdaten}{115}{section.12.2}
+\contentsline {subsection}{\numberline {12.2.1}Welche und jeweils wieviele Knoten enth\IeC {\"a}lt die Datenbank}{115}{subsection.12.2.1}
+\contentsline {subsection}{\numberline {12.2.2}Welche Verkn\IeC {\"u}pfungen gibt es in der Datenbank und wie h\IeC {\"a}ufig sind sie}{115}{subsection.12.2.2}
+\contentsline {subsection}{\numberline {12.2.3}Welche Knoten haben keine Kanten}{116}{subsection.12.2.3}
+\contentsline {section}{\numberline {12.3}Weitere Labels f\IeC {\"u}r einen Knoten}{116}{section.12.3}
+\contentsline {section}{\numberline {12.4}CSV-Feld enth\IeC {\"a}lt mehrere Werte}{117}{section.12.4}
+\contentsline {section}{\numberline {12.5}Reglu\IeC {\"a}re Ausdr\IeC {\"u}cke}{117}{section.12.5}
+\contentsline {section}{\numberline {12.6}Vorkommende W\IeC {\"o}rter in einer Textproperty z\IeC {\"a}hlen}{118}{section.12.6}
+\contentsline {section}{\numberline {12.7}\texttt {MERGE} schl\IeC {\"a}gt fehl da eine Property NULL ist}{119}{section.12.7}
+\contentsline {section}{\numberline {12.8}Der \texttt {WITH}-Befehl}{119}{section.12.8}
+\contentsline {section}{\numberline {12.9}Knoten hat bestimmte Kante nicht}{120}{section.12.9}
+\contentsline {section}{\numberline {12.10}H\IeC {\"a}ufigkeit von Wortketten}{120}{section.12.10}
+\contentsline {section}{\numberline {12.11}Liste von Briefknoten nach Datum verketten}{120}{section.12.11}
+\contentsline {section}{\numberline {12.12}Die Apoc-Bibliothek}{121}{section.12.12}
+\contentsline {subsection}{\numberline {12.12.1}Installation in neo4j}{121}{subsection.12.12.1}
+\contentsline {subsection}{\numberline {12.12.2}Installation unter neo4j-Desktop}{121}{subsection.12.12.2}
+\contentsline {subsection}{\numberline {12.12.3}Liste aller Funktionen}{121}{subsection.12.12.3}
+\contentsline {subsection}{\numberline {12.12.4}Dokumentation aller Funktionen}{121}{subsection.12.12.4}
+\contentsline {section}{\numberline {12.13}apoc.xml.import}{123}{section.12.13}
+\contentsline {section}{\numberline {12.14}(apoc.load.json)}{123}{section.12.14}
