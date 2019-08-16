@@ -113,15 +113,13 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
  },
 ```
 
-Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
-
 Die folgende Abbildung zeigt beispielhaft den ersten Klostereintrag des obigen json-Beispiels zum Adeligen Damenstift Neuburg als importierten Klosterknoten im Graphen.
 
 ![Klosterknoten des Adeligen Damenstifts Neuburg in der Graphdatenbank](Bilder/Germania-Sacra-Klosterknoten.png)
 
-Im folgenden die cypher-queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
+Im folgenden finden sich die cypher-Queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
 
-Im ersten Abschnitt des Codebeispiels werden Indexe z.B. für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet, mit denen sichergestellt wird, das die IDs der Kloster- und Personenknosten jeweils nur einmal vorkommen können.
+Im ersten Abschnitt des Codebeispiels werden Indexe z.B. für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet, mit denen sichergestellt wird, dass die IDs der Kloster- und Personenknosten jeweils nur einmal vorkommen können.
 
 ```cypher
 CREATE INDEX ON :Person(gnd);
@@ -131,7 +129,7 @@ CREATE CONSTRAINT ON (p:Person) ASSERT p.id IS UNIQUE;
 CREATE CONSTRAINT ON (k:Kloster) ASSERT k.id IS UNIQUE;
 ```
 
-Der nächste Befehl importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknoten in der Graphdatenbank angelegt.
+Der nächste Befehl importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknotens in der Graphdatenbank angelegt.
 
 ```cypher
 // Personenknoten erstellen
@@ -167,7 +165,7 @@ wikipedia:k.Wikipedia, datumBis:k.Datum_bis, kid:k.klosterid, gnd:k.GND})
 RETURN count(kl);
 ```
 
-Die Zugehörigkeit eines Klosters zu einem Bistum ist in der Eigenschaft Bistum bei den jeweiligen Klosterknoten gespeichert. Aus dieser Information werden in diesem Query die Bistumsknoten erstellt und die Klosterknoten den jeweiligen Bistumsknoten zugeordnet.
+Die Zugehörigkeit eines Klosters zu einem Bistum ist in der Eigenschaft Bistum der jeweiligen Klosterknoten gespeichert. Aus dieser Information werden in diesem Query die Bistumsknoten erstellt und die Klosterknoten den jeweiligen Bistumsknoten zugeordnet.
 
 ```cypher
 // Bistumsknoten erstellen
@@ -177,7 +175,7 @@ MERGE (b)<-[bi:BISTUM]-(k)
 RETURN count(bi);
 ```
 
-Analog zu den Bistumern werden in diesem Query die Professionen erstellt und den einzelnen Personenknoten zugeordnet.
+Analog zu den Bistümern werden in diesem Query die Professionen erstellt und den einzelnen Personenknoten zugeordnet.
 
 ```cypher
 //Professionsknoten erstellen
