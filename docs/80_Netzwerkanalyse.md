@@ -25,15 +25,15 @@ Grundlegende Maße in der Netzwerkanalyse sind
 
 * **Dichte** als Quotient zwischen tatsächlichen Anzahl der Kanten und der maximal möglichen Anzahl der Kanten.
 * **Entfernungsmaße**, z.B. geodätische Abstände, Durchmesser des Netzwerks etc.
-* **Reziprozität** als Quotient zwischen der Anzahl bidirektionaler und einseitigen Beziehen.
+* **Reziprozität** als Quotient zwischen der Anzahl bidirektionaler und einseitiger Beziehungen.
 * **Clustering** beispielsweise als Anzahl und Art von Triaden.
 
 Eine wichtige Rolle spielen auch die Zentralitätsmaße (Beispiele):
 
 * Bei der **Degree Centrality** werden pro Knoten die Anzahl der Verbindungen zu anderen Knoten betrachtet.
-* Bei der **Betweenes Centrality** wird die Anzahl der über einen Knoten laufenden möglichen Verbindungen zwischen zwei anderen Knoten erhoben.
+* Bei der **Betweenness Centrality** wird die Anzahl der über einen Knoten laufenden möglichen Verbindungen zwischen zwei anderen Knoten erhoben.
 * Die **Closeness Centrality** erhebt die Nähe zu allen anderen Knoten.
-* Die **Eigenvektor Centrality** misst die Verbindung zu "einflussreichen" Knoten.
+* Die **Eigenvector Centrality** misst die Verbindung zu "einflussreichen" Knoten.
 
 ### Beispiel: Zentralitätsmaße
 
@@ -51,16 +51,16 @@ Für unser Beispiel ergibt sich damit:
 $$2*18/(10*(10-1)) = 0,4$$
 womit die Dichte des Netzwerks 0,4 beträgt.
 
-* Die höchste **Degreenes Centrality** hat mit 6 Kanten der Knoten D, was mehr als bei allen anderen ist. Den ersten Platz bei der **Betweenes Centrality** teilen sich die Knoten D, F, G I und H.
+* Die höchste **Degreeness Centrality** hat mit 6 Kanten der Knoten D, was mehr als bei allen anderen ist. Den ersten Platz bei der **Betweenness Centrality** teilen sich die Knoten D, F, G I und H.
 * Die höchste **Closeness** besteht zwischen den Knoten F und G.
-* Der größte **Eigenvektor** besteht zwischen den Knoten D, F und G.
+* Der größte **Eigenvector** besteht zwischen den Knoten D, F und G.
 * Die Knoten F und G sind **strukturell äquivalent**.
 
 Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Netzwerkanalyse-Algorithmen auf eine aufbereitete Graphdatenbank der Regesten Kaiser Heinrichs IV. angewendet.
 
 ## Die Register der Regesta Imperii
 
-Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneinträgen im Register in den Regesten. Da die hier vorgestellten Netzwerkanalyse-Algorithmen nur mit unimodalen Netzwerken arbeiten können, also Netzwerken, die nur Knoten eines Typs enthalten, muss die Regestendaten entsprechend erweitert werden. Dabei wird davon ausgegangen, dass zwei Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben. Diese Verbindung wird durch eine `APPEARS_WITH`-Kante dargestellt, da die gemeinsame Rolle im Regest nicht näher qualifiziert werden kann.
+Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneinträgen im Register der Regesten. Da die hier vorgestellten Netzwerkanalyse-Algorithmen nur mit unimodalen Netzwerken arbeiten können, also Netzwerken, die nur Knoten eines Typs enthalten, müssen die Regestendaten entsprechend erweitert werden. Dabei wird davon ausgegangen, dass zwei Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben. Diese Verbindung wird durch eine `APPEARS_WITH`-Kante dargestellt, da die gemeinsame Rolle im Regest nicht näher qualifiziert werden kann.
 
 Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel [Regestenmodellierung im Graphen](20_Regestenmodellierung-im-Graphen.md) beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, `APPEARS_WITH`-Kanten erstellt.
 
@@ -73,9 +73,9 @@ CREATE (n1)-[k:APPEARS_WITH]->(n2)
 SET k.count = c;
 ~~~
 
-## Explorative Datenanalyse oder was ist in der Datenbank
+## Explorative Datenanalyse oder "Was ist in der Datenbank?"
 
-Mit den in diesem Abschnitt vorstellten Queries lassen sich Graphen explorativ erfassen. Mit dem folgenden Query findet man alle im Graph vorkommenden Typen von Knoten und die jeweiligen Häufigkeiten.
+Mit den in diesem Abschnitt vorgestellten Queries lassen sich Graphen explorativ erfassen. Mit dem folgenden Query findet man alle im Graph vorkommenden Typen von Knoten und die jeweiligen Häufigkeiten.
 
 ~~~cypher
 CALL db.labels()
@@ -107,7 +107,7 @@ Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse 
 
 ### PageRank
 
-Der PagePageRank-Algorithmus bewertet und gewichtet eine Menge verknüpfter Knoten anhand ihrer Struktur.[^998a] Auf Grundlage der Verlinkunsstruktur wird dabei jedem Knoten ein Gewicht, der sog. PageRank zugeordnet.
+Der PagePageRank-Algorithmus bewertet und gewichtet eine Menge verknüpfter Knoten anhand ihrer Struktur.[^998a] Auf Grundlage der Verlinkungsstruktur wird dabei jedem Knoten ein Gewicht, der sog. PageRank zugeordnet.
 
 ~~~cyper
 CALL algo.pageRank.stream("IndexPerson", "APPEARS_WITH",
@@ -129,7 +129,7 @@ size((u)<-[:APPEARS_WITH]-()) AS followers
 ORDER by followers DESC;
 ~~~
 
-### Betweenes Centrality
+### Betweenness Centrality
 
 ~~~cyper
 // betweenness centrality
@@ -243,7 +243,7 @@ RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 ~~~
 
 ## Zusammenfassung
-In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graphdatenbank mit den Regesten Kaiser Heinrichs IV. für die Anwendung von Netzwerkanalyse-Algorithmen vorbereitet. Im zweiten Abschnitt wurden dann cypher-Queries für verschiedenen Netzwerkalgorithmen aufgelistet. In einem weitern geplanten Kapitel werden die Ergebnisse dieser Algorithmen qualitativ ausgewertet.
+In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graphdatenbank mit den Regesten Kaiser Heinrichs IV. für die Anwendung von Netzwerkanalyse-Algorithmen vorbereitet. Im zweiten Abschnitt wurden dann cypher-Queries für verschiedene Netzwerkalgorithmen aufgelistet. In einem weitern geplanten Kapitel werden die Ergebnisse dieser Algorithmen qualitativ ausgewertet.
 
 [^9ea3]: Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs [Historisch-archäologische Netzwerkanalyse](https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/#/step-1) von Aline Deicke und Marjam Trautmann, der im Rahmen der [International Summer School](https://iss.adwmainz.net) in Mainz stattfand (abgerufen am 07.02.2019).
 
