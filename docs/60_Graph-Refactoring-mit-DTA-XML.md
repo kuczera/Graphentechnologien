@@ -25,7 +25,7 @@ Diesen Gedanken folgend werden in diesem Abschnitt Ansätze für eine Modellieru
 
 ## Granularität des Modells -- Was ist ein Token ?
 
-Dabei ist die Entscheidung, für ein Wort jeweils einen Knoten zu nehmen schon eine wichtige Vorentscheidung. Es wäre durchaus denkbar auch für jedes Zeichen einen Knoten anzulegen. Für den Bereich der historisch-kritischen und philologischen Editionen ist es in der Regel ausreichend, beim Import von XML-kodierten Texten in den Graphen jeweils ein Wort in einen Knoten zu importieren, da meist die historische Aussage der Quelle im Vordergrund steht. In anderen Bereichen der digitalen Geisteswissenschaften kann die Entscheidung, welche Einheit für den Import in einen Knoten gewählt wird, durchaus anders ausfallen. So ist für Philologien die Betrachtung auf Buchstabenebene interessant[^736a].
+Dabei ist die Entscheidung, für ein Wort jeweils einen Knoten zu nehmen, schon eine wichtige Vorentscheidung. Es wäre durchaus denkbar auch für jedes Zeichen einen Knoten anzulegen. Für den Bereich der historisch-kritischen und philologischen Editionen ist es in der Regel ausreichend, beim Import von XML-kodierten Texten in den Graphen jeweils ein Wort in einen Knoten zu importieren, da meist die historische Aussage der Quelle im Vordergrund steht. In anderen Bereichen der digitalen Geisteswissenschaften kann die Entscheidung, welche Einheit für den Import in einen Knoten gewählt wird, durchaus anders ausfallen. So ist für Philologien die Betrachtung auf Buchstabenebene interessant[^736a].
 
 
 ![Granularität von Text im Graphen](Bilder/Granularitaet-im-Graphen.png){#fig:Granularitaet-im-Graphen.png}
@@ -46,9 +46,9 @@ CALL apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig
 	yield node return node;
 ~~~
 
-Dabei werden die XML-Knoten in Graphknoten umgewandelt und verschiedene Arten von Kanten erstellt, die einerseits die Baum-Hierarchie des XMLs im Graphen abbilden. Mit der Option `createNextWordRelationships:true` wird darüber hinaus festgelegt, dass die im XML vorhandenen Textknoten über `NEXT_WORD`-Kanten miteinerander verknüpft werden. Zu beachten ist hierbei, dass es in TEI-XML zwei verschiedene Klassen von Elementen gibt. Die eine dient der Klassifizierung von Text, die zweite bringt Varianten und zusätzlichen Text mit, der beim Import in seiner Serialität eingelesen und mit `NEXT_WORD`-Kanten verbunden wird. Dies kann dann zu Problemen bei der Lesbarkeit der Wortkette führen.
+Dabei werden die XML-Knoten in Graphknoten umgewandelt und verschiedene Arten von Kanten erstellt, die die Baum-Hierarchie des XMLs im Graphen abbilden. Mit der Option `createNextWordRelationships:true` wird darüber hinaus festgelegt, dass die im XML vorhandenen Textknoten über `NEXT_WORD`-Kanten miteinerander verknüpft werden. Zu beachten ist hierbei, dass es in TEI-XML zwei verschiedene Klassen von Elementen gibt. Die eine dient der Klassifizierung von Text, die zweite bringt Varianten und zusätzlichen Text mit, der beim Import in seiner Serialität eingelesen und mit `NEXT_WORD`-Kanten verbunden wird. Dies kann dann zu Problemen bei der Lesbarkeit der Wortkette führen.
 
-Das Wurzelelement der importieren XML-Datei wird in einen Knoten vom Typ `XmlDocument` importiert. Dieser erhält die Properties `_xmlEncoding` zur Darstellung des Encodings, `_xmlVersion` für die Xml-Version und `url` für die URL des importierten XML-Dokuments.
+Das Wurzelelement der importierten XML-Datei wird in einen Knoten vom Typ `XmlDocument` importiert. Dieser erhält die Properties `_xmlEncoding` zur Darstellung des Encodings, `_xmlVersion` für die Xml-Version und `url` für die URL des importierten XML-Dokuments.
 
 Mit einem weiteren cypher-Query erhalten alle der importierten Knoten die Eigenschaft `url` mit der URL des importierten XML-Dokuments. Damit lassen sich Knoten in einer Graphdatenbank mit mehreren importierten XML-Dokumenten auseinanderhalten.
 
@@ -113,13 +113,13 @@ RETURN * LIMIT 25
 
 ![XML-Hierarchie eines `<add>`-Elements und der von ihm umfassten Wörter im Graphen.](Bilder/TEI2Graph/XML-Hierarchie.png)
 
-In einem zweiten Schritt kann der so entstandene Graph mit Hilfe von cypher-Querys weiter bearbeitet werden. Die Grahdatenbank neo4j ist schemafrei und somit können nun über die importieren XML-Strukturen weitere Erschließungsstrukturen gelegt werden, ohne dass ein XML-Parser sich über das nicht mehr wohlgeformte XML beschwert. Zu beachten ist bei jedem Schritt, ob wieder der Schritt zurück nach XML getätigt werden soll. Sicherlich ist es kein größeres Problem, eine in eine Graphdatenbank importierte XML-Datei wieder als solche zu exportieren. Ist der Graph aber mit weiteren Informationen angereichert, so muss geklärt werden, ob, und wenn ja wie, diese zusätzlichen Informationen in wohlgeformtes XML transformiert werden können.
+In einem zweiten Schritt kann der so entstandene Graph mit Hilfe von cypher-Querys weiter bearbeitet werden. Die Grahdatenbank neo4j ist schemafrei und somit können nun über die importierten XML-Strukturen weitere Erschließungsstrukturen gelegt werden, ohne dass ein XML-Parser sich über das nicht mehr wohlgeformte XML beschwert. Zu beachten ist bei jedem Schritt, ob wieder der Schritt zurück nach XML getätigt werden soll. Sicherlich ist es kein größeres Problem, eine in eine Graphdatenbank importierte XML-Datei wieder als solche zu exportieren. Ist der Graph aber mit weiteren Informationen angereichert, so muss geklärt werden, ob, und wenn ja wie, diese zusätzlichen Informationen in wohlgeformtes XML transformiert werden können.
 
 ## Das DTA-Basisformat im Graphen
 
 Das DTA-Basisformat ist ein Subset der TEI und bietet für Textphänomene jeweils nur eine Annotationsmöglichkeit. Damit wird die in der TEI vorhandene Flexibilität bei der Auszeichnung eingeschränkt, um damit einen höheren Grad an Interoperabilität zu erreichen. Das DTA-Basisformat folgt den P5-Richtlinien der TEI, trifft aber eine Tag-Auswahl der für die Auszeichung historischer Texte notwendigen Elemente.
 
-Im folgenden Abschnitt werden für ausgewählte Elemente des DTA-Basisformats mögliche Modellierungsformen im Graphen beschrieben. Zum äußeren Erscheinungsbild wird der Seitenfall sowie Spalten- und Zeilenumbrüche berücksichtigt. Bei den Textphänomenen werden Absätze, Schwer- und Unleserliches behandelt. Inhaltlich werden beschränkt es sich auf die Kapiteleinteilung und Inline-Auszeichnungen. Abschließend werden noch editorische Eingriffe im Graph modelliert. Für die Metadaten werden keine Modellierungsvorschläge formuliert, da diese sich sauber im XML-Baum darstellen lassen und keine Überlappungsprobleme etc. entstehen.
+Im folgenden Abschnitt werden für ausgewählte Elemente des DTA-Basisformats mögliche Modellierungsformen im Graphen beschrieben. Zum äußeren Erscheinungsbild werden der Seitenfall sowie Spalten- und Zeilenumbrüche berücksichtigt. Bei den Textphänomenen werden Absätze, Schwer- und Unleserliches behandelt. Inhaltlich beschränkt es sich auf die Kapiteleinteilung und Inline-Auszeichnungen. Abschließend werden noch editorische Eingriffe im Graph modelliert. Für die Metadaten werden keine Modellierungsvorschläge formuliert, da diese sich sauber im XML-Baum darstellen lassen und keine Überlappungsprobleme etc. entstehen.
 
 ## Layoutstrukturen des Dokuments
 
@@ -139,7 +139,7 @@ Im Graphen sieht die Stelle wie folgt aus:
 
 Das leere `<lb/>`-Element steht für die Markierung eines Zeilenanfangs (*line begins*). Der Graph soll nun so umgebaut werden, dass die Zeile durch einen `line`-Knoten gekennzeichnet wird, von dem aus eine `FIRST_CHILD_OF`-Kante mit dem ersten Wort der Zeile und eine `LAST_CHILD_OF`-Kante mit dem letzten Wort der Zeile verbunden ist.
 
-Mit dem folgenden cypher-query kommt man den auf der Abbildung sichtbaren Subgraphen:
+Mit dem folgenden cypher-Query kommt man den auf der Abbildung sichtbaren Subgraphen:
 
 ~~~cypher
 MATCH (n0:XmlWord)-[:NEXT_WORD]->
@@ -179,7 +179,7 @@ Im Graphen sieht die Stelle wie folgt aus:
 
 ![`<lb/>`-Element im Graphen](Bilder/TEI2Graph/lb mit Worttrennung im Graphen.png)
 
-Mit dem folgenden cypher-query kommt man den auf der Abbildung sichtbaren Supgraphen:
+Mit dem folgenden cypher-query kommt man den auf der Abbildung sichtbaren Subgraphen:
 
 ~~~cypher
 MATCH (n0:XmlWord {DtaID:10197})-[:NEXT_WORD]->
@@ -190,7 +190,7 @@ RETURN * LIMIT 20;
 ~~~
 
 Das `<lb/>`-Element trennt das Wort Kenntniß.[^4fcf]
-Im nächsten Schritt werden nun die beiden getrennten Wortknoten `Kennt-` und `niß` im zweiten Wortknoten `niß` zusammengefasst. Der erste Wortknoten `Kennt-` inkl. seiner Kanten wird gelöscht und eine neue `NEXT-` und `NEXT_WORD`-Kante zwischen dem `niß`-Wortknoten und dem vorhergehenden `Die`-Wortknoten erstellt. Die Informationen, an welcher Stelle das Wort getrennt war, wird in den Eigenschaften des neuen `Kenntniß`-Wortnnotens gespeichert. In der Eigenschaft `before` steht dann der Inhalt des ursprünlich ersten Wortknotens `Kennt-` und in der Eigenschaft after der Inhalt des ursprünglich zweiten Wortknotens `niß`.
+Im nächsten Schritt werden nun die beiden getrennten Wortknoten `Kennt-` und `niß` im zweiten Wortknoten `niß` zusammengefasst. Der erste Wortknoten `Kennt-` inkl. seiner Kanten wird gelöscht und eine neue `NEXT-` und `NEXT_WORD`-Kante zwischen dem `niß`-Wortknoten und dem vorhergehenden `Die`-Wortknoten erstellt. Die Informationen, an welcher Stelle das Wort getrennt war, wird in den Eigenschaften des neuen `Kenntniß`-Wortknotens gespeichert. In der Eigenschaft `before` steht dann der Inhalt des ursprünlich ersten Wortknotens `Kennt-` und in der Eigenschaft after der Inhalt des ursprünglich zweiten Wortknotens `niß`.
 
 Hier werden die notwendigen Cypher-Befehle angezeigt:
 
@@ -223,7 +223,7 @@ Im DTA-Bf wird jeweils der Anfang einer Seite mit dem leeren Element `<pb>` mark
 <pb facs="#f[Bildnummer]" n="[Seitenzahl]"/>
 ~~~
 
-Ist eine Seitenzahl im Faksimile falsch wiedergegeben, so wird diese originalgetreu übernommen und die richtige Seitenzahl in eckigen hinzugefügt in das `n`-Attribut übernommen.
+Ist eine Seitenzahl im Faksimile falsch wiedergegeben, so wird diese originalgetreu übernommen und die richtige Seitenzahl in eckigen Klammern hinzugefügt in das `n`-Attribut übernommen.
 
 ~~~xml
 <pb facs="#f[Bildnummer]"
@@ -338,8 +338,6 @@ Absätze werden im DTA-Basisformat mit dem `<p>`-Element eingefasst. Im Manuskri
 
 ![XML-Auszug aus Patzig mit einem Absatz als Beispiel.](Bilder/TEI2Graph/p-xml-Beispiel.png)
 
-Da das `<p>`-Element im Unterschied zu den leeren Elementen wie `pb` oder `lb` ein öffnendes und schließendes Tag hat, wird beim Import der TEI-Xml-Datei durch den Importer schon ein `p`-Knoten erstellt, der mit einer `FIRST_CHILD_OF`-Kante mit dem ersten Wort des Absatzes und mit einer `LAST_CHILD_OF`-Kante mit dem letzten Wort des Absatzes verknüpft ist.
-
 ![Ein Teil des gleichen Absatzes aus Patzig im Graphen. ](Bilder/TEI2Graph/p-graph-Beispiel.png)
 
 Alle Wörter eines Absatzes sind darüber hinaus über `NEXT_SIBLING`-Kanten in der Textreihenfolge verknüpft.
@@ -348,7 +346,7 @@ Alle Wörter eines Absatzes sind darüber hinaus über `NEXT_SIBLING`-Kanten in 
 
 Im DTA-Basisformat wird bei der Transkiption von Büchern die Kapiteleinteilung mit verschachtelten `div`-Element vorgenommen. Das im `div`-Element erlaubte \@n-Attribut gibt die Strukturebene an. Über das \@type-Attribut kann der Typ des Kapitels näher spezifiziert werden. Eine Liste der möglichen Werte für das Attribut findet sich unter http://deutschestextarchiv.de/doku/basisformat/div.html.
 
-Für Manuskripte, wie der hier behandelten Vorlesungsmitschrift von Patzig gibt es unter http://deutschestextarchiv.de/doku/basisformat/msKapitel.html noch zwei zusätzliche Werte für das \@type-Attribut, nämlich *session* für Vorlesungsmitschriften und *letter* für Briefe.
+Für Manuskripte, wie die hier behandelten Vorlesungsmitschrift von Patzig, gibt es unter http://deutschestextarchiv.de/doku/basisformat/msKapitel.html noch zwei zusätzliche Werte für das \@type-Attribut, nämlich *session* für Vorlesungsmitschriften und *letter* für Briefe.
 
 Mit folgendem cypher-Query erhalten wir die in Patzig verwendeten Werte für das \@type-Attribut des `div`-Elements.
 
@@ -400,7 +398,7 @@ Die Elemente `<add>` und `<del>` werden für Kennzeichnung von Tilgungen und Hin
 
 ### `<add>`-Element
 
-Dabei können die Umstände der Änderungen beim `<add>`-Element mit dem \@place-Attribut näher beschrieben, welches die in der folgenden Tabelle angegebenen Werte annehmen darf[^a974]:
+Dabei können die Umstände der Änderungen beim `<add>`-Element mit dem \@place-Attribut näher beschrieben werden, welches die in der folgenden Tabelle angegebenen Werte annehmen darf[^a974]:
 
 |Element|\@place-Wert|Bedeutung
 |:---------|-----------|:----------------------------------------------|
@@ -475,7 +473,7 @@ Der Query gruppiert sich um den `s`-Knoten, der das `subst`-Element darstellt un
 
 ![subst-Beispiel in der Graph-Ansicht. ](Bilder/TEI2Graph/subst-graph-1.png)
 
-cyper-Query für den umgebaut
+cyper-Query für den Umbau
 
 ~~~cypher
 MATCH
@@ -513,7 +511,7 @@ MATCH
 ![\<subst>-Beispiel nach dem Graph-Umbau. ](Bilder/TEI2Graph/subst-add-del-bearbeitet.png)
 
 ## Zusammenfassung
-In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (`lb`), Seiten (`pb`), Absätze (`p`)), Struktur (Kapitel (`div`)) und editorische Eingriffe (`subst`, `add` und `del`) in Graphstrukturen überführt. Die entsprechenden Tags wurden in einen Annotationsknoten zusammengeführt. Mit diesem Knoten wird jeweils der erste und der letzte betroffene Wortknoten mit einer `FIRST_CHILD_OF`- und einer `LAST_CHILD_OF`-Kante verknüpft. Damit entstehen klare Annotationsstrukturen, die aber offensichtlich überlappen. Dies stellt im Graphen aber kein Problem dar.
+In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (`lb`), Seiten (`pb`), Absätze (`p`)), Struktur (Kapitel (`div`)) und editorische Eingriffe (`subst`, `add` und `del`) in Graphstrukturen überführt. Die entsprechenden Tags wurden in einen Annotationsknoten zusammengeführt. Mit diesem Knoten werden jeweils der erste und der letzte betroffene Wortknoten mit einer `FIRST_CHILD_OF`- und einer `LAST_CHILD_OF`-Kante verknüpft. Damit entstehen klare Annotationsstrukturen, die aber offensichtlich überlappen. Dies stellt im Graphen jedoch kein Problem dar.
 
 
 [^b20c]: Vgl. www.neo4j.com (abgerufen am 7.8.2017).
