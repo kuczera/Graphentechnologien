@@ -1,5 +1,5 @@
 ---
-title: JSON Import mit den Daten der Germania Sacra
+title: Json Import mit den Daten der Germania Sacra
 layout: default
 order: 70
 contents: true
@@ -11,7 +11,7 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
-# JSON Import mit den Daten der Germania Sacra
+# Json Import mit den Daten der Germania Sacra
 
 (Dieser Abschnitt befindet sich in Bearbeitung)
 
@@ -19,13 +19,13 @@ contents: true
 
 Das Projekt Germania Sacra erschließt die Quellen der Kirche des alten Reiches.[^eeaa] Es stellt die Kirche und ihre Institutionen von den Anfängen im 3./4. Jahrhundert bis zu deren Auflösung am Beginn des 19. Jahrhunderts dar. Im Rahmen des Projekts werden die überlieferten Quellen nach einheitlichen Kriterien aufgearbeitet und so strukturierte Daten für Kirchengeschichte im alten Reich bereitgestellt. So bildet das Projekt die Grundlage für weiterführende Forschungen.
 
-Neben den Bänden bietet das Projekt auch ein [digitales Personenregister](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/digitales-personenregister/) mit Angaben u.a. zu Personen, Bischöfen, Klöstern und Stiften. Die Daten werden über die [Schnittstellen des Projekts](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/schnittstellen-und-linked-data/) als JSON-Daten bereitgestellt.[^c866]
+Neben den Bänden bietet das Projekt auch ein [digitales Personenregister](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/digitales-personenregister/) mit Angaben u.a. zu Personen, Bischöfen, Klöstern und Stiften. Die Daten werden über die [Schnittstellen des Projekts](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/schnittstellen-und-linked-data/) als Json-Daten bereitgestellt.[^c866]
 
-## Germania Sacra JSON
+## Germania Sacra Json
 
 ### Personen
 
-Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten zu den Personen und der institutionelle Anbindung. Der folgende Ausschnitt aus einer JSON-Datei umfasst beispielhaft zwei Personeneinträge.
+Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten zu den Personen und der institutionelle Anbindung. Der folgende Ausschnitt aus einer Json-Datei umfasst beispielhaft zwei Personeneinträge.
 
 ```json
 {
@@ -60,16 +60,16 @@ Die Daten des Projekts umfassen z.B. Angaben zu Namen, Namensalternativen, Daten
 	}
 ```
 
-Die folgende Abbildung zeigt beispielhaft den ersten Personeneintrag des obigen json-Beispiels von Ludold von Escherde als importierten Personenknoten im Graphen.
+Die folgende Abbildung zeigt beispielhaft den ersten Personeneintrag des obigen Json-Beispiels von Ludold von Escherde als importierten Personenknoten im Graphen.
 
 ![Personenknoten von Ludold von Escherde in der Graphdatenbank](Bilder/Germania-Sacra-Personenknoten-mit-Properties.png)
 
-Unter dem Personenknoten werden die aus dem json importierten Properties aufgelistet.
+Unter dem Personenknoten werden die aus dem Json importierten Properties aufgelistet.
 
 
 ### Klöster
 
-Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den Angaben zu den Klöstern.  
+Die folgende Abbildung zeigt die ersten drei Einträge der Json-Datei mit den Angaben zu den Klöstern.  
 
 ```json
 {"kloster":
@@ -113,11 +113,11 @@ Die folgende Abbildung zeigt die ersten drei Einträge der JSON-Datei mit den An
  },
 ```
 
-Die folgende Abbildung zeigt beispielhaft den ersten Klostereintrag des obigen json-Beispiels zum Adeligen Damenstift Neuburg als importierten Klosterknoten im Graphen.
+Die folgende Abbildung zeigt beispielhaft den ersten Klostereintrag des obigen Json-Beispiels zum Adeligen Damenstift Neuburg als importierten Klosterknoten im Graphen.
 
 ![Klosterknoten des Adeligen Damenstifts Neuburg in der Graphdatenbank](Bilder/Germania-Sacra-Klosterknoten.png)
 
-Im folgenden finden sich die cypher-Queries für den Import der json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
+Im folgenden finden sich die cypher-Queries für den Import der Json-Dateien. Die json-Dateien selbst werden über Seafile mit einem Download-Link bereitgestellt.
 
 Im ersten Abschnitt des Codebeispiels werden Indexe z.B. für die Property gnd von Personenknoten und die Property Bistum von Klosterknoten erstellt. Anschließend werden Constraints für die IDs von Kloster- und Personenknoten eingerichtet, mit denen sichergestellt wird, dass die IDs der Kloster- und Personenknosten jeweils nur einmal vorkommen können.
 
@@ -129,7 +129,7 @@ CREATE CONSTRAINT ON (p:Person) ASSERT p.id IS UNIQUE;
 CREATE CONSTRAINT ON (k:Kloster) ASSERT k.id IS UNIQUE;
 ```
 
-Der nächste Befehl importiert aus der Personen-json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknotens in der Graphdatenbank angelegt.
+Der nächste Befehl importiert aus der Personen-Json-Datei die Personen in die Graphdatenbank. Die Zusatzinformationen zu den einzelnen Personeneinträgen werden jeweils als Properties des Personenknotens in der Graphdatenbank angelegt.
 
 ```cypher
 // Personenknoten erstellen
@@ -187,12 +187,12 @@ RETURN count(pr);
 
 ## Zusammenfassung
 
-In diesem Abschnitt wurden die Prinzipien für den Import von json-Dateien am Beispiel der Daten des Projekts Germania Sacra vorgestellt.
+In diesem Abschnitt wurden die Prinzipien für den Import von Json-Dateien am Beispiel der Daten des Projekts Germania Sacra vorgestellt.
 
 ![Schema der importierten json-Daten (Quelle:Kuczera).)](Bilder/GS-Schema1.png)
 
-Im geplanten Folgekapitel werden die Analyse von json-Daten und der Import komplexerer json-Strukturen erläutert werden.
+Im geplanten Folgekapitel werden die Analyse von Json-Daten und der Import komplexerer Json-Strukturen erläutert werden.
 
-[^eeaa]&#x3A; Zu diesem Abschnitt vgl. <http://www.germania-sacra.de/> (zuletzt abgerufen am 07.03.2019).
+[^eeaa]: Zu diesem Abschnitt vgl. <http://www.germania-sacra.de/> (zuletzt abgerufen am 07.03.2019).
 
-[^c866]: Der in diesem Kapitel verwendete json-Dump wurde freundlicherweise direkt vom Projekt Germania Sacra zur Verfügung gestellt und die Verwendung in dieser Veröffentlichung sowie die weitere Verwendung genehmigt.
+[^c866]: Der in diesem Kapitel verwendete Json-Dump wurde freundlicherweise direkt vom Projekt Germania Sacra zur Verfügung gestellt und die Verwendung in dieser Veröffentlichung sowie die weitere Verwendung genehmigt.
