@@ -62,7 +62,7 @@ Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Ne
 
 Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneinträgen im Register der Regesten. Da die hier vorgestellten Netzwerkanalyse-Algorithmen nur mit unimodalen Netzwerken arbeiten können, also Netzwerken, die nur Knoten eines Typs enthalten, müssen die Regestendaten entsprechend erweitert werden. Dabei wird davon ausgegangen, dass zwei Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben. Diese Verbindung wird durch eine `APPEARS_WITH`-Kante dargestellt, da die gemeinsame Rolle im Regest nicht näher qualifiziert werden kann.
 
-Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel [Regestenmodellierung im Graphen](20_Regestenmodellierung-im-Graphen.md) beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, `APPEARS_WITH`-Kanten erstellt.
+Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel [Regestenmodellierung im Graphen](20_Regestenmodellierung-im-Graphen.md) beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden Cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, `APPEARS_WITH`-Kanten erstellt.
 
 ~~~cypher
 MATCH (n1:IndexPerson)-[r1:PERSON_IN]->
@@ -109,7 +109,7 @@ Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse 
 
 Der PagePageRank-Algorithmus bewertet und gewichtet eine Menge verknüpfter Knoten anhand ihrer Struktur.[^998a] Auf Grundlage der Verlinkungsstruktur wird dabei jedem Knoten ein Gewicht, der sog. PageRank zugeordnet.
 
-~~~cyper
+~~~cypher
 CALL algo.pageRank.stream("IndexPerson", "APPEARS_WITH",
 {iterations:20})
 YIELD nodeId, score
@@ -121,7 +121,7 @@ ORDER BY score DESC;
 
 ### Degree Centrality
 
-~~~cyper
+~~~cypher
 MATCH (u:IndexPerson)
 RETURN u.name1 AS name,
 size((u)-[:APPEARS_WITH]->()) AS follows,
@@ -131,7 +131,7 @@ ORDER by followers DESC;
 
 ### Betweenness Centrality
 
-~~~cyper
+~~~cypher
 // betweenness centrality
 CALL algo.betweenness.stream("IndexPerson",
 "APPEARS_WITH", {direction: "OUTGOING", iterations: 10}) YIELD nodeId, centrality
@@ -142,7 +142,7 @@ ORDER by centrality DESC;
 
 ### Closeness Centrality
 
-~~~cyper
+~~~cypher
 // betweenness centrality
 CALL algo.closeness.stream("IndexPerson", "APPEARS_WITH")
 YIELD nodeId, centrality
@@ -156,7 +156,7 @@ LIMIT 30;
 
 ### Strongly Connected Components
 
-~~~cyper
+~~~cypher
 CALL algo.scc.stream("IndexPerson","APPEARS_WITH")
 YIELD nodeId, partition
 MATCH (u:IndexPerson) WHERE id(u) = nodeId
@@ -166,7 +166,7 @@ ORDER BY partition DESC;
 
 ### Weakly Connected Components
 
-~~~cyper
+~~~cypher
 CALL algo.unionFind.stream("IndexPerson","APPEARS_WITH")
 YIELD nodeId, setId
 MATCH (u:IndexPerson) WHERE id(u) = nodeId
@@ -185,7 +185,7 @@ RETURN p.name1 AS Name, label ORDER BY label DESC;
 
 ### Louvain Modularity
 
-~~~cyper
+~~~cypher
 CALL algo.louvain.stream("IndexPerson",
 "APPEARS_WITH", {})
 YIELD nodeId, community
@@ -196,7 +196,7 @@ ORDER BY community;
 
 ### Triangle count and Clustering Coefficient
 
-~~~cyper
+~~~cypher
 CALL algo.triangle.stream("IndexPerson","APPEARS_WITH")
 YIELD nodeA,nodeB,nodeC
 MATCH (a:IndexPerson) WHERE id(a) = nodeA
@@ -207,7 +207,7 @@ RETURN a.name1 AS nodeA, b.name1 AS nodeB, c.name1 AS node;
 
 direkt aus dem Beispiel übernommen
 
-~~~cyper
+~~~cypher
 CALL algo.triangleCount.stream('IndexPerson', 'APPEARS_WITH')
 YIELD nodeId, triangles, coefficient
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
@@ -217,7 +217,7 @@ ORDER BY coefficient DESC;
 
 nach der Anzahl der Dreiecksbeziehungen sortiert
 
-~~~cyper
+~~~cypher
 CALL algo.triangleCount.stream('IndexPerson', 'APPEARS_WITH')
 YIELD nodeId, triangles, coefficient
 MATCH (p:IndexPerson) WHERE id(p) = nodeId
@@ -243,7 +243,7 @@ RETURN a.shortName AS nodeA, b.shortName AS nodeB, c.shortName AS node;
 ~~~
 
 ## Zusammenfassung
-In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graphdatenbank mit den Regesten Kaiser Heinrichs IV. für die Anwendung von Netzwerkanalyse-Algorithmen vorbereitet. Im zweiten Abschnitt wurden dann cypher-Queries für verschiedene Netzwerkalgorithmen aufgelistet. In einem weitern geplanten Kapitel werden die Ergebnisse dieser Algorithmen qualitativ ausgewertet.
+In diesem Kapitel wurde die im Kapitel zur Graphmodellierung eingerichtete Graphdatenbank mit den Regesten Kaiser Heinrichs IV. für die Anwendung von Netzwerkanalyse-Algorithmen vorbereitet. Im zweiten Abschnitt wurden dann Cypher-Queries für verschiedene Netzwerkalgorithmen aufgelistet. In einem weitern geplanten Kapitel werden die Ergebnisse dieser Algorithmen qualitativ ausgewertet.
 
 [^9ea3]: Die Informationen und Abbildungen in diesem Abschnitt stammen aus dem Kurs [Historisch-archäologische Netzwerkanalyse](https://digitale-methodik.adwmainz.net/mod5/5c/slides/networkAnalysis/2018/#/step-1) von Aline Deicke und Marjam Trautmann, der im Rahmen der [International Summer School](https://iss.adwmainz.net) in Mainz stattfand (abgerufen am 07.02.2019).
 
