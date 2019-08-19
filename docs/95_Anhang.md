@@ -15,9 +15,9 @@ contents: true
 
 In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen bei der Verwendung von Graphdatenbanken in den digitalen Geisteswissenschaften vorgestellt. Die Hinweise stammen oft von meinem Kollegen Stefan Armbruster von neo4j, dem an dieser Stelle nochmal herzlich für seine Unterstützung gedankt sei.
 
-## cypher-Dokumentation
+## Cypher-Dokumentation
 
-Die Dokumentation von cypher findet sich auf den Seiten von neo4j:
+Die Dokumentation von Cypher findet sich auf den Seiten von neo4j:
 [https://neo4j.com/docs/developer-manual/current/](https://neo4j.com/docs/developer-manual/current/)
 
 ## Analyse der Graphdaten
@@ -59,7 +59,7 @@ RETURN labels(n), count(labels(n)) AS Anzahl ORDER BY Anzahl DESC;
 ## Weitere Labels für einen Knoten
 
 Gegeben sind Knoten vom Typ IndexEntry, die in der Property type noch näher spezifiziert sind (z.B. Ort, Person, Sache etc.).
-Mit dem folgenden Query wird der Wert der Proptery type als zusätzliches Label angelegt.
+Mit dem folgenden Query wird der Wert der Property type als zusätzliches Label angelegt.
 
 ~~~cypher
 MATCH (e:IndexEntry)
@@ -80,8 +80,7 @@ RETURN node;
 
 MATCH (e:IndexEntry)
 WHERE e.type = 'ereignis'
-WITH e
-CALL apoc.create.addLabels(id(e), ['IndexEvent']) YIELD node
+WITH eCALL apoc.create.addLabels(id(e), ['IndexEvent']) YIELD node
 RETURN node;
 
 MATCH (e:IndexEntry)
@@ -102,15 +101,15 @@ RETURN node;
 
 Beim Import von Daten im CSV-Format in die Graphdatenbank kann es vorkommen, dass in einem CSV-Feld mehrere Werte zusammen stehen. In diesem Abschnitt wird erklärt, wie man diese Werte auseinandernehmen, einzeln im Rahmen des Imports nutzen kann.
 
-In der Regel ist es von Vorteil, zunächst das CSV-Feld als eine Propery zu importieren und in einem zweiten Schritt auseinanderzunehmen.
+In der Regel ist es von Vorteil, zunächst das CSV-Feld als eine Property zu importieren und in einem zweiten Schritt auseinanderzunehmen.
 
 Angenommen wir haben Personen importiert, die in der Property `abschluss` eine kommaseparierte Liste von verschiedenen beruflichen Abschlüssen haben, wie z.B. Lehre, BA-Abschluss, MA-Abschluss, Promotion.
 
-In der Property `abschluss` steht zum Beispiel drin:
+In der Property `abschluss` steht zum Beispiel:
 
 `lic. theol., mag. art., dr. theol., bacc. art., bacc. bibl. theol.`
 
-Für die Aufteilung der Einzelwerte kann die `split`-Funktion verwendet werden, die einen String jeweils an einem anzugebenden Schlüsselzeichen (hier das Komma) auftrennt. Der Befehl hierzu sieht wie folgt auch:
+Für die Aufteilung der Einzelwerte kann die `split`-Funktion verwendet werden, die einen String jeweils an einem anzugebenden Schlüsselzeichen (hier das Komma) auftrennt. Der Befehl hierzu sieht wie folgt aus:
 
 ~~~cypher
 MATCH (p:Person)
@@ -137,7 +136,7 @@ http://opac.regesta-imperii.de/lang_de/kurztitelsuche_r.php?
 kurztitel=watterich,_pontificum_romanorum_vitae>Watterich 1, 159</link>).
 ~~~
 
-Mit dem folgenden Query werden in den Überlieferungsteilen der Regesten Kaiser Heinrichs IV. die Verlinkungen der Litereratur rausgesucht und für jeden Link per MERGE ein Knoten erzeugt. Anschließend werden die neu erstellen Knoten mit den jeweiligen Regesten über eine `REFERENCES`-Kante verbunden.
+Mit dem folgenden Query werden in den Überlieferungsteilen der Regesten Kaiser Heinrichs IV. die Verlinkungen der Litereratur herausgesucht und für jeden Link per MERGE ein Knoten erzeugt. Anschließend werden die neu erstellen Knoten mit den jeweiligen Regesten über eine `REFERENCES`-Kante verbunden.
 
 ~~~cypher
 MATCH (reg:Regesta)
@@ -206,7 +205,7 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 ## Der `WITH`-Befehl
 
-Da cypher eine deklarative und keine imperative Sprache ist, gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
+Da Cypher eine deklarative und keine imperative Sprache ist, gibt es bei der Formulierung der Querys Einschränkungen.[^03a5] Hier hilft oft der `WITH`-Befehl weiter, mit dem sich die o.a. beiden Befehle auch in einem Query vereinen lassen:
 
 ~~~cypher
 LOAD CSV WITH HEADERS FROM "file:///import.csv" AS line
@@ -256,9 +255,9 @@ RETURN count(*)
 
 ## Die Apoc-Bibliothek
 
-Die Funktionalitäten sind bei neo4j in verschiedene Bereiche aufgeteilt. Die Datenbank selbst bringt Grundfunktionalitäten mit. Um Industriestandards zu genügen haben diese Funktionen umfangreiche Tests und Prüfungen durchlaufen. Weiteregehende Funktionen sind in die sogenannte [*apoc-Bibliothek*](https://guides.neo4j.com/apoc) ausgelagert, die zusätzlich installiert werden muss. Diese sogenannten *user defined procedures* sind benutzerdefinierte Implementierungen bestimmter Funktionen, die in cypher selbst nicht so leicht ausgedrückt werden können. Diese Prozeduren sind in Java implementiert und können einfach in ihre neo4j-Instanz implementiert und dann direkt von Cypher aus aufgerufen werden.[^5cb9]
+Die Funktionalitäten sind bei neo4j in verschiedene Bereiche aufgeteilt. Die Datenbank selbst bringt Grundfunktionalitäten mit. Um Industriestandards zu genügen haben diese Funktionen umfangreiche Tests und Prüfungen durchlaufen. Weiteregehende Funktionen sind in die sogenannte [*Apoc-Bibliothek*](https://guides.neo4j.com/apoc) ausgelagert, die zusätzlich installiert werden muss. Diese sogenannten *user defined procedures* sind benutzerdefinierte Implementierungen bestimmter Funktionen, die in Cypher selbst nicht so leicht ausgedrückt werden können. Diese Prozeduren sind in Java implementiert und können einfach in ihre neo4j-Instanz implementiert und dann direkt von Cypher aus aufgerufen werden.[^5cb9]
 
-Die APOC-Bibliothek besteht aus vielen Prozeduren, die bei verschiedenen Aufgaben in Bereichen wie Datenintegration, Graphenalgorithmen oder Datenkonvertierung helfen.
+Die Apoc-Bibliothek besteht aus vielen Prozeduren, die bei verschiedenen Aufgaben in Bereichen wie Datenintegration, Graphenalgorithmen oder Datenkonvertierung helfen.
 
 ### Installation in neo4j
 
@@ -280,11 +279,11 @@ Wenn eine Liste mit Funktionen ausgegeben wird, war die Installation erfolgreich
 
 ### Dokumentation aller Funktionen
 
-In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) der apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
+In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) der Apoc-Bibliothek sind die einzelnen Funktionen genauer beschrieben.
 
 ## apoc.xml.import
 
-Mit dem Befehl apoc.xml.import ist es möglich, einen xml-Baum 1:1 in die Graphdatenbank einzuspielen. Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
+Mit dem Befehl apoc.xml.import ist es möglich, einen XML-Baum 1:1 in die Graphdatenbank einzuspielen. Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
 
 Beispielbefehl:
 call
@@ -296,9 +295,9 @@ return node;
 
 |Kantentyp|Beschreibung|
 |------------------------|------------------------------------------------|
-|:IS_CHILD_OF|Verweis auf eingeschachteltes Xml-Element|
+|:IS_CHILD_OF|Verweis auf eingeschachteltes XML-Element|
 |:FIRST_CHILD_OF|Verweis auf das erste untergeordnete Element|
-|:NEXT_SIBLING|Verweis auf das nächste Xml-Element auf der gleichen Ebene|
+|:NEXT_SIBLING|Verweis auf das nächste XML-Element auf der gleichen Ebene|
 |:NEXT|Erzeugt eine lineare Kette durch das gesamte XML-Dokument und gibt so die Serialität des XMLs wieder|
 |:NEXT_WORD|Verbindet Wortknoten zu einer Kette von Wortknoten. Wird nur erzeugt, wenn createNextWordRelationships:true gesetzt wird|
 
@@ -352,7 +351,7 @@ call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as 
 return count(*);
 ~~~
 
-json-example
+Json-example
 
 ~~~
 {
