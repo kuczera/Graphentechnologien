@@ -130,7 +130,7 @@ unwind doc._TextCorpus._lemmas._lemma as lemma
 match (t:Token{id:lemma.tokenIDs}) set t.Lemma = lemma._text;
 ~~~
 
-Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den Cypher-Querys für den gesamten Artikel herunterzuladen).
+Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden.
 
 ### Beispielabfrage
 
