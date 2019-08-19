@@ -13,7 +13,7 @@ contents: true
 
 # Das Deutsche Textarchiv im Graphen
 
-In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheiden sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
+In diesem Abschnitt werden zwei Verfahren zum Import von Xml-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheiden sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
 
 ## Das deutsche Textarchiv
 
@@ -51,7 +51,7 @@ und im Anschluss im Vergleich das Original (links) und der Lesetext (rechts).
 
 ![Eine Beispielzeile aus dem Faust](Bilder/Faust-S11-Faks.png)
 
-Vergleicht man das TCF-Xml mit der gleiche Stelle im TEIP5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
+Vergleicht man das TCF-Xml mit der gleiche Stelle im TEI-P5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
 
 ~~~xml
 <lb/>
@@ -130,7 +130,7 @@ unwind doc._TextCorpus._lemmas._lemma as lemma
 match (t:Token{id:lemma.tokenIDs}) set t.Lemma = lemma._text;
 ~~~
 
-Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den cypher-Querys für den gesamten Artikel herunterzuladen).
+Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den Cypher-Querys für den gesamten Artikel herunterzuladen).
 
 ### Beispielabfrage
 
@@ -144,7 +144,7 @@ w=()-[:NEXT_TOKEN*5]->(a:Token{Lemma:'Bild'})
 RETURN *;
 ~~~
 
-Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen
+Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen.
 
 ![Eine Beispielzeile aus dem Faust](Bilder/TEI2Graph/BilderFroherTage.png)
 
