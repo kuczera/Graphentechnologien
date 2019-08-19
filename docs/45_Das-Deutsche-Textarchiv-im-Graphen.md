@@ -13,7 +13,7 @@ contents: true
 
 # Das Deutsche Textarchiv im Graphen
 
-In diesem Abschnitt werden zwei Verfahren zum Import von Xml-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheiden sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
+In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheiden sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
 
 ## Das deutsche Textarchiv
 
@@ -51,7 +51,7 @@ und im Anschluss im Vergleich das Original (links) und der Lesetext (rechts).
 
 ![Eine Beispielzeile aus dem Faust](Bilder/Faust-S11-Faks.png)
 
-Vergleicht man das TCF-Xml mit der gleiche Stelle im TEI-P5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
+Vergleicht man das TCF-XML mit der gleiche Stelle im TEI-P5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
 
 ~~~xml
 <lb/>
@@ -149,9 +149,9 @@ Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen.
 ![Eine Beispielzeile aus dem Faust](Bilder/TEI2Graph/BilderFroherTage.png)
 
 
-## Import der TEIP5-Fassung
+## Import der TEI-P5-Fassung
 
-Im nächsten Schritt wird die TEIP5-Fassung von Goethes Faust importiert
+Im nächsten Schritt wird die TEI-P5-Fassung von Goethes Faust importiert
 
 ~~~cypher
 call
@@ -171,7 +171,7 @@ w=(:XmlWord)-[:NEXT_WORD*3]->
 RETURN *;
 ~~~
 
-Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen, da hier u.a. auch der Zeilenfall annotiert ist.
+Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEI-P5-Graphen, da hier u.a. auch der Zeilenfall annotiert ist.
 
 ![Die Beispielzeile aus der TEIP5-Fassung des  Faust](Bilder/TEI2Graph/BilderFroherTageP5.png)
 
