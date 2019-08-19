@@ -61,7 +61,7 @@ Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Impor
 
 ## Der Import mit apoc.load.xmlSimple
 
-Für den Import von XML-Daten steht in der apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
+Für den Import von XML-Daten steht in der Apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
 
 
 ~~~cypher
@@ -81,7 +81,7 @@ UNWIND xmlFile._work as wdata
 		 MERGE (w1)-[:GEDRUCKT_IN]->(o1));
 ~~~
 
-Für den Import wird die apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. die Zeilen 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der jeweils ein Werk (das ist der Inhalt des *work*-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle *work*-Elemente der XML-Datei abgearbeitet sind.
+Für den Import wird die Apoc-Funktion apoc.load.xmlSimple verwendet[^6846]. Diese Funktion nimmt XML-Dateien oder eine URL und stellt die Daten geparst für die weitere Verarbeitung in einer Map-Struktur zur Verfügung (vgl. die Zeilen 1-4 des Codebeispiels). In der Variable __xmlFile__ befindet sich nun diese Map-Struktur. In Zeile 5 folgt der __UNWIND__-Befehl, der jeweils ein Werk (das ist der Inhalt des *work*-Elements in der XML-Datei) an die Variable value weitergibt, mit der es dann weiter verarbeitet werden kann. Dies wiederholt sich so lange, bis alle *work*-Elemente der XML-Datei abgearbeitet sind.
 
 Nach dem `UNWIND`-Befehl folgt eine Gruppe von Befehlen, die immer wieder für jedes *work*-Element ausgeführt werden. Als erstes wird mit dem `MERGE`-Befehl ein Knoten vom Typ `Werk` für das Buch mit der Titelangabe in der Eigenschaft `name` erstellt. Dies ist nicht weiter schwierig, da in der XML-Datei für jedes Werk nur ein Titel existiert. Anders ist dies bei den Autoren, von denen es einen oder mehrere geben kann, die dann auch in mehreren *autor*-Elementen verzeichnet sind. In der gleichen Weise wird anschließend mit den Angaben zu Autor, Kommentator (die beide Personenknoten ergeben) und mit dem Druckort verfahren. Mit der Erstellung bzw. Prüfung auf Existenz durch den `Merge`-Befehl werden gleichzeitig die `AUTOR_VON`-, `KOMMENTIERT_VON`-, und `GEDRUCKT_IN`-Kanten erstellt und der Graph vervollständigt.
 
@@ -113,7 +113,7 @@ FOREACH (x in druckorte |
 
 ## Zusammenfassung
 
-In diesem Abschnitt wurden die Analyse einer XML-Datei, die daraus resultierende Graphmodellierung und der Import des XMLs in die Graphdatenbank neo4j beschrieben. Für den Import wurden die Funktionen `apoc.load.xmlSimple` und `apoc.load.xml` aus der apoc-Bibliothek verwendet. Der cypher-Code kann als Grundlage für weitere Importe von XML in die Graphdatenbank neo4j dienen.
+In diesem Abschnitt wurden die Analyse einer XML-Datei, die daraus resultierende Graphmodellierung und der Import des XMLs in die Graphdatenbank neo4j beschrieben. Für den Import wurden die Funktionen `apoc.load.xmlSimple` und `apoc.load.xml` aus der apoc-Bibliothek verwendet. Der Cypher-Code kann als Grundlage für weitere Importe von XML in die Graphdatenbank neo4j dienen.
 
 
-[^6846]: Die apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen finden sich im Anhang im Abschnitt zur Die Apoc-Bibliothek.
+[^6846]: Die Apoc-Bibliothek muss nach der Installation von neo4j zusätzlich installiert werden. Nähere Informationen finden sich im Anhang im Abschnitt zur Die Apoc-Bibliothek.
