@@ -71,7 +71,7 @@ In der folgenden Tabelle werden charakteristische Möglichkeiten zur Typisierung
 
 |Graphattribute|Unterschiede|Überlegungen zum Algorithms|
 |------------------|---------------------|------------------------------------|
-|Verbundene und nichtverbundene Graphen|Gibt es einen Pfad (Länge egal) zwischen zwei beliebigen Knoten eines Graphen|Knoteninseln können zu unvorhergesehenem Verhalten, wie Abbruch oder Auslassen von Knoteninseln|
+|Verbundene und nichtverbundene Graphen|Gibt es einen Pfad (Länge egal) zwischen zwei beliebigen Knoten eines Graphen|Knoteninseln können zu unvorhergesehenem Verhalten, wie Abbruch oder Auslassen von Knoteninseln führen|
 |Gewichtete und ungewichtete Graphen|Gibt es (domänen-spezifische) Werte für Wichtungen an Knoten und Kanten|Werte machen den Graphen reicher an Informationen; Viele Algoritmen benötigen gewichtende Werte|
 |Gerichtete und ungerichtete Graphen|Ist eine Verbindung hierarchisch oder gegenseitig|Die Richtung einer Kante sind für viele Auswertungen von Relevanz|
 |Zyklische und nicht zyklische Graphen|In zyklischen Graphen können Pfade können wieder zum Startknoten zurückkehren|Zyklische Graphen sind weit verbreitet. Bei der Auswertung mit Graphalgorithmen muss der Graph aber möglicherweise bearbeitet werden|
