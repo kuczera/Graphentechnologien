@@ -35,7 +35,7 @@ Im folgenden Beispiel soll das Potential der Graphmodellierung von Verwandtschaf
 
 ![Berchar in der Nomen-et-Gens-Datenbank](Bilder/NeG/040-Berchar-DB-Eintrag.jpg)
 
-In der Graphdatenbank neo4j wird für eine solche Fragestellung eine Shortest_Path-Abfrage verwendet, die den kürzesten möglichen Weg zwischen zwei Knoten zurück liefert, sofern es einen gibt. Der folgende cypher-Befehl liefert den Pfad zwischen dem Personenknoten Karls des Großen mit der NeG-ID `7404` und dem Personenknoten von Berchar mit der NeG-ID `7119`. Dabei wird die Länge des abzufragenden Pfades auf 15 Kanten begrenzt.
+In der Graphdatenbank neo4j wird für eine solche Fragestellung eine Shortest_Path-Abfrage verwendet, die den kürzesten möglichen Weg zwischen zwei Knoten zurück liefert, sofern es einen gibt. Der folgende Cypher-Befehl liefert den Pfad zwischen dem Personenknoten Karls des Großen mit der NeG-ID `7404` und dem Personenknoten von Berchar mit der NeG-ID `7119`. Dabei wird die Länge des abzufragenden Pfades auf 15 Kanten begrenzt.
 
 ~~~cypher
 // shortest_path-Abfrage von Karl dem Großen zu Berchar

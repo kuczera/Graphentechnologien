@@ -13,7 +13,7 @@ contents: true
 
 # Das Deutsche Textarchiv im Graphen
 
-In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheidet sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
+In diesem Abschnitt werden zwei Verfahren zum Import von XML-Texten des Deutschen Textarchivs (DTA) in die Graphdatenbank neo4j vorgestellt. Dabei unterscheiden sich sowohl das gewählte Ausgangsformat der DTA als auch die gewählten Importtechniken.
 
 ## Das deutsche Textarchiv
 
@@ -27,7 +27,7 @@ Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download 
 + [TCF](http://deutschestextarchiv.de/book/download_fulltcf/16181) bietet die tokenisierte, serialisierte, lemmatisierte und normalisierte Fassung, textkritische Informationen fehlen jedoch.
 + [Plain-Text](http://deutschestextarchiv.de/book/download_txt/goethe_faust01_1808) bietet einen einfachen Text mit Seiten- und Zeilenfall ohne weitere Zusatzinformationen
 
-Für den Import in eine Graphdatenbanken bietet sich das TCF-Format an, da es den Text tokenisiert, serialisiert, lemmatisiert und normalisiert bietet. In diesem Format lässt er sich mit cypher-Befehlen in die Graphdatenbank importieren. Im Beispiel wird Goethes Faust in der TCF-Fassung in die Graphdatenbank importiert.
+Für den Import in eine Graphdatenbanken bietet sich das TCF-Format an, da es den Text in tokenisierter, serialisierter, lemmatisierter und normalisierter Form bietet. In diesem Format lässt er sich mit Cypher-Befehlen in die Graphdatenbank importieren. Im Beispiel wird Goethes Faust in der TCF-Fassung in die Graphdatenbank importiert.
 
 Hier wird ein Ausschnitt aus der TCF-Datei[^f332] gezeigt
 
@@ -51,7 +51,7 @@ und im Anschluss im Vergleich das Original (links) und der Lesetext (rechts).
 
 ![Eine Beispielzeile aus dem Faust](Bilder/Faust-S11-Faks.png)
 
-Vergleicht man das TCF-Xml mit der gleiche Stelle im TEIP5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
+Vergleicht man das TCF-XML mit der gleiche Stelle im TEI-P5 ist zu erkennen, dass in letzterem der Zeilenfall annotiert ist.
 
 ~~~xml
 <lb/>
@@ -130,7 +130,7 @@ unwind doc._TextCorpus._lemmas._lemma as lemma
 match (t:Token{id:lemma.tokenIDs}) set t.Lemma = lemma._text;
 ~~~
 
-Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden (hier klicken, um den Code mit den cypher-Querys für den gesamten Artikel herunterzuladen).
+Damit ist nun die Fassung von Goethes Faust aus dem Deutschen Textarchiv in die Graphdatenbank importiert worden und kann weiter untersucht werden.
 
 ### Beispielabfrage
 
@@ -144,14 +144,14 @@ w=()-[:NEXT_TOKEN*5]->(a:Token{Lemma:'Bild'})
 RETURN *;
 ~~~
 
-Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen
+Damit finden wir die am Anfang des Kapitels vorgestellte Stelle im Graphen.
 
 ![Eine Beispielzeile aus dem Faust](Bilder/TEI2Graph/BilderFroherTage.png)
 
 
-## Import der TEIP5-Fassung
+## Import der TEI-P5-Fassung
 
-Im nächsten Schritt wird die TEIP5-Fassung von Goethes Faust importiert
+Im nächsten Schritt wird die TEI-P5-Fassung von Goethes Faust importiert
 
 ~~~cypher
 call
@@ -171,7 +171,7 @@ w=(:XmlWord)-[:NEXT_WORD*3]->
 RETURN *;
 ~~~
 
-Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEIP5-Graphen, da hier u.a. auch der Zeilenfall annotiert ist.
+Das Ergebnis zeigt die komplexere Struktur der gleichen Stelle im TEI-P5-Graphen, da hier u.a. auch der Zeilenfall annotiert ist.
 
 ![Die Beispielzeile aus der TEIP5-Fassung des  Faust](Bilder/TEI2Graph/BilderFroherTageP5.png)
 
