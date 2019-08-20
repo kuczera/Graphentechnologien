@@ -1,0 +1,209 @@
+// Datenbank leeren
+MATCH (n) DETACH DELETE n;
+
+// vorab Index erzeugen -> Import wird schneller
+CREATE INDEX ON :Regesta(ident);
+CREATE INDEX ON :Regesta(regnum);
+CREATE INDEX ON :Regesta(persistentIdentifier);
+CREATE INDEX ON :Regesta(registerId);
+CREATE INDEX ON :Regesta(heftId);
+CREATE INDEX ON :Regesta(placeOfIssue);
+CREATE INDEX ON :Regesta(origPlaceOfIssue);
+CREATE INDEX ON :Date(startDate);
+CREATE INDEX ON :Place(original);
+CREATE INDEX ON :Place(normalizedGerman);
+CREATE INDEX ON :Lemma(lemma);
+CREATE INDEX ON :Literature(literatur);
+CREATE INDEX ON :Reference(reference);
+CREATE INDEX ON :IndexEntry(registerId);
+CREATE INDEX ON :IndexEntry(nodeId);
+CREATE INDEX ON :Regesta(latLong);
+CREATE INDEX ON :IndexPlace(registerId);
+CREATE INDEX ON :IndexEvent(registerId);
+CREATE INDEX ON :IndexPerson(registerId);
+
+// Regestenknoten erstellen
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/RegH4.csv" AS line
+CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary,
+  archivalHistory:line.archival_history, date:line.date_string,
+  ident:line.identifier,  regnum:line.regnum,
+  origPlaceOfIssue:line.locality_string, startDate:line.start_date,
+  endDate:line.end_date})
+MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
+MERGE (r)-[:DATE]->(d)
+RETURN count(r);
+
+// RI-Ausstellungsorte-geo erstellen
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/RI_Ortsdaten.csv"
+AS line
+WITH line
+WHERE line.Lat IS NOT NULL
+AND line.normalisiertDeutsch IS NOT NULL
+MATCH (r:Regesta {origPlaceOfIssue:line.Original})
+MERGE (p:Place {normalizedGerman:line.normalisiertDeutsch,
+  longitude:line.Long, latitude:line.Lat})
+WITH r, p, line
+MERGE (r)-[rel:PLACE_OF_ISSUE]->(p)
+SET p.wikidataId = line.wikidataId
+SET p.name = line.name
+SET p.gettyId = line.GettyId
+SET p.geonamesId = line.GeonamesId
+SET rel.original = line.Original
+SET rel.alternativeName = line.Alternativname
+SET rel.commentary = line.Kommentar
+SET rel.allocation = line.Zuordnung
+SET rel.state = line.Lage
+SET rel.certainty = line.Sicherheit
+SET rel.institutionInCity = line.InstInDerStadt
+RETURN count(p);
+
+// Regesten und Ausstellungsorte mit Koordinaten der Ausstellungsorte versehen
+MATCH (r:Regesta)-[:PLACE_OF_ISSUE]->(o:Place)
+SET r.latLong = point({latitude: tofloat(o.latitude),
+  longitude: tofloat(o.longitude)})
+SET o.latLong = point({latitude: tofloat(o.latitude),
+  longitude: tofloat(o.longitude)})
+SET r.placeOfIssue = o.normalizedGerman
+SET r.latitude = o.latitude
+SET r.longitude = o.longitude;
+
+// Date in neo4j-Datumsformat umwandeln
+MATCH (n:Regesta)
+SET n.isoStartDate = date(n.startDate);
+MATCH (n:Regesta)
+SET n.isoEndDate = date(n.endDate);
+MATCH (d:Date)
+SET d.isoStartDate = date(d.startDate);
+MATCH (d:Date)
+SET d.isoEndDate = date(d.endDate);
+
+// ReggH4-Herrscherhandeln
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/ReggH4-Verben.csv"
+AS line FIELDTERMINATOR ','
+MATCH (r:Regesta{ident:line.regid})
+MERGE (l:Lemma{lemma:line.Lemma})
+MERGE (r)-[:ACTION]->(l);
+
+// ReggH4-Literaturnetzwerk erstellen
+MATCH (reg:Regesta)
+WHERE reg.archivalHistory CONTAINS "link"
+UNWIND apoc.text.regexGroups(reg.archivalHistory,
+"<link (\\S+)>(\\S+)</link>") as link
+MERGE (ref:Reference {url:link[1]})
+ON CREATE SET ref.title=link[2]
+MERGE (reg)-[:REFERENCES]->(ref);
+
+// Registereinträge Personen erstellen
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/RegisterH4-IndexPerson.csv"
+AS line
+CREATE (:IndexPerson {registerId:line.ID, name1:line.name1});
+
+// Registereinträge Orte erstellen
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/RegisterH4-IndexPlace.csv"
+AS line
+CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
+
+// PLACE_IN-Kanten für Orte erstellen
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/RegisterH4-Place-APPEARS_IN.csv"
+AS line
+MATCH (from:IndexPlace {registerId:line.ID})
+MATCH (to:Regesta {regnum:line.regnum2})
+CREATE (from)-[:PLACE_IN {regnum:line.regnum,
+  name1:line.name1, name2:line.name2}]->(to);
+
+// PERSON_IN-Kanten für Person erstellen
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/GraphReader/raw/master/data/RegisterH4-Person-APPEARS_IN.csv"
+AS line
+MATCH (from:IndexPerson {registerId:line.ID}),
+(to:Regesta {regnum:line.regnum2})
+CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1,
+  name2:line.name2}]->(to);
+
+// Robert II. von Flandern
+MATCH (n:IndexPerson) WHERE n.registerId = 'H4P01822'
+RETURN *;
+
+// Robert II. von Flandern mit Netzwerk
+MATCH (n:IndexPerson)-[:PERSON_IN]->
+(r:Regesta)<-[:PERSON_IN]-
+(m:IndexPerson)
+WHERE n.registerId = 'H4P01822'
+RETURN *;
+
+// Robert II. von Flandern mit Netzwerk und Herrscherhandeln (viel)
+MATCH
+(n1:IndexPerson)-[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-
+(n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)<-[:PERSON_IN]-
+(n3:IndexPerson)
+WHERE n1.registerId = 'H4P01822'
+RETURN *;
+
+// Robert II. von Flandern und Herzog Heinrich von Niederlothringen mit Netzwerk
+MATCH
+(n:IndexPerson)-[:PERSON_IN]->
+(r:Regesta)<-[:PERSON_IN]-(m:IndexPerson)
+WHERE n.registerId = 'H4P01822'
+AND m.registerId = 'H4P00926'
+RETURN *;
+
+// Robert und Heinrich mit allen gemeinsamen Personen und Regesten
+MATCH (n1:IndexPerson)
+-[:PERSON_IN]->(r1:Regesta)<-[:PERSON_IN]-
+(n2:IndexPerson)-[:PERSON_IN]->(r2:Regesta)
+<-[:PERSON_IN]-(n3:IndexPerson)
+WHERE n1.registerId = 'H4P00926'
+AND n3.registerId = 'H4P01822'
+RETURN *;
+
+// Rausrechnen der dazwischenliegenden Knoten
+MATCH
+(startPerson:IndexPerson)-[:PERSON_IN]->
+(regest:Regesta)<-[:PERSON_IN]-(endPerson:IndexPerson)
+WHERE startPerson.registerId in ['H4P01822', 'H4P00926']
+WITH startPerson, endPerson, count(regest) as anzahl,
+collect(regest.ident) as idents
+CALL apoc.create.vRelationship(startPerson, "KNOWS",
+{anzahl:anzahl, regesten:idents}, endPerson) YIELD rel
+RETURN startPerson, endPerson, rel;
+
+// Liste der Regesten als Ergebnis
+MATCH
+(startPerson:IndexPerson)-[:PERSON_IN]->
+(regest1:Regesta)<-[:PERSON_IN]-(middlePerson:IndexPerson)
+-[:PERSON_IN]->(regest2:Regesta)
+<-[:PERSON_IN]-(endPerson:IndexPerson)
+WHERE startPerson.registerId in ['H4P00926']
+AND endPerson.registerId in ['H4P01822']
+RETURN DISTINCT startPerson.name1,
+regest1.ident, regest1.text,
+middlePerson.name1, regest2.ident,
+regest2.text, endPerson.name1;
+
+// Herrscherhandeln ausgezählt
+MATCH (n:Lemma)<-[h:ACTION]-(m:Regesta)
+RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
+
+// Herrscherhandeln pro Ausstellungsort
+MATCH (n:Lemma)<-[h:ACTION]-(:Regesta)-[:PLACE_OF_ISSUE]->(p:Place)
+WHERE p.normalizedGerman IS NOT NULL
+RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
+
+MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Lemma)
+RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
+
+// Entfernungen von Orten berechnen lassen
+MATCH (n:Place)
+WHERE n.normalizedGerman = 'Augsburg'
+WITH n.latLong as point
+MATCH (r:Regesta)
+WHERE distance(r.latLong, point) < 200000
+AND r.placeOfIssue IS NOT NULL
+AND r.placeOfIssue <> 'Augsburg'
+RETURN r.ident, r.placeOfIssue,
+distance(r.latLong, point) AS Entfernung
+ORDER BY Entfernung;
+
+// Welche Literatur wird am häufigsten zitiert
+MATCH (n:Reference)<-[r:REFERENCES]-(m:Regesta)
+RETURN n.title, count(r) AS Anzahl
+ORDER BY Anzahl DESC LIMIT 10;
