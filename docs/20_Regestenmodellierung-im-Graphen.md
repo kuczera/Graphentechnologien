@@ -102,7 +102,7 @@ Im folgenden werden die einzelnen Teile des Import-Befehls erläutert:
 |`LOAD CSV WITH HEADERS FROM` "https://docs.google.com/ ..." AS line|line|Import der CSV-Dateien. Es wird jeweils eine Zeile an die Variable line weitergegeben|
 |`CREATE`(r:Regesta {regid:line.persistentIdentifier, text:line.summary, archivalHistory:line.archival_history, date:line.date_string|line.persistent_ identifier, line.summary etc. |Erstellung des Regestenknotens. Für die weiteren Befehle steht der neu erstellt Regestenknoten unter der Variable `r` zur Verfügung.|
 |`MERGE` (d:Date {startDate:line.start_date, endate:line.end_date})|line.start_date und line.end_date|Es wird geprüft, ob ein Datumsknoten mit der Datumsangabe schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Datumsknoten unter der Variable d zur Verfügung.|
-|`MERGE` (r)-[:HAT_DATUM]->(d)|`(r)` ist der Regestenknoten, `(d)` ist der Datumsknoten|Zwischen Regestenknoten und Datumsknoten wird eine `HAT_DATUM`-Kante erstellt.|
+|`MERGE` (r)-[:DATE]->(d)|`(r)` ist der Regestenknoten, `(d)` ist der Datumsknoten|Zwischen Regestenknoten und Datumsknoten wird eine `DATE`-Kante erstellt.|
 
 ### Erstellen der Ausstellungsorte
 
