@@ -146,6 +146,27 @@ MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 ~~~
 
+## Iso-Zeit- und Datumsangaben in neo4j-Datumsformat umrechnen
+
+Wenn in neo4j Datumsangaben iso-konform im Format JJJJ-MM-TT (also Jahr-Monat-Tag) abgespeichert sind, behandelt Neo4j diese Angaben aber immer noch als String. Um Datumsberechnungen durchführen zu können, müssen die Strings in neo4j-interne Datumswerte umgerechnet werden. Der Cypher-Query am Beispiel der Regesta Imperii hierzu sieht wie folgt aus:
+
+~~~cypher
+// Date in neo4j-Datumsformat umwandeln
+MATCH (n:Regesta)
+SET n.isoStartDate = date(n.startDate);
+MATCH (n:Regesta)
+SET n.isoEndDate = date(n.endDate);
+MATCH (d:Date)
+SET d.isoStartDate = date(d.startDate);
+MATCH (d:Date)
+SET d.isoEndDate = date(d.endDate);
+~~~
+
+Zunächst werden mit dem `MATCH`-Befehl alle Regestenknoten aufgerufen. Anschließend wird für jeden Regestenknoten aus der String-Property `startDate` die Datumsproperty `isoStartDate` berechnet und im Regestenknoten abgespeichert. Mit Hilfe der Property können dann Datumsangaben und Zeiträume abgefragt werden (Beispiel hierzu unten in der Auswertung).
+
+
+
+
 ## Vorkommende Wörter in einer Textproperty zählen
 
 Werden Texte in der Property source eines Knotens l gespeichert, kann man sich mit folgendem Query die Häufigkeit der einzelnen Wörter anzeigen lassen.
