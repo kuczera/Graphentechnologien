@@ -53,7 +53,7 @@ ORDER BY relationshipType
 ~~~cyper
 MATCH (n)
 WHERE size((n)--())=0
-RETURN labels(n), count(labels(n)) AS Anzahl ORDER BY Anzahl DESC;
+RETURN DISTINCT labels(n);
 ~~~
 
 ## Weitere Labels für einen Knoten
