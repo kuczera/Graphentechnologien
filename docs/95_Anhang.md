@@ -239,9 +239,9 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 Der `LOAD CSV`-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den `CREATE`-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende `WITH`-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
-## Export eines Subgraphen mit apc.export.cypher.query
+## Export eines Subgraphen mit apoc.export.cypher.query
 
-Hier wird beschrieben, wie man einen Teil einer Graphdatenbank, einen sogenannten Sub-Graphen, exportieren und in eine neue Graphdatenbank importieren kann. Weitere Infos zum Befehl apc.export.cypher.query finden Sie auf der [Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/) dieser Seite.
+Hier wird beschrieben, wie man einen Teil einer Graphdatenbank, einen sogenannten Sub-Graphen, exportieren und in eine neue Graphdatenbank importieren kann. Weitere Infos zum Befehl apoc.export.cypher.query finden Sie auf der [Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/) dieser Seite.
 
 ### Export des Subgraphen
 
