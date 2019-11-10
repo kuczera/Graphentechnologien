@@ -239,6 +239,31 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 Der `LOAD CSV`-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den `CREATE`-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende `WITH`-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
+## Export eines Subgraphen mit apc.export.cypher.query
+
+Hier wird beschrieben, wie man einen Teil einer Graphdatenbank, einen sogenannten Sub-Graphen, exportieren und in eine neue Graphdatenbank importieren kann. Weitere Infos zum Befehl apc.export.cypher.query finden Sie auf der [Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/) dieser Seite.
+
+### Export des Subgraphen
+
+~~~cypher
+// Export von Knoten und Kanten des cypher-Statements inkl. der Indexe als cypher-Statements in die genannte Datei
+CALL apoc.export.cypher.query(
+'MATCH (p1:Person)-[r:KNOWS]->(p2:Person) RETURN p1, r, p2',
+'/tmp/export.cypher',{format:'cypher-shell'});
+~~~
+
+Zu beachten ist, dass beim RETURN-Befehl explizit p1, p2 und r erwähnt werden.
+Dies ergibt die Datei export.cypher im Verzeichnis /tmp. Der Inhalt dieser Datei kann als Text in die Befehlszeile des neo4j-Browsers einer leeren Graphdatenbank kopiert und ausgeführt werden. Damit wird dann aus Subgraph erstellt.
+
+### Import des Subgraphen in eine neue Datenbank über die cypher-Shell  
+
+Alternativ kann die exportierte Datei direkt über die cypher-Shell importiert werden:
+
+~~~cypher
+cat /tmp/export.cypher | ./bin/cypher-shell -u neo4j -p password
+~~~
+
+
 ## Knoten hat bestimmte Kante nicht
 
 Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://134.176.70.65:10210/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
