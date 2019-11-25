@@ -164,8 +164,18 @@ SET d.isoEndDate = date(d.endDate);
 
 Zunächst werden mit dem `MATCH`-Befehl alle Regestenknoten aufgerufen. Anschließend wird für jeden Regestenknoten aus der String-Property `startDate` die Datumsproperty `isoStartDate` berechnet und im Regestenknoten abgespeichert. Mit Hilfe der Property können dann Datumsangaben und Zeiträume abgefragt werden (Beispiel hierzu unten in der Auswertung).
 
+## Geokoordinaten in neo4j
 
+In den Properties von Knoten können auch Geokoorinaten gespeichert und analysiert werden. Angenommen im Knoten (n) enthält die Property n.latitude die Angaben zum Breitengrad und die Property n.longitude die Angaben zum Längengrad. Dann kann mit dem folgenden Query die Property n.nLatLong erstellt werden, mit der dann Entfernungsberechnungen durchgeführt werden können:
 
+~~~cypher
+// Property zur Entfernungsberechnung erstellen
+MATCH (o:Ort)
+SET o.nLatLong = point({latitude: tofloat(line.Latitude), longitude: tofloat(line.Longitude)});
+RETURN *;
+~~~
+
+Beispiele zur Auswertung an Hand der Regesta Imperii finden Sie in dieser <a href="https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html">Präsentation</a> auf dieser <a href="https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html#/step-10">Folie</a>.
 
 ## Vorkommende Wörter in einer Textproperty zählen
 
