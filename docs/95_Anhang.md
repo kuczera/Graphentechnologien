@@ -113,8 +113,8 @@ Für die Aufteilung der Einzelwerte kann die `split`-Funktion verwendet werden, 
 
 ~~~cypher
 MATCH (p:Person)
-FOREACH ( j in split(p.abschluss, ", ") |
-MERGE (t:Titel {name:j})
+FOREACH ( j in split(p.abschluss, ",") |
+MERGE (t:Titel {name:trim(j)})
 MERGE (t)<-[:ABSCHLUSS]-(p)
 );
 ~~~
