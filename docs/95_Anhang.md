@@ -308,6 +308,14 @@ CALL apoc.nodes.link(briefe, "NEXT_LETTER")
 RETURN count(*)
 ~~~
 
+## Alle Indexe in einer Datenbank löschen
+
+Mit dem folgenden Befehl lassen sich alle Indexe einer Datenbank auf einmal löschen.
+
+~~~cypher
+CALL apoc.schema.assert({},{},true) YIELD label, key
+RETURN *;
+~~~
 
 ## Die Apoc-Bibliothek
 
