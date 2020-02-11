@@ -124,6 +124,20 @@ Zu beachten ist, dass die im CSV-Feld vorhandenen Begriffe konsistent benannt se
 
 ## Reguläre Ausdrücke
 
+### Reguläre Ausdrücke mit cypher
+
+Im folgenden Beispiel werden die Properties startDate and endDate auf Korrektheit überprüft.
+
+~~~cypher
+match (r:Regesta)
+where not r.startDate =~ "[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}" or not r.endDate =~ "[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}"
+return r.identifier, r.startDate, r.endDate
+~~~
+
+Damit können Tippfehler in den Datumsangaben gefunden werden (z.B. 0903-21-11).
+
+### Reguläre Ausdrücke mit apoc
+
 Mit dem Befehl `apoc.text.regexGroups` ist es möglich, reguläre Ausrücke zum Auffinden und Ändern von Property-Werten zu nutzen.
 
 Beispiel: Überlieferung des Regest [RI III,2,3 n. 3](http://www.regesta-imperii.de/id/1051-02-02_1_0_3_2_3_3_3):
