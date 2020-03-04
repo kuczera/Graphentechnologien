@@ -13,6 +13,10 @@ contents: true
 
 # Netzwerkanalyse mit neo4j
 
+## Technische Vorbemerkungen
+
+Um die Graphalgorithem in neo4j nutzen zu können, müssen sie installiert werden. Dies geschieht analog zur APOC-Library, wie im Anschnitt zur [APOC-Installation](https://kuczera.github.io/Graphentechnologien/95_Anhang.html#die-apoc-bibliothek) erklärt.
+
 ## Grundlagen zur Netzwerkanalyse
 
 ### Vorbemerkungen
@@ -103,7 +107,7 @@ Mit diesen Queries lässt sich bei unbekannten Graphdatenbanken ein erster Über
 
 ## Zentralitätsalgorithmen in der historischen Netzwerkanalyse
 
-Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse der Personennetzwerke der Regesten Kaiser Heinrichs IV. verwendet. Im Zentrum steht hier zunächst die technische Anwendung. Die inhaltliche Analyse wird Gegenstand eines geplanten nächsten Kapitels sein.
+Im folgenden Abschnitt werden verschiedene Zentralitätsalgorithmen zur Analyse der Personennetzwerke der Regesten Kaiser Heinrichs IV. verwendet. Im Zentrum steht hier zunächst die technische Anwendung. Die inhaltliche Analyse wird Gegenstand eines geplanten nächsten Kapitels sein. Als Vorlage für diesen Abschnitt diente u.a. das Buch *Graph Algorithms* von Mark Needham und Amy E. Hodler (O’Reilly Media 2019) und kann kostenlos auf dieser Seite bezogen werden: [https://neo4j.com/graph-algorithms-book/](https://neo4j.com/graph-algorithms-book/). Es bietet einen sehr guten Überblick zur Nutzung von Netzwerkalgorithemn in neo4j.
 
 ### PageRank
 
