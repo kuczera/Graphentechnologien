@@ -191,6 +191,18 @@ RETURN *;
 
 Beispiele zur Auswertung an Hand der Regesta Imperii finden Sie in dieser <a href="https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html">Präsentation</a> auf dieser <a href="https://digitale-methodik.adwmainz.net/mod5/5c/slides/graphentechnologien/RI.html#/step-10">Folie</a>.
 
+Hier noch eine cypher-Beispiel zur Abfrage der Ausstellungsorte in den Regesten Kaiser Heinrichs IV. (Band [RI III,2,3](http://www.regesta-imperii.de/unternehmen/publikationen.html#c200)) mit der Datumseinschränkung 1.1.1085 bis 1.1.1090. Die Ausgabe ist für die direkte Übernahme in den [Dariah-Geobrowser](https://geobrowser.de.dariah.eu/edit/index.html) formatiert. Über r.identifier lässt sich der Regestenband und über isoStartDate und isoEndDate der Zeitraum anpassen.
+
+~~~cypher
+MATCH (p)-[:PLACE_OF_ISSUE]-(r:Regesta)
+WHERE p.latLong IS NOT NULL 
+AND r.identifier =~ 'RI III,2,3 .*'
+AND r.isoStartDate > date('1085-01-01')
+AND r.isoEndDate < date('1090-01-01')
+RETURN p.normalizedGerman AS Name, p.normalizedGerman AS Address, 
+r.identifier AS Description, p.longitude AS Longitude, p.latitude AS Latitude, r.isoStartDate AS Timestamp
+~~~
+
 ## Vorkommende Wörter in einer Textproperty zählen
 
 Werden Texte in der Property source eines Knotens l gespeichert, kann man sich mit folgendem Query die Häufigkeit der einzelnen Wörter anzeigen lassen.
