@@ -67,7 +67,7 @@ CREATE INDEX ON :Regesta(origPlaceOfIssue);
 CREATE INDEX ON :Date(startDate);
 CREATE INDEX ON :Place(original);
 CREATE INDEX ON :Place(normalizedGerman);
-CREATE INDEX ON :Lemma(lemma);
+CREATE INDEX ON :Action(action);
 CREATE INDEX ON :Literature(literatur);
 CREATE INDEX ON :Reference(reference);
 CREATE INDEX ON :IndexEntry(registerId);
@@ -182,11 +182,11 @@ Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Ve
 LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/ReggH4-Verben.csv"
 AS line FIELDTERMINATOR ','
 MATCH (r:Regesta{ident:line.regid})
-MERGE (l:Lemma{lemma:line.Lemma})
+MERGE (l:Action{action:line.Lemma})
 MERGE (r)-[:ACTION]->(l);
 ~~~
 
-Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Lemma`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-Knoten mit dem `Lemma`-Knoten über eine `ACTION`-Kante verbunden. In der folgenden Abbildung ist ein Ausschnitt mit Regesten und den verknüpften Lemmaknoten dargestellt.
+Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Action`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-Knoten mit dem `Action`-Knoten über eine `ACTION`-Kante verbunden. In der folgenden Abbildung ist ein Ausschnitt mit Regesten und den verknüpften Actionknoten dargestellt.
 
 ![Herrscherhandeln im Graphen.](Bilder/RI2Graph/ReggH4-Action.png)
 
@@ -421,11 +421,11 @@ Wie bereits oben erwähnt, wurde in einem ersten Test jeweils das erste Verb des
 
 ~~~cypher
 // Herrscherhandeln ausgezählt
-MATCH (n:Lemma)<-[h:ACTION]-(m:Regesta)
-RETURN n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
+MATCH (n:Action)<-[h:ACTION]-(m:Regesta)
+RETURN n.action, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
-|n.lemma|ANZAHL|
+|n.action|ANZAHL|
 |----------------------|------------|
 |werden|145|
 |schenken|133|
@@ -442,16 +442,16 @@ Die Ergebnisliste zeigt gleich die Einschränkungen, da das Hilfsverb *werden* a
 
 ### Herrscherhandeln pro Ausstellungsort ausgezählt
 
-Im folgenden Query kommt eine räumliche Komponente zur Abfrage hinzu, da das Lemma hier jeweils abhängig vom Ausstellungsort der Urkunde abgefragt wird.
+Im folgenden Query kommt eine räumliche Komponente zur Abfrage hinzu, da das Verb (Action) hier jeweils abhängig vom Ausstellungsort der Urkunde abgefragt wird.
 
 ~~~cypher
 // Herrscherhandeln pro Ausstellungsort
-MATCH (n:Lemma)<-[h:ACTION]-(:Regesta)-[:PLACE_OF_ISSUE]->(p:Place)
+MATCH (n:Action)<-[h:ACTION]-(:Regesta)-[:PLACE_OF_ISSUE]->(p:Place)
 WHERE p.normalizedGerman IS NOT NULL
-RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
+RETURN p.normalizedGerman, n.action, count(h) as ANZAHL ORDER BY ANZAHL desc LIMIT 10;
 ~~~
 
-|p.normalizedGerman|n.lemma|ANZAHL|
+|p.normalizedGerman|n.action|ANZAHL|
 |----|----:|----:|
 |Mainz|begehen|15|
 |Mainz|schenken|14|
@@ -464,7 +464,7 @@ RETURN p.normalizedGerman, n.lemma, count(h) as ANZAHL ORDER BY ANZAHL desc LIMI
 |Regensburg|bestätigen|7|
 |Regensburg|werden|7|
 
-In der ersten Spalte befindet sich der Ortsname, der aus der Property `normalizedGerman` des `Place`-Knotens stammt. In der zweiten Spalte wird das Lemma angegeben und in der dritten Spalte schließlich die Anzahl der jeweiligen Regesten. Interessant wäre hier auch noch die Ergänzung der zeitlichen Dimension, mit der dann der zeitliche Verlauf in die Auswertung miteinbezogen werden könnte.
+In der ersten Spalte befindet sich der Ortsname, der aus der Property `normalizedGerman` des `Place`-Knotens stammt. In der zweiten Spalte wird das Verb angegeben und in der dritten Spalte schließlich die Anzahl der jeweiligen Regesten. Interessant wäre hier auch noch die Ergänzung der zeitlichen Dimension, mit der dann der zeitliche Verlauf in die Auswertung miteinbezogen werden könnte.
 
 
 ### Herrscherhandeln und Anwesenheit
@@ -472,12 +472,12 @@ In der ersten Spalte befindet sich der Ortsname, der aus der Property `normalize
 Im nächsten Beispiel werden in einem Regest genannten Personen in die Auswertung des Herrscherhandelns mit einbezogen.
 
 ~~~cypher
-MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Lemma)
-RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
+MATCH (p:IndexPerson)-[:PERSON_IN]-(r:Regesta)-[:ACTION]-(l:Action)
+RETURN p.name1, l.action, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 ~~~
 
 
-|p.name1|l.lemma|Anzahl|
+|p.name1|l.action|Anzahl|
 |:-----------------------------------------------------|------------:|------:|
 | ... | ... | ... |
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|schenken|21|
@@ -493,7 +493,7 @@ RETURN p.name1, l.lemma, count(l) AS Anzahl ORDER BY p.name1, Anzahl DESC;
 |Adalbero, Metzer Domkanoniker, Kanzler Heinrichs IV., Kanzler (Gegen)Kg. Rudolfs v. Rheinfelden|setzen|1|
 | ... | ... | ... |
 
-Die Ergebnistabelle zeigt den Abschnitt zu Adalbero, einem Metzer Domkanoniker, mit der Häufigkeit des jeweiligen Herrscherhandeln-Lemmas.
+Die Ergebnistabelle zeigt den Abschnitt zu Adalbero, einem Metzer Domkanoniker, mit der Häufigkeit der jeweiligen Verben zum "Herrscherhandeln".
 
 ### Regesten 200 km rund um Augsburg
 
