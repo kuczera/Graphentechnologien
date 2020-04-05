@@ -61,8 +61,9 @@ Damit steht das Graphmodell fest und im nächsten Abschnitt geht es an den Impor
 
 ## Der Import mit apoc.load.xmlSimple
 
-Für den Import von XML-Daten steht in der Apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import gelistet.
+Für den Import von XML-Daten steht in der Apoc-Bibliothek der Befehl apoc.load.xml zur Verfügung. Im folgenden wird zunächst der gesamte Befehl für den Import des XML-Beispiels gelistet.
 
+![Auszug aus dem XML-Beispiel (Quelle: Kuczera)](./Bilder/kollatz-xml-Beispiel.png)
 
 ~~~cypher
 CALL apoc.load.xmlSimple("https://raw.githubusercontent.com/kuczera/Graphentechnologien/master/docs/data/kollatz.xml") yield value as xmlFile
