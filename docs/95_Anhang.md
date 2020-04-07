@@ -351,7 +351,7 @@ Die Apoc-Bibliothek besteht aus vielen Prozeduren, die bei verschiedenen Aufgabe
 
 ### Installation in neo4j
 
-Die Apoc-Bibliothek lässt sich unter [http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/%7Bapoc-release%7D](http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/%7Bapoc-release%7D) herunterladen und muss in den plugin-Ordner der neo4j-Datenbank kopiert werden.
+Die Apoc-Bibliothek lässt sich unter [http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/%7Bapoc-release%7D](http://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/) herunterladen und muss in den plugin-Ordner der neo4j-Datenbank kopiert werden.
 
 ### Installation unter neo4j-Desktop
 
