@@ -373,12 +373,11 @@ In der [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/) d
 
 ## apoc.xml.import
 
-Mit dem Befehl apoc.xml.import ist es möglich, einen XML-Baum 1:1 in die Graphdatenbank einzuspielen. Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
+Mit dem Befehl apoc.xml.import ist es möglich, einen XML-Text-Dateien 1:1 in die Graphdatenbank einzuspielen. Die [Dokumentation](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly) findet sich [hier](https://neo4j-contrib.github.io/neo4j-apoc-procedures/#_import_xml_directly).
 
 Beispielbefehl:
 call
-apoc.xml.import("URL",{createNextWordRelationships:
-true})
+apoc.xml.import("URL",{relType:'NEXT_WORD', label:'XmlWord', filterLeadingWhitespace:true})
 yield node
 return node;
 
