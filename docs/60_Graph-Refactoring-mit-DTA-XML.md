@@ -42,7 +42,7 @@ Mit dem folgenden Befehl wird die Patzig-Mitschrift in die Graphdatenbank import
 
 ~~~cypher
 CALL apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',
-	{createNextWordRelationships:true}) 	
+	{relType:'NEXT_WORD', label:'XmlWord', filterLeadingWhitespace:true}) 	
 	yield node return node;
 ~~~
 
