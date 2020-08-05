@@ -195,11 +195,11 @@ Hier noch eine cypher-Beispiel zur Abfrage der Ausstellungsorte in den Regesten 
 
 ~~~cypher
 MATCH (p)-[:PLACE_OF_ISSUE]-(r:Regesta)
-WHERE p.latLong IS NOT NULL 
+WHERE p.latLong IS NOT NULL
 AND r.identifier =~ 'RI III,2,3 .*'
 AND r.isoStartDate > date('1085-01-01')
 AND r.isoEndDate < date('1090-01-01')
-RETURN p.normalizedGerman AS Name, p.normalizedGerman AS Address, 
+RETURN p.normalizedGerman AS Name, p.normalizedGerman AS Address,
 r.identifier AS Description, p.longitude AS Longitude, p.latitude AS Latitude, r.isoStartDate AS Timestamp
 ~~~
 
@@ -302,7 +302,7 @@ cat /tmp/export.cypher | ./bin/cypher-shell -u neo4j -p password
 
 ## Knoten hat bestimmte Kante nicht
 
-Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://134.176.70.65:10210/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
+Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://jlu-buster.mni.thm.de:10210/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
 
 ~~~cypher
 MATCH (reg:Regesta)
@@ -325,7 +325,7 @@ RETURN p
 
 ## Häufigkeit von Wortketten
 
-Am Beispiel des [DTA-Imports](http://134.176.70.65:10220/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
+Am Beispiel des [DTA-Imports](http://jlu-buster.mni.thm.de:10220/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
 
 ~~~cypher
 MATCH p=(n1:Token)-[:NEXT_TOKEN]->(n2:Token)-[:NEXT_TOKEN]->(n3:Token)
