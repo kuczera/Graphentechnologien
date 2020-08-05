@@ -311,6 +311,18 @@ WHERE NOT
 RETURN reg;
 ~~~
 
+
+## Shortest Path hat bestimmte Kanten nicht
+
+Am Beispiel der [Fraktalität und Dynamik Graphdatenbank](http://jlu-buster.mni.thm.de:12160/browser/) werden mit dem folgenden Cypher-Query die Kantentypen 'BEGRABEN_IN' und 'VERSTORBEN_IN' aus dem shortestPath p ausgeschlossen:
+
+~~~cypher
+MATCH (n1:Person {pid: '3699' }),(n2:Person {pid: '3785' }), p = shortestPath((n1)-[*]-(n2))
+WHERE NONE (r IN relationships(p) WHERE type(r)= 'BEGRABEN_IN')
+AND NONE (r IN relationships(p) WHERE type(r)= 'VERSTORBEN_IN')
+RETURN p
+~~~
+
 ## Häufigkeit von Wortketten
 
 Am Beispiel des [DTA-Imports](http://134.176.70.65:10220/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
