@@ -410,6 +410,10 @@ return node;
 Beispiel: Laden der json-Daten der [Germania Sacra](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/klosterdatenbank/linked-data/).
 
 ~~~cypher
+CALL apoc.schema.assert({},{},true) YIELD label, key
+RETURN *;
+MATCH (n) DETACH DELETE n;
+
 CREATE INDEX ON :Person(GSid);
 CREATE INDEX ON :Person(Orden);
 CREATE INDEX ON :Kloster(bistum);
@@ -419,8 +423,6 @@ CREATE INDEX ON :Institution(institutionId);
 CREATE INDEX ON :Orden(bezeichnung);
 CREATE CONSTRAINT ON (p:Person) assert p.id is unique;
 CREATE CONSTRAINT ON (k:Kloster) assert k.id is unique;
-
-MATCH (n) DETACH DELETE n;
 
 // Germania Sacra Personendaten importieren
 UNWIND range(1,755) as page
@@ -480,6 +482,10 @@ SET n.viaf = NULL;
 Beispiel: Laden eines [Json-Beispiels](https://corpusvitrearum.de/id/about.html) des Projekts [CVMA](https://corpusvitrearum.de/).
 
 ~~~cypher
+CALL apoc.schema.assert({},{},true) YIELD label, key
+RETURN *;
+MATCH (n) DETACH DELETE n;
+
 CREATE INDEX ON :Resource(uri);
 UNWIND range(1,14) as page
 CALL
