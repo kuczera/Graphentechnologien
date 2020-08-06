@@ -407,97 +407,70 @@ return node;
 
 (Dieser Abschnitt befindet sich gerade in Bearbeitung)
 
+Beispiel: Laden der json-Daten der [Germania Sacra](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/klosterdatenbank/linked-data/).
+
 ~~~cypher
-create constraint on (p:Person) assert p.id is unique;
-create constraint on (p:AristWork) assert p.id is unique;
-create constraint on (p:Manuscript) assert p.id is unique;
+CREATE INDEX ON :Person(GSid);
+CREATE INDEX ON :Person(Orden);
+CREATE INDEX ON :Kloster(bistum);
+CREATE INDEX ON :Amt(bezeichnung);
+CREATE INDEX ON :PersonAmt(bezeichnung);
+CREATE INDEX ON :Institution(institutionId);
+CREATE INDEX ON :Orden(bezeichnung);
+CREATE CONSTRAINT ON (p:Person) assert p.id is unique;
+CREATE CONSTRAINT ON (k:Kloster) assert k.id is unique;
 
-call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
-unwind keys(value.persons) as personId
-merge (personNode:Person{id:personId})
-set personNode = value.persons[personId];
+MATCH (n) DETACH DELETE n;
 
-call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
-unwind keys(value.aristWorks) as aristWorksId
-merge (aristWorksNode:AristWork{id:aristWorksId})
-set aristWorksNode = value.aristWorks[aristWorksId];
+// Germania Sacra Personendaten importieren
+UNWIND range(1,755) as page
+CALL apoc.load.json("http://personendatenbank.germania-sacra.de/api/v1.0/person?format=json&id=%2A&limit=100&page=" + page) YIELD value
+UNWIND value.records AS r
+CREATE (p:Person {GSid: r.person.id,
+      vorname: r.person.vorname,
+      vornamenvarianten: r.person.vornamenvarianten,
+      namenspraefix: r.person.namenspraefix,
+      familienname: r.person.familienname,
+      familiennamenvarianten: r.person.familiennamenvarianten,
+      namenszusatz: r.person.namenszusatz,
+      herkunftsname: r.person.herkunftsname,
+      titel: r.person.titel,
+      orden: r.person.orden,
+      geburtsdatum: r.person.geburtsdatum,
+      sterbedatum: r.person.sterbedatum,
+      belegdaten: r.person.belegdaten,
+      taetigkeit: r.person.taetigkeit,
+      gndnummer: r.person.gndnummer,
+      cerlid: r.person.cerlid,
+      viaf: r.person.viaf,
+      verwandtschaften: r.person.verwandtschaften,
+      anmerkungen: r.person.anmerkungen,
+      gsId:r.item.gsn.nummer})
+WITH r, p
+UNWIND r.aemter AS i
+CREATE (a:PersonAmt {bezeichnung:i.bezeichnung,
+        art: i.weltlich,
+        institution: i.institution,
+        ort: i.ort,
+        dioezese: i.dioezese,
+        gebiet: i.gebiet,
+        klosterid: i.klosterid,
+        weihegrad: i.weihegrad,
+        von: i.von,
+        bis: i.bis,
+        latitude: i.latitude,
+        longitude: i.longitude,
+        anmerkung: i.anmerkung})
+CREATE (p)-[:HAT_AMT]->(a)
+RETURN *;
 
-call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
-unwind keys(value.mss) as msId
-merge (msNode:Manuscript{id:msId})
-set msNode = value.mss[msId];
-
-call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
-unwind value.`ms-person-rel` as rel
-match (start:Person{id:rel.person})
-match (end:Manuscript{id:rel.ms})
-with start, end, rel
-call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as dummy
-return count(*);
-
-call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
-unwind value.`ms-ms-rel` as rel
-merge (start:Manuscript{id:rel.ms})
-merge (end:Manuscript{id:rel.`other-ms`})
-with start, end, rel
-call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as dummy
-return count(*);
-
-call apoc.load.json("file:///var/lib/neo4j/import/cagb-graph-test-v1.json") yield value
-unwind value.`ms-aristWork-rel` as rel
-match (start:Manuscript{id:rel.ms})
-match (end:AristWork{id:rel.aristWork})
-with start, end, rel
-call apoc.merge.relationship(start, toUpper(rel.rel), {}, {}, end) yield rel as dummy
-return count(*);
-~~~
-
-Json-example
-
-~~~
-{
-  "mspersonrel": [{
-    "ms": "69686",
-    "person": "d3f1",
-    "rel": "author-contained"
-  }, {
-    "ms": "69686",
-    "person": "p3366450e-0387-43d4-9f04-7f0f1c08dff8",
-    "rel": "scribe"
-  }, {
-    "ms": "69686",
-    "person": "p8c827441-77b4-4e12-8209-7ce8f06060f1",
-    "rel": "scribe"
-  }
-  ],
-  "persons": {
-    "d19f17": {
-      "label": "Castro, Juan Pàez de",
-      "id": "d19f17"
-    },
-    "d10f30": {
-      "label": "Augustinus (Aurelius Augustinus)",
-      "id": "d10f30"
-    },
-    "d22f20": {
-      "label": "Manouel\n Chrysoloras",
-      "id": "d22f20"
-    }
-  },
-  "aristWorks": {
-    "EE": {
-      "label": "Ethica ad Eudemum (EE)",
-      "id": "EE"
-    },
-    "Parva-Naturalia": {
-      "label": "Parva naturalia (Parva Naturalia)",
-      "id": "Parva-Naturalia"
-    },
-    "Hist.-An.": {
-      "label": "Historia animalium (Hist. An.)",
-      "id": "Hist.-An."
-    }
-  }
+// GND-und VIAF-Nummern auf NULL setzen, wenn nicht vorhanden
+MATCH (n:Person) 
+WHERE n.gndnummer = ""
+SET n.gndnummer = NULL;
+MATCH (n:Person) 
+WHERE n.viaf = ""
+SET n.viaf = NULL;
 
 ~~~
 
