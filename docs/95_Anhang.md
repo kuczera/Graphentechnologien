@@ -473,6 +473,23 @@ WHERE n.viaf = ""
 SET n.viaf = NULL;
 
 ~~~
+## (neosemantics)
+
+(Dieser Abschnitt befindet sich gerade in Bearbeitung)
+
+Beispiel: Laden eines [Json-Beispiels](https://corpusvitrearum.de/id/about.html) des Projekts [CVMA](https://corpusvitrearum.de/).
+
+~~~cypher
+CREATE INDEX ON :Resource(uri);
+UNWIND range(1,14) as page
+CALL
+apoc.load.json("https://corpusvitrearum.de/id/about.json?tx_vocabulary_about[limit]=500&tx_vocabulary_about[page]="
++ page) YIELD value
+UNWIND value.`http://www.w3.org/ns/hydra/core#member` AS item
+CALL semantics.importRDF(item.`@id`, "JSON-LD") YIELD triplesLoaded
+RETURN triplesLoaded;
+~~~
+
 
 [^5cb9]: Vgl. https://guides.neo4j.com/apoc (zuletzt aufgerufen am 11.04.2018).
 
