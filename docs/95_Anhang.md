@@ -20,9 +20,39 @@ In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen bei
 Die Dokumentation von Cypher findet sich auf den Seiten von neo4j:
 [https://neo4j.com/docs/developer-manual/current/](https://neo4j.com/docs/developer-manual/current/)
 
-## Analyse der Graphdaten
+## Explorative Datenanalyse oder "Was ist in der Datenbank?"
 
 ### Welche und jeweils wieviele Knoten enthält die Datenbank
+
+Mit den in diesem Abschnitt vorgestellten Queries lassen sich Graphen explorativ erfassen. Mit dem folgenden Query findet man alle im Graph vorkommenden Typen von Knoten und die jeweiligen Häufigkeiten.
+
+~~~cypher
+CALL db.labels()
+YIELD label
+CALL apoc.cypher.run("MATCH (:`"+label+"`)
+RETURN count(*) as count", null)
+YIELD value
+RETURN label, value.count as count
+ORDER BY label;
+~~~
+
+### Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie
+
+Der nächste Query führt die gleiche Untersuchung für die in der Graphdatenbank vorhanden Kantentypen durch.
+
+~~~cyper
+CALL db.relationshipTypes()
+YIELD relationshipType
+CALL apoc.cypher.run("MATCH ()-[:" + `relationshipType` + "]->()
+RETURN count(*) as count", null)
+YIELD value
+RETURN relationshipType, value.count AS count
+ORDER BY relationshipType;
+~~~
+
+Mit diesen Queries lässt sich bei unbekannten Graphdatenbanken ein erster Überblick zur statistischen Verteilung von Knoten- und Kantentypen erstellen.
+
+
 
 Mit dem folgenden Query werden alle Typen von Knoten und deren jeweilige Häufigkeit aufgelistet.
 
@@ -36,7 +66,6 @@ RETURN label, value.count as count
 ORDER BY label
 ~~~
 
-### Welche Verknüpfungen gibt es in der Datenbank und wie häufig sind sie
 
 ~~~cyper
 CALL db.relationshipTypes()
@@ -467,10 +496,10 @@ CREATE (p)-[:HAT_AMT]->(a)
 RETURN *;
 
 // GND-und VIAF-Nummern auf NULL setzen, wenn nicht vorhanden
-MATCH (n:Person) 
+MATCH (n:Person)
 WHERE n.gndnummer = ""
 SET n.gndnummer = NULL;
-MATCH (n:Person) 
+MATCH (n:Person)
 WHERE n.viaf = ""
 SET n.viaf = NULL;
 

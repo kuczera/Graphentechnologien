@@ -66,6 +66,8 @@ Mit diesen Vorbemerkungen als Hintergrund werden in den folgenden Abschnitten Ne
 
 Grundlage der hier verwendeten Netzwerkdaten sind die Nennungen von Personeneinträgen im Register der Regesten. Da die hier vorgestellten Netzwerkanalyse-Algorithmen nur mit unimodalen Netzwerken arbeiten können, also Netzwerken, die nur Knoten eines Typs enthalten, müssen die Regestendaten entsprechend erweitert werden. Dabei wird davon ausgegangen, dass zwei Personen, die gemeinsam in einem Regest genannt sind, etwas miteinander zu tun haben. Diese Verbindung wird durch eine `APPEARS_WITH`-Kante dargestellt, da die gemeinsame Rolle im Regest nicht näher qualifiziert werden kann.
 
+Für die Netzwerkanalyse erstellen Sie mit [Neo4j-Desktop](https://neo4j.com/docs/operations-manual/current/installation/) eine Graphdatenbank der Version 4.1 oder höher, bei der Sie die Plugins **APOC** und **Graph Data Science Library** installieren. Zur [Graph Data Science Library](https://neo4j.com/docs/graph-data-science/current/) gibt es auch eine umfangreiche [Dokumentation](https://neo4j.com/docs/graph-data-science/current/).
+
 Für diesen Abschnitt werden als Datenbeispiel die Regesten Heinrichs IV. in einer Graphdatenbank verwendet. Die Erstellung der Graphdatenbank wird im Kapitel [Regestenmodellierung im Graphen](20_Regestenmodellierung-im-Graphen.md) beschrieben. Auf dieser Datengrundlage werden dann noch zusätzliche Kantentypen erstellt. Mit dem folgenden Cypher-Query werden zwischen Personeneinträgen des Registers, die gemeinsam in einem Regest genannt sind, `APPEARS_WITH`-Kanten erstellt.
 
 ~~~cypher
@@ -76,34 +78,6 @@ WITH n1, count(r1) AS c, n2
 CREATE (n1)-[k:APPEARS_WITH]->(n2)
 SET k.count = c;
 ~~~
-
-## Explorative Datenanalyse oder "Was ist in der Datenbank?"
-
-Mit den in diesem Abschnitt vorgestellten Queries lassen sich Graphen explorativ erfassen. Mit dem folgenden Query findet man alle im Graph vorkommenden Typen von Knoten und die jeweiligen Häufigkeiten.
-
-~~~cypher
-CALL db.labels()
-YIELD label
-CALL apoc.cypher.run("MATCH (:`"+label+"`)
-RETURN count(*) as count", null)
-YIELD value
-RETURN label, value.count as count
-ORDER BY label;
-~~~
-
-Der nächste Query führt die gleiche Untersuchung für die in der Graphdatenbank vorhanden Kantentypen durch.
-
-~~~cyper
-CALL db.relationshipTypes()
-YIELD relationshipType
-CALL apoc.cypher.run("MATCH ()-[:" + `relationshipType` + "]->()
-RETURN count(*) as count", null)
-YIELD value
-RETURN relationshipType, value.count AS count
-ORDER BY relationshipType;
-~~~
-
-Mit diesen Queries lässt sich bei unbekannten Graphdatenbanken ein erster Überblick zur statistischen Verteilung von Knoten- und Kantentypen erstellen.
 
 ## Zentralitätsalgorithmen in der historischen Netzwerkanalyse
 
