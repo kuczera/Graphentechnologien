@@ -15,6 +15,9 @@ contents: true
 
 ## Technische Vorbemerkungen
 
+(Für dieses Kapitel sollte neo4j in einer 3.5-Version (z.B. 3.5.20) inkl. der aktuellen apoc-Version genutzt werden. In der Version 4 ändert sich die Nutzung der Graphalgorithmen.)
+
+
 Um die Graphalgorithem in neo4j nutzen zu können, müssen sie installiert werden. Dies geschieht analog zur APOC-Library, wie im Anschnitt zur [APOC-Installation](https://kuczera.github.io/Graphentechnologien/95_Anhang.html#die-apoc-bibliothek) erklärt.
 
 ## Grundlagen zur Netzwerkanalyse
