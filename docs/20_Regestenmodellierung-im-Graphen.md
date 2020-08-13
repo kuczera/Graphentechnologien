@@ -254,7 +254,7 @@ Im nächsten Schritt werden nun mit den Daten der `APPEARS_IN`-Tabelle die Verkn
 
 ~~~cypher
 // PLACE_IN-Kanten für Orte erstellen
-LOAD CSV WITH HEADERS FROM "RegisterH4-Place-APPEARS_IN.csv"
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4-Place-APPEARS_IN.csv"
 AS line
 MATCH (from:IndexPlace {registerId:line.ID})
 MATCH (to:Regesta {regnum:line.regnum2})
@@ -267,7 +267,7 @@ Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten ange
 
 ~~~cypher
 // PERSON_IN-Kanten für Person erstellen
-LOAD CSV WITH HEADERS FROM "RegisterH4-Person-APPEARS_IN.csv"
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4-Person-APPEARS_IN.csv"
 AS line
 MATCH (from:IndexPerson {registerId:line.ID}),
 (to:Regesta {regnum:line.regnum2})
