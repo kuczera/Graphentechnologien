@@ -375,6 +375,17 @@ CALL apoc.nodes.link(briefe, "NEXT_LETTER")
 RETURN count(*)
 ~~~
 
+Soll es sich nur um virtuelle Kanten handeln, können diese beispielhaft für diese [GraphDB](http://jlu-buster.mni.thm.de:12360/browser/) so erstellt werden:
+
+~~~cypher
+MATCH (s:Person {gnd:'http://d-nb.info/gnd/118607626'})<-[:SENDER|:RECEIVER]-(b:Letter)-[:RECEIVER]->(e:Person)
+WITH b, s, e ORDER BY b.sendDate ASC
+WITH collect(distinct b) as briefe, collect(s) as p1, collect(e) as p2
+UNWIND range(0,size(briefe)-2) AS i
+RETURN briefe, collect( apoc.create.vRelationship(briefe[i], "NEXT_BRIEF", {}, briefe[i+1])), p1, p2;
+~~~
+
+
 ## Alle Indexe in einer Datenbank löschen
 
 Mit dem folgenden Befehl lassen sich alle Indexe einer Datenbank auf einmal löschen.
