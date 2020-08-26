@@ -1,7 +1,7 @@
 ---
 title: Graph-Refactoring mit DTA-XML
 layout: default
-order: 60
+order: 50
 contents: true
 ---
 
