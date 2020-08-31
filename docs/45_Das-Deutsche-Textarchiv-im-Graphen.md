@@ -155,8 +155,7 @@ Im nächsten Schritt wird die TEI-P5-Fassung von Goethes Faust importiert
 
 ~~~cypher
 call
-apoc.xml.import("http://deutschestextarchiv.de/book/download_xml/goethe_faust01_1808",{createNextWordRelationships:
-true})
+apoc.xml.import("http://deutschestextarchiv.de/book/download_xml/goethe_faust01_1808",{relType:'NEXT_WORD', label:'XmlWord'})
 yield node
 return node;
 ~~~
