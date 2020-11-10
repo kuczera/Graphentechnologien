@@ -35,7 +35,7 @@ MATCH (n) DETACH DELETE n;
 Bei großen Datenbanken funktioniert der o.a. Befehl meist nicht. Daher kann dieser Befehl genutzt werden, für den aber die APOC-Bibliothek installiert sein muss.
 
 ~~~cypher
-CALL apoc.periodic.iterate('MATCH (n) RETURN n', 'DETACH DELETE n', {batchSize:1000})
+CALL apoc.periodic.iterate('MATCH (n) RETURN n', 'DETACH DELETE n', {batchSize:1000});
 CALL apoc.schema.assert({},{},true) YIELD label, key
 RETURN *;
 ~~~
