@@ -20,6 +20,26 @@ In diesem Kapitel werden Tipps und Tricks rund um typische Herausforderungen bei
 Die Dokumentation von Cypher findet sich auf den Seiten von neo4j:
 [https://neo4j.com/docs/developer-manual/current/](https://neo4j.com/docs/developer-manual/current/)
 
+## Datenbank löschen
+
+Vorab hier der Befehl, mit dem eine neo4j-Datenbank geleert werden kann. 
+
+### Kleine Datenbanken
+
+~~~cypher
+MATCH (n) DETACH DELETE n;
+~~~
+
+### Große Datenbanken
+
+Bei großen Datenbanken funktioniert der o.a. Befehl meist nicht. Daher kann dieser Befehl genutzt werden, für den aber die APOC-Bibliothek installiert sein muss.
+
+~~~cypher
+CALL apoc.periodic.iterate('MATCH (n) RETURN n', 'DETACH DELETE n', {batchSize:1000})
+CALL apoc.schema.assert({},{},true) YIELD label, key
+RETURN *;
+~~~
+
 ## Explorative Datenanalyse oder "Was ist in der Datenbank?"
 
 ### Welche und jeweils wieviele Knoten enthält die Datenbank
