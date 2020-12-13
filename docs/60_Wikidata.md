@@ -11,6 +11,131 @@ contents: true
 * Will be replaced with the ToC, excluding the "Contents" header
 {:toc}
 
+# Graphergänzung aus Wikidata-Daten in Neo4j
+
+## Einführung
+
+Mit dem [wikidata-neo4j-importer](https://github.com/findie/wikidata-neo4j-importer) ist es möglich, einen Dump von Wikidata in Neo4j zu importieren. Der Vorgang benötigt einiges an Rechenleistung  und Zeit, da der Wikidata-Dump zuletzt stark angewachsen ist. Für Testzwecke finden Sie hier eine [Neo4jWikidata-Datenbank](http://jlu-buster.mni.thm.de:7474/browser/).
+In diesem Abschnitt wird beschrieben, wie man aus dem eigenen Projekt heraus, in dem es Entitäten mit Normdaten, wie z.B. Wikidata-IDs gibt, aus dem Neo4j-Wikidatagraph mit cypher Zusatzinformationen in die eigene Graph-DB einspielen kann. Damit ist es z.B. möglich, weitere Entitäten in der eigenen Datenbank mit Wikidata-IDs auszustatten.
+
+## Testdatenbank erstellen
+
+Mit diesen [Cypherskript](https://kuczera.github.io/Graphentechnologien/cypher/20_cypher-Datenbankerstellung.txt) können Sie eine Testdatenbank mit den Regesten Kaiser Heinrichs IV. erstellen. Wenn der Import läuft ist Zeit für einen Kaffee. Die einzelnen Schritte werden [hier](https://kuczera.github.io/Graphentechnologien/20_Regestenmodellierung-im-Graphen.html) beschrieben.
+
+## Regestengraphmodell
+
+Im [Abschnitt zur explorativen Datenanalyse](https://kuczera.github.io/Graphentechnologien/95_Anhang.html#explorative-datenanalyse-oder-was-ist-in-der-datenbank) wird erklärt, wie man sich einen Überblick zu den in der Datenbank vorhandenen Daten verschafft. Für dieses Beispiel hier liegt der Fokus auf den Knoten mit dem Laben IndexPerson. Dies sind Personen aus dem Register des Regesten Kaiser Heinrichs IV. Einige der IndexPerson-Knoten haben auch eine WikidataId
+Mit dem folgenden Query werden die WikidataIds und die Namen der IndexPerson-Knoten angezeigt:
+
+~~~
+MATCH (n:IndexPerson)
+WHERE n.wikidataId IS NOT NULL
+RETURN n.wikidataId, n.label;
+~~~
+
+## Regestengraph aus Neo4jWikidata-Datenbank ergänzen
+
+In diesem Abschnitt werden Queries zur Ergänzung von Verwandtschaftsinformationen vorgestellt.
+
+Vorab die Information, das man für den Fall das etwas schiefgeht die Wikidataknoten mit folgendem Query wieder gelöscht werden können:
+
+~~~
+MATCH (n:IndexPerson {source:'wikidata'}) DETACH DELETE n;
+~~~
+
+
+
+### Eltern ergänzen
+
+Für diese Personen sollen nun zusätzliche Informationen aus der Neo4jWikidata-Datenbank ergänzt werden. Der entsprechende Query sieht wie folgt aus:
+
+~~~
+// IS_CHILD_OF erstellen
+MATCH (n:IndexPerson)
+WHERE n.wikidataId IS NOT NULL
+AND n.wikidataId <> ""
+WITH collect(n.wikidataId) as wis
+call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+MATCH (p:Entity)<-[rp:FATHER|MOTHER]-(n:Entity)
+WHERE n.id in $wis AND p.label IS NOT NULL
+RETURN p.label AS pLabel, p.id AS pId, n.id as nId;", {wis:wis}) yield row
+MATCH (n2:IndexPerson{wikidataId: row.nId})
+MERGE (p:IndexPerson {wikidataId:row.pId})
+ON CREATE SET p.source = 'wikidata'
+ON CREATE SET p.label = row.pLabel
+MERGE (n2)-[rel:IS_CHILD_OF]->(p)
+RETURN *;
+~~~
+
+### Ehepartner erstellen
+
+Mit dem folgenden Query werden zu den IndexPerson-Knoten die Ehepartner aus der Neo4jWikidata-Datenbank ergänzt. Zu beachten ist, dass diese Abfrage auch IndexPerson-Knoten einbezieht, die im vorherigen Schritt erst erzeugt wurden.
+
+~~~
+// SPOUSE erstellen
+MATCH (n:IndexPerson)
+WHERE n.wikidataId IS NOT NULL
+AND n.wikidataId <> ""
+WITH collect(n.wikidataId) as wis
+call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+MATCH (p:Entity)<-[rp:SPOUSE]-(n:Entity)
+WHERE n.id in $wis AND p.label IS NOT NULL
+RETURN p.label AS pLabel, p.id AS pId, n.id as nId;", {wis:wis}) yield row
+MATCH (n2:IndexPerson{wikidataId: row.nId})
+MERGE (p:IndexPerson {wikidataId:row.pId})
+ON CREATE SET p.source = 'wikidata'
+ON CREATE SET p.label = row.pLabel
+MERGE (n2)-[rel1:SPOUSE]->(p)
+MERGE (n2)<-[rel2:SPOUSE]-(p)
+RETURN *;
+~~~
+
+### Kinder ergänzen
+
+Mit dem folgenden Query werden zu den IndexPerson-Knoten aus dem RI-Register die Kinder aus der Neo4jWikidata-Datenbank ergänzt. Zu beachten ist, dass diese Abfrage auch IndexPerson-Knoten einbezieht, die in den vorherigen Schritten erzeugt wurde.
+
+~~~
+//  Eltern mit IS_CHILD_OF erstellen
+MATCH (n:IndexPerson)
+WHERE n.wikidataId IS NOT NULL
+AND n.wikidataId <> ""
+WITH collect(n.wikidataId) as wis
+call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+MATCH (p:Entity)-[rp:FATHER|MOTHER]->(n:Entity)
+WHERE n.id in $wis AND p.label IS NOT NULL
+RETURN p.label AS pLabel, p.id AS pId, n.id as nId;", {wis:wis}) yield row
+MATCH (n2:IndexPerson{wikidataId: row.nId})
+MERGE (p:IndexPerson {wikidataId:row.pId})
+ON CREATE SET p.source = 'wikidata'
+ON CREATE SET p.label = row.pLabel
+MERGE (n2)<-[rel:IS_CHILD_OF]-(p)
+RETURN *;
+~~~
+
+### Labels ergänzen
+
+Mit dem folgenden Query werden für IndexPerson-Knoten, die aus der Neo4jWikidata-Datenbank importiert wurden, ggf. noch Label-Angaben ergänzt, falls sie noch nicht vorhanden sind.
+
+~~~
+// Labels ergänzen
+MATCH (ip:IndexPerson)
+WHERE ip.source = 'wikidata'
+AND ip.label IS NULL
+OR ip.label = ""
+WITH collect(ip.wikidataId) as wis
+call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+MATCH (p:Entity)
+WHERE p.id in $wis AND p.label IS NOT NULL
+RETURN p.label AS pLabel, p.id AS pId;", {wis:wis}) yield row
+MATCH (p:IndexPerson {wikidataId:row.pId})
+SET p.label = row.pLabel
+RETURN *;
+~~~
+
+
+
+
+
 # Graphergänzung aus Wikidata
 
 ## Vorbemerkung
