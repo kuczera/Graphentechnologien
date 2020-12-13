@@ -132,11 +132,15 @@ SET p.label = row.pLabel
 RETURN *;
 ~~~
 
+### Zusammenfassung
+
+In diesem Abschnitt wird am Beispiel der Regesta Imperii und Wikidata erklärt, wie man aus einer bestehenden Neo4j-Datenbank heraus mit cypher-Queries Informationen aus einer anderen Neo4j-Datenbank abfragen und ergänzen kann.
 
 
 
 
-# Graphergänzung aus Wikidata
+
+# Graphergänzung aus Wikidata mit SPARQL
 
 ## Vorbemerkung
 
