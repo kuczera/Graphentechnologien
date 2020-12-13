@@ -20,7 +20,7 @@ In diesem Abschnitt wird beschrieben, wie man aus dem eigenen Projekt heraus, in
 
 ## Testdatenbank erstellen
 
-Mit diesen [Cypherskript](https://kuczera.github.io/Graphentechnologien/cypher/20_cypher-Datenbankerstellung.txt) können Sie eine Testdatenbank mit den Regesten Kaiser Heinrichs IV. erstellen. Wenn der Import läuft ist Zeit für einen Kaffee. Die einzelnen Schritte werden [hier](https://kuczera.github.io/Graphentechnologien/20_Regestenmodellierung-im-Graphen.html) beschrieben.
+Mit diesen [Cypherskript](https://github.com/kuczera/Graphentechnologien/raw/master/docs/cypher/20_cypher-Datenbankerstellung.txt) können Sie eine Testdatenbank mit den Regesten Kaiser Heinrichs IV. erstellen. Wenn der Import läuft ist Zeit für einen Kaffee. Die einzelnen Schritte werden [hier](https://kuczera.github.io/Graphentechnologien/20_Regestenmodellierung-im-Graphen.html) beschrieben.
 
 ## Regestengraphmodell
 
