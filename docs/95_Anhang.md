@@ -40,6 +40,14 @@ CALL apoc.schema.assert({},{},true) YIELD label, key
 RETURN *;
 ~~~
 
+## Indexe erstellen falls vorhanden
+
+Seit Neo4j 4 gibt es eine Fehlermeldung, wenn man versucht einen Index zu erzeugen, der schon vorhanden ist, was bei Skripten ärgerlich sein kann. Mit folgendem Befehl kann man einen Index nur dann erstellen, wenn er noch nicht vorhanden ist.
+
+~~~cypher
+CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.genID);
+~~~
+
 ## Explorative Datenanalyse oder "Was ist in der Datenbank?"
 
 ### Welche und jeweils wieviele Knoten enthält die Datenbank
