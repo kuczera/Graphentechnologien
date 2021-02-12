@@ -332,6 +332,28 @@ MERGE (p)-[:HERKUNFT]->(o);
 
 Der `LOAD CSV`-Befehl lädt die CSV-Datei und gibt sie zeilenweise an den `CREATE`-Befehl weiter. Dieser erstellt den Personenknoten. Der folgende `WITH`-Befehl stellt quasi alles wieder auf Anfang und gibt an die nach ihm kommenden Befehle nur die Variablen line und p weiter.
 
+## Export einer Graphdatenbank in ein cypher-file
+
+In Neo4j Desktop kann eine Graphdatenbank mit diesem Befehl exportiert werden:
+Dokumentation: https://neo4j.com/labs/apoc/4.1/export/cypher/#export-cypher-neo4j-browser
+
+~~~cypher
+CALL apoc.export.cypher.all("all-plain.cypher", {
+    format: "plain",
+    useOptimizations: {type: "UNWIND_BATCH", unwindBatchSize: 20}
+})
+YIELD file, batches, source, format, nodes, relationships, properties, time, rows, batchSize
+RETURN file, batches, source, format, nodes, relationships, properties, time, rows, batchSize;
+~~~
+
+Den Export findet man dann im Import-Ordner der Datenbank. Diese Datei kann in einen anderen Neo4j-Browser in die Eingabezeile gezogen und dann importiert werden.
+
+Auch mit der cypher-shell kann der Export wieder importiert werden:
+
+~~~cypher
+cypher-shell -u neo4j -p password < all-plain.cypher
+~~~
+
 ## Export eines Subgraphen mit apoc.export.cypher.query
 
 Hier wird beschrieben, wie man einen Teil einer Graphdatenbank, einen sogenannten Sub-Graphen, exportieren und in eine neue Graphdatenbank importieren kann. Weitere Infos zum Befehl apoc.export.cypher.query finden Sie auf der [Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/) dieser Seite.
