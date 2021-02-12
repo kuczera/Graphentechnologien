@@ -342,8 +342,10 @@ CALL apoc.export.cypher.all("all-plain.cypher", {
     format: "plain",
     useOptimizations: {type: "UNWIND_BATCH", unwindBatchSize: 20}
 })
-YIELD file, batches, source, format, nodes, relationships, properties, time, rows, batchSize
-RETURN file, batches, source, format, nodes, relationships, properties, time, rows, batchSize;
+YIELD file, batches, source, format, nodes, relationships, 
+properties, time, rows, batchSize
+RETURN file, batches, source, format, nodes, relationships, 
+properties, time, rows, batchSize;
 ~~~
 
 Den Export findet man dann im Import-Ordner der Datenbank. Diese Datei kann in einen anderen Neo4j-Browser in die Eingabezeile gezogen und dann importiert werden.
