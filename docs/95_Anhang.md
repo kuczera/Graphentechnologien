@@ -48,6 +48,27 @@ Seit Neo4j 4 gibt es eine Fehlermeldung, wenn man versucht einen Index zu erzeug
 CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.genID);
 ~~~
 
+Tipp: Wenn es schon Befehle zur Indexerstellung gibt wir z.B. 
+
+~~~cypher
+CREATE INDEX ON :IndexPerson(registerid);
+~~~
+kann man diese durch Suchen und Ersetzen in der folgenen Reihenfolge updaten:
+
+~~~cypher
+(
+) ON (n.
+
+CREATE INDEX ON :
+CREATE INDEX IF NOT EXISTS FOR (n:
+~~~
+
+Das Ergebnis sieht dann so aus:
+
+~~~cypher
+CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.registerid);
+~~~
+
 ## Explorative Datenanalyse oder "Was ist in der Datenbank?"
 
 ### Welche und jeweils wieviele Knoten enthält die Datenbank
