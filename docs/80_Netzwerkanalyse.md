@@ -52,10 +52,14 @@ Die folgende Abbildung zeigt einen kleinen Beispielgraphen, an dem einige Zentra
 
 * Bei der Berechnung der **Dichte** wird der Quotient zwischen der tatsächlichen Anzahl der Kanten und der maximal möglichen Anzahl der Kanten berechnet.
 Die Formel hierfür lautet
-$$Dichte des Netzwerks = 2m/(n*(n-1))$$
+
+Dichte des Netzwerks = 2m/(n*(n-1))
+
 wobei m die Anzahl der vorhandenen Kanten ist und n die Anzahl der Knoten.
 Für unser Beispiel ergibt sich damit:
-$$2*18/(10*(10-1)) = 0,4$$
+
+2*18/(10*(10-1)) = 0,4
+
 womit die Dichte des Netzwerks 0,4 beträgt.
 
 * Die höchste **Degreeness Centrality** hat mit 6 Kanten der Knoten D, was mehr als bei allen anderen ist. Den ersten Platz bei der **Betweenness Centrality** teilen sich die Knoten D, F, G, I und H.
