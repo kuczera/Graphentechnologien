@@ -58,7 +58,7 @@ Für unser Beispiel ergibt sich damit:
 $$2*18/(10*(10-1)) = 0,4$$
 womit die Dichte des Netzwerks 0,4 beträgt.
 
-* Die höchste **Degreeness Centrality** hat mit 6 Kanten der Knoten D, was mehr als bei allen anderen ist. Den ersten Platz bei der **Betweenness Centrality** teilen sich die Knoten D, F, G I und H.
+* Die höchste **Degreeness Centrality** hat mit 6 Kanten der Knoten D, was mehr als bei allen anderen ist. Den ersten Platz bei der **Betweenness Centrality** teilen sich die Knoten D, F, G, I und H.
 * Die höchste **Closeness** besteht zwischen den Knoten F und G.
 * Der größte **Eigenvector** besteht zwischen den Knoten D, F und G.
 * Die Knoten F und G sind **strukturell äquivalent**.
