@@ -21,11 +21,11 @@ Das Deutsche Textarchiv (DTA) stellt einen Disziplinen übergreifenden Grundbest
 
 ## Die Downloadformate des DTA
 
-Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download an. Als Beispiel wird hier [Goethes Faust](http://deutschestextarchiv.de/book/show/goethe_faust01_1808) in der ersten Auflage von 1808 importiert.
+Das DTA bietet zu den bereitgestellten Texten verschiedene Formate zum Download an. Als Beispiel wird hier [Goethes Faust](https://deutschestextarchiv.de/book/show/goethe_faust01_1808) in der ersten Auflage von 1808 importiert.
 
-+ [TEI-P5](http://deutschestextarchiv.de/book/download_xml/goethe_faust01_1808) bietet die textkritische Fassung des Faust
-+ [TCF](http://deutschestextarchiv.de/book/download_fulltcf/16181) bietet die tokenisierte, serialisierte, lemmatisierte und normalisierte Fassung, textkritische Informationen fehlen jedoch.
-+ [Plain-Text](http://deutschestextarchiv.de/book/download_txt/goethe_faust01_1808) bietet einen einfachen Text mit Seiten- und Zeilenfall ohne weitere Zusatzinformationen
++ [TEI-P5](https://deutschestextarchiv.de/book/download_xml/goethe_faust01_1808) bietet die textkritische Fassung des Faust
++ [TCF](https://deutschestextarchiv.de/book/download_fulltcf/16181) bietet die tokenisierte, serialisierte, lemmatisierte und normalisierte Fassung, textkritische Informationen fehlen jedoch.
++ [Plain-Text](https://deutschestextarchiv.de/book/download_txt/goethe_faust01_1808) bietet einen einfachen Text mit Seiten- und Zeilenfall ohne weitere Zusatzinformationen
 
 Für den Import in eine Graphdatenbanken bietet sich das TCF-Format an, da es den Text in tokenisierter, serialisierter, lemmatisierter und normalisierter Form bietet. In diesem Format lässt er sich mit Cypher-Befehlen in die Graphdatenbank importieren. Im Beispiel wird Goethes Faust in der TCF-Fassung in die Graphdatenbank importiert.
 
