@@ -36,12 +36,12 @@ Im Graphmodell ist man im Hinblick auf die Granularität des Datenmodells wesent
 
 Für den Import der Texte wird die Procedure apoc.xml.import aus der apoc-Bibliothek von neo4j verwendet[^ed8a]. Die Procedure nimmt XML-Dateien entgegen und importiert sie in die Graphdatenbank.
 
-Importiert wird die Transkription von [Gotthilf Patzigs Mitschriften](http://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13) von Humboldts Vorträgen über physische Geographie.[^70f5]
+Importiert wird die Transkription von [Gotthilf Patzigs Mitschriften](https://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13) von Humboldts Vorträgen über physische Geographie.[^70f5]
 
 Mit dem folgenden Befehl wird die Patzig-Mitschrift in die Graphdatenbank importiert[^8a2a]:
 
 ~~~cypher
-CALL apoc.xml.import('http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',
+CALL apoc.xml.import('https://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828',
 	{relType:'NEXT_WORD', label:'XmlWord', filterLeadingWhitespace:true}) 	
 	yield node return node;
 ~~~
@@ -61,7 +61,7 @@ Mit dem nächsten cypher-Query werden die Knoten des importierten XML-Dokuments 
 
 ~~~cypher
 MATCH p = (start:XmlDocument)-[:NEXT*]->(end:XmlTag)
-WHERE NOT (end)-[:NEXT]->() AND start.url = 'http://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828'
+WHERE NOT (end)-[:NEXT]->() AND start.url = 'https://www.deutschestextarchiv.de/book/download_xml/patzig_msgermfol841842_1828'
 WITH nodes(p) as nodes, range(0, size(nodes(p))) AS indexes
 UNWIND indexes AS index
 SET (nodes[index]).DtaID = index;
@@ -125,7 +125,7 @@ Im folgenden Abschnitt werden für ausgewählte Elemente des DTA-Basisformats m�
 
 ### Graphenmodellierung von Zeilen
 
-Nehmen wir als Beispiel Zeilenwechsel auf einer Seite des Patzig-Manuskripts (http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=Himalaja&p=39).[^3af6]
+Nehmen wir als Beispiel Zeilenwechsel auf einer Seite des Patzig-Manuskripts (https://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=Himalaja&p=39).[^3af6]
 
 ~~~ xml
 ... Die<lb/>
@@ -232,7 +232,7 @@ Ist eine Seitenzahl im Faksimile falsch wiedergegeben, so wird diese originalget
 
 
 Das `<pb/>`-Element auf den Seiten 5 und 6 aus Patzig
-(http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/
+(https://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/
 ?hl=viel&p=5)[^3fd9]:
 
 ~~~xml
@@ -344,9 +344,9 @@ Alle Wörter eines Absatzes sind darüber hinaus über `NEXT_SIBLING`-Kanten in 
 
 ### Kapiteleinteilung
 
-Im DTA-Basisformat wird bei der Transkiption von Büchern die Kapiteleinteilung mit verschachtelten `div`-Element vorgenommen. Das im `div`-Element erlaubte \@n-Attribut gibt die Strukturebene an. Über das \@type-Attribut kann der Typ des Kapitels näher spezifiziert werden. Eine Liste der möglichen Werte für das Attribut findet sich unter http://deutschestextarchiv.de/doku/basisformat/div.html.
+Im DTA-Basisformat wird bei der Transkiption von Büchern die Kapiteleinteilung mit verschachtelten `div`-Element vorgenommen. Das im `div`-Element erlaubte \@n-Attribut gibt die Strukturebene an. Über das \@type-Attribut kann der Typ des Kapitels näher spezifiziert werden. Eine Liste der möglichen Werte für das Attribut findet sich unter https://deutschestextarchiv.de/doku/basisformat/div.html.
 
-Für Manuskripte, wie die hier behandelten Vorlesungsmitschrift von Patzig, gibt es unter http://deutschestextarchiv.de/doku/basisformat/msKapitel.html noch zwei zusätzliche Werte für das \@type-Attribut, nämlich *session* für Vorlesungsmitschriften und *letter* für Briefe.
+Für Manuskripte, wie die hier behandelten Vorlesungsmitschrift von Patzig, gibt es unter https://deutschestextarchiv.de/doku/basisformat/msKapitel.html noch zwei zusätzliche Werte für das \@type-Attribut, nämlich *session* für Vorlesungsmitschriften und *letter* für Briefe.
 
 Mit folgendem cypher-Query erhalten wir die in Patzig verwendeten Werte für das \@type-Attribut des `div`-Elements.
 
@@ -515,22 +515,22 @@ In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (`l
 
 
 [^b20c]: Vgl. www.neo4j.com (abgerufen am 7.8.2017).
-[^dff9]: Die Graphdatenbank orientdb (http://orientdb.com/) bietet ein für Historiker sehr interessantes Feature, da sie als Datentyp für die Properties von Knoten auch Datumsangaben im ISO-Format zulässt. Vgl. https://orientdb.com/docs/2.2/Managing-Dates.html (abgerufen am 7.8.2017).
+[^dff9]: Die Graphdatenbank orientdb (https://orientdb.com/) bietet ein für Historiker sehr interessantes Feature, da sie als Datentyp für die Properties von Knoten auch Datumsangaben im ISO-Format zulässt. Vgl. https://orientdb.com/docs/2.2/Managing-Dates.html (abgerufen am 7.8.2017).
 [^ed8a]: Wie die apoc-Bibliothek installiert und die Funktionen und Procedures verwendet werden können wird im [Kapitel für Fortgeschrittene](85-cypher-fuer-Fortgeschrittene.md) erklärt.
 [^4da1]: !!! Literaturhinweis ergänzen, Hans-Werner Bartz fragen.
 [^32a2]: Vgl. @DekkerHaentjensItmorejust2017.
 [^b141]: @SchmidtInteroperableDigitalScholarly2014, 4.1 Annotations.
-[^3af6]: URL des Beispieltextes: http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=Himalaja&p=39 abgerufen am 02.01.2018.
+[^3af6]: URL des Beispieltextes: https://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=Himalaja&p=39 abgerufen am 02.01.2018.
 
-[^8317]: Vgl. die Dokumentation des DTA-Basisformats unter http://www.deutschestextarchiv.de/doku/basisformat/seitenFacsNr.html abgerufen am 25.11.2017.
+[^8317]: Vgl. die Dokumentation des DTA-Basisformats unter https://www.deutschestextarchiv.de/doku/basisformat/seitenFacsNr.html abgerufen am 25.11.2017.
 
-[^3fd9]: Die Beispielseite findet sich unter http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?p=5 abgerufen am 25.11.2017.
+[^3fd9]: Die Beispielseite findet sich unter https://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?p=5 abgerufen am 25.11.2017.
 
 [^28e2]: Vgl. zuletzt @DekkerHaentjensItmorejust2017.
 
 [^bb95]: Beispielsweise sieht @HuitfeldtMarkupTechnologyTextual2014, S. 161, digitale Dokumente prinzipiell als lineare Sequenz von Zeichen.
 
-[^736a]: In FuD (http://fud.uni-trier.de/) werden Texte in Standoff-Markup auf Buchstabenebene ausgezeichnet, während beim DTA-Basisformat der Fokus auf der wortbasierten Auszeichung liegt (vgl. http://www.deutschestextarchiv.de/doku/basisformat/eeAllg.html).
+[^736a]: In FuD (https://fud.uni-trier.de/) werden Texte in Standoff-Markup auf Buchstabenebene ausgezeichnet, während beim DTA-Basisformat der Fokus auf der wortbasierten Auszeichung liegt (vgl. https://www.deutschestextarchiv.de/doku/basisformat/eeAllg.html).
 
 [^4fcf]: Zur einfacheren Lesbarkeit wurden im Wort *Kenntniß* die Sonderzeichen normalisiert.
 
@@ -539,9 +539,9 @@ In diesem Kapitel wurden exemplarisch die XML-Strukturen für Layout (Zeilen (`l
 [^0f28]: Die Anzahl der `<p>`-Elemente im Graph erhält man mit der Abfrage MATCH (n:XmlTag {_name:'p'}) RETURN count(n);
 
 [^8a2a]: Für die Vereinheitlichung des Druckbildes mussten an einigen Stellen Zeilenumbrüche in die Codebeispiele eingefügt werden, die deren direkte Ausführung behindern.
-[^a974]: Vgl. hierzu http://deutschestextarchiv.de/doku/basisformat/msAddDel.html.
-[^cb71]: Vgl. hierzu http://deutschestextarchiv.de/doku/basisformat/msAddDel.html.
+[^a974]: Vgl. hierzu https://deutschestextarchiv.de/doku/basisformat/msAddDel.html.
+[^cb71]: Vgl. hierzu https://deutschestextarchiv.de/doku/basisformat/msAddDel.html.
 
-[^148e]: Vgl. http://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=zum&p=32.
+[^148e]: Vgl. https://www.deutschestextarchiv.de/book/view/patzig_msgermfol841842_1828/?hl=zum&p=32.
 
-[^70f5]: Gotthilf Patzig: Vorträge über physische Geographie des Freiherrn Alexander von Humbold: gehalten im großen Hörsaale des Universitäts-Gebäudes zu Berlin im Wintersemester 1827/28 vom 3ten Novbr. 1827. bis 26 April 1828. Aus schriftlichen Notizen nach jedem Vortrage zusammengestellt vom Rechnungsrath Gotthilf Friedrich Patzig. Berlin 1827/28 (= Nachschrift der ‚Kosmos-Vorträge‘ Alexander von Humboldts in der Berliner Universität, 3.11.1827–26.4.1828), S. 9. In: Deutsches Textarchiv. Grundlage für ein Referenzkorpus der neuhochdeutschen Sprache. Herausgegeben von der Berlin-Brandenburgischen Akademie der Wissenschaften, Berlin 2007–2019. http://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13.
+[^70f5]: Gotthilf Patzig: Vorträge über physische Geographie des Freiherrn Alexander von Humbold: gehalten im großen Hörsaale des Universitäts-Gebäudes zu Berlin im Wintersemester 1827/28 vom 3ten Novbr. 1827. bis 26 April 1828. Aus schriftlichen Notizen nach jedem Vortrage zusammengestellt vom Rechnungsrath Gotthilf Friedrich Patzig. Berlin 1827/28 (= Nachschrift der ‚Kosmos-Vorträge‘ Alexander von Humboldts in der Berliner Universität, 3.11.1827–26.4.1828), S. 9. In: Deutsches Textarchiv. Grundlage für ein Referenzkorpus der neuhochdeutschen Sprache. Herausgegeben von der Berlin-Brandenburgischen Akademie der Wissenschaften, Berlin 2007–2019. https://www.deutschestextarchiv.de/patzig_msgermfol841842_1828/13.
