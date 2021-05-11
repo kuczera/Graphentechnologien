@@ -81,7 +81,7 @@ Mit den Befehlen wird sichergestellt, dass die im nächsten Schritt importierten
 Nun folgt der Import-Befehl mit der apoc-procedure *apoc.load.xmlSimple*.
 
 ~~~cypher
-call apoc.load.xml('http://deutschestextarchiv.de/book/download_fulltcf/16181') yield value as doc
+call apoc.load.xml('https://deutschestextarchiv.de/book/download_fulltcf/16181') yield value as doc
 unwind doc._TextCorpus._tokens._token as token
 create (t:Token{id:token.ID, text:token._text})
 with collect(t) as tokens
@@ -97,7 +97,7 @@ In der ersten Zeile wird der apoc-Befehl *apoc.load.xmlSimple* aufgerufen, der a
 Der nächste Befehl lädt wieder die gleiche XML-Datei und importiert die Satzstrukturen.
 
 ~~~cypher
-call apoc.load.xmlSimple("http://deutschestextarchiv.de/book/download_fulltcf/16181") yield value as doc
+call apoc.load.xmlSimple("https://deutschestextarchiv.de/book/download_fulltcf/16181") yield value as doc
 unwind doc._TextCorpus._sentences._sentence as sentence
 match (t1:Token{id:head(split(sentence.tokenIDs, " "))})
 match (t2:Token{id:last(split(sentence.tokenIDs, " "))})
