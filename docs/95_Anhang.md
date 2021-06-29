@@ -22,7 +22,7 @@ Die Dokumentation von Cypher findet sich auf den Seiten von neo4j:
 
 ## Datenbank löschen
 
-Vorab hier der Befehl, mit dem eine neo4j-Datenbank geleert werden kann. 
+Vorab hier der Befehl, mit dem eine neo4j-Datenbank geleert werden kann.
 
 ### Kleine Datenbanken
 
@@ -48,7 +48,7 @@ Seit Neo4j 4 gibt es eine Fehlermeldung, wenn man versucht einen Index zu erzeug
 CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.genID);
 ~~~
 
-Tipp: Wenn es schon Befehle zur Indexerstellung gibt wir z.B. 
+Tipp: Wenn es schon Befehle zur Indexerstellung gibt wir z.B.
 
 ~~~cypher
 CREATE INDEX ON :IndexPerson(registerid);
@@ -363,9 +363,9 @@ CALL apoc.export.cypher.all("all-plain.cypher", {
     format: "plain",
     useOptimizations: {type: "UNWIND_BATCH", unwindBatchSize: 20}
 })
-YIELD file, batches, source, format, nodes, relationships, 
+YIELD file, batches, source, format, nodes, relationships,
 properties, time, rows, batchSize
-RETURN file, batches, source, format, nodes, relationships, 
+RETURN file, batches, source, format, nodes, relationships,
 properties, time, rows, batchSize;
 ~~~
 
@@ -404,7 +404,7 @@ cat /tmp/export.cypher | ./bin/cypher-shell -u neo4j -p password
 
 ## Knoten hat bestimmte Kante nicht
 
-Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://jlu-buster.mni.thm.de:10210/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
+Am Beispiel der [Regesta-Imperii-Graphdatenbank](http://jlu-buster.mni.thm.de:9250/browser/) der Regesten Kaiser Friedrichs III. werden mit dem folgenden Cypher-Query alle Regestenknoten ausgegeben, die keine `PLACE_OF_ISSUE`-Kante zu einem `Place`-Knoten haben:
 
 ~~~cypher
 MATCH (reg:Regesta)
@@ -416,7 +416,7 @@ RETURN reg;
 
 ## Shortest Path hat bestimmte Kanten nicht
 
-Am Beispiel der [Fraktalität und Dynamik Graphdatenbank](http://jlu-buster.mni.thm.de:12160/browser/) werden mit dem folgenden Cypher-Query die Kantentypen 'BEGRABEN_IN' und 'VERSTORBEN_IN' aus dem shortestPath p ausgeschlossen:
+Am Beispiel der [Fraktalität und Dynamik Graphdatenbank](http://jlu-buster.mni.thm.de:9500/browser/) werden mit dem folgenden Cypher-Query die Kantentypen 'BEGRABEN_IN' und 'VERSTORBEN_IN' aus dem shortestPath p ausgeschlossen:
 
 ~~~cypher
 MATCH (n1:Person {pid: '3699' }),(n2:Person {pid: '3785' }), p = shortestPath((n1)-[*]-(n2))
@@ -427,7 +427,7 @@ RETURN p
 
 ## Häufigkeit von Wortketten
 
-Am Beispiel des [DTA-Imports](http://jlu-buster.mni.thm.de:10220/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
+Am Beispiel des [DTA-Imports](http://jlu-buster.mni.thm.de:9530/browser/) von [Berg Ostasien](http://www.deutschestextarchiv.de/book/show/berg_ostasien01_1864) wird mit dem folgenden Query die Häufigkeit von Wortketten im Text ausgegeben:
 
 ~~~cypher
 MATCH p=(n1:Token)-[:NEXT_TOKEN]->(n2:Token)-[:NEXT_TOKEN]->(n3:Token)
@@ -448,7 +448,7 @@ CALL apoc.nodes.link(briefe, "NEXT_LETTER")
 RETURN count(*)
 ~~~
 
-Soll es sich nur um virtuelle Kanten handeln, können diese beispielhaft für diese [GraphDB](http://jlu-buster.mni.thm.de:12360/browser/) so erstellt werden:
+Soll es sich nur um virtuelle Kanten handeln, können diese beispielhaft für diese [GraphDB](http://jlu-buster.mni.thm.de:9150/browser/) so erstellt werden:
 
 ~~~cypher
 MATCH (s:Person {gnd:'http://d-nb.info/gnd/118607626'})<-[:SENDER|:RECEIVER]-(b:Letter)-[:RECEIVER]->(e:Person)
