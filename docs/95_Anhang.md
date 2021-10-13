@@ -24,13 +24,13 @@ Die Dokumentation von Cypher findet sich auf den Seiten von neo4j:
 
 Vorab hier der Befehl, mit dem eine neo4j-Datenbank geleert werden kann.
 
-### Kleine Datenbanken
+## Kleine Datenbanken
 
 ~~~cypher
 MATCH (n) DETACH DELETE n;
 ~~~
 
-### Große Datenbanken
+## Große Datenbanken
 
 Bei großen Datenbanken funktioniert der o.a. Befehl meist nicht. Daher kann dieser Befehl genutzt werden, für den aber die APOC-Bibliothek installiert sein muss.
 
@@ -38,6 +38,28 @@ Bei großen Datenbanken funktioniert der o.a. Befehl meist nicht. Daher kann die
 CALL apoc.periodic.iterate('MATCH (n) RETURN n', 'DETACH DELETE n', {batchSize:1000});
 CALL apoc.schema.assert({},{},true) YIELD label, key
 RETURN *;
+~~~
+
+## Datenbank exportieren und importieren
+
+### Datenbank exportieren
+
+~~~
+neo4j-admin dump --to=/tmp/neo4j.dump
+~~~
+
+### Datenbank importieren
+
+In neo4j.conf upgrade der DB erlauben:
+
+Enable this to be able to upgrade a store from an older version.
+
+~~~
+dbms.allow_upgrade=true
+~~~
+
+~~~
+bin/neo4j-admin load --from import/neo4j.dump --force
 ~~~
 
 ## Indexe erstellen falls vorhanden
