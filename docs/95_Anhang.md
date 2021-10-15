@@ -608,6 +608,33 @@ SET n.gndnummer = NULL;
 MATCH (n:Person)
 WHERE n.viaf = ""
 SET n.viaf = NULL;
+~~~
+
+### Json rekursiv einlesen
+
+~~~cypher
+// file with json data
+WITH 'file:///somedirectory/recursive.json' AS json_file
+
+// get all of the ID values
+CALL apoc.load.json(json_file,"$..ID") YIELD value AS result
+WITH json_file, result.result AS keys
+
+// for each ID value get all of the children
+UNWIND range(0,size(keys)-1) AS i
+CALL apoc.load.json(json_file,"$..[?(@.ID == '" + toString(keys[i]) + "')].groups[*].ID") YIELD value AS children
+
+// create the parents and children and link them up
+WITH keys[i] AS parent_key, children.result AS children
+MERGE (parent:GroupNode {name: parent_key})
+WITH parent, children
+UNWIND children as child_key
+MERGE (child:GroupNode {name: child_key})
+MERGE (child)-[:CHILD_OF]->(parent)
+RETURN *
+~~~
+
+Quelle: https://community.neo4j.com/t/import-nodes-from-recursively-structured-json/11704/2
 
 ~~~
 ## (neosemantics)
