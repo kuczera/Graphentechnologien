@@ -542,7 +542,40 @@ return node;
 
 (Dieser Abschnitt befindet sich gerade in Bearbeitung)
 
-Beispiel: Laden der json-Daten der [Germania Sacra](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/klosterdatenbank/linked-data/).
+### Beispiel 1
+
+Import einer geschachtelten JSON-Datei in neo4j
+
+~~~cypher
+// Themen importieren
+WITH 'http://jlu-buster.mni.thm.de/~kuczera/Luhmann/Inhaltsuebersicht_ZKI.json'
+AS json_file
+// get all of the ID values
+CALL apoc.load.json(json_file,"$..id") YIELD value AS result
+WITH json_file, result.result AS keys
+// for each ID value get all of the children
+UNWIND range(0,size(keys)-1) AS i
+WITH keys[i] AS parent_key, json_file
+WHERE parent_key IS NOT NULL
+CALL apoc.load.json(json_file,"$..[?(@.id == '" + toString(parent_key) +"')].children[*]") YIELD value AS children
+// create the parents and children and link them up
+MERGE (parent:GroupNode {name: parent_key})
+WITH parent, children
+UNWIND children as child
+WITH parent, children, child
+WHERE child.id IS NOT NULL
+MERGE (childNode:GroupNode {name: child.id})
+SET childNode.start_ekin = child.start_ekin, childNode.end_ekin = child.end_ekin, childNode.title = child.title
+MERGE (childNode)-[:CHILD_OF]->(parent)
+RETURN count(*);
+~~~
+
+
+
+
+### Beispiel 2
+
+Laden der json-Daten der [Germania Sacra](https://adw-goe.de/forschung/forschungsprojekte-akademienprogramm/germania-sacra/klosterdatenbank/linked-data/).
 
 ~~~cypher
 CALL apoc.schema.assert({},{},true) YIELD label, key
