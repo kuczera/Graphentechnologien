@@ -93,6 +93,17 @@ CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.registerid);
 
 ## Explorative Datenanalyse oder "Was ist in der Datenbank?"
 
+### Schema der Graphdatenbank
+
+Mit diesem Befehl lässt sich das Schema des Graphmodells anzeigen.
+
+~~~cypher
+CALL db.schema.visualization();
+~~~
+
+Für den Befehl muss die APOC-Bibliothek installiert sein.
+
+
 ### Welche und jeweils wieviele Knoten enthält die Datenbank
 
 Mit den in diesem Abschnitt vorgestellten Queries lassen sich Graphen explorativ erfassen. Mit dem folgenden Query findet man alle im Graph vorkommenden Typen von Knoten und die jeweiligen Häufigkeiten.
