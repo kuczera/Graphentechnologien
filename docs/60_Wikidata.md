@@ -220,3 +220,60 @@ set l.date = l.sentDateNotBefore;
 match (l:Letter) where l.date IS NULL and l.sentDateNotAfter IS NOT NULL and l.sentDateNotBefore IS NULL
 set l.date = l.sentDateNotAfter;
 ~~~
+
+# Graphergänzung zu vorhandenen Entityknoten
+
+In der Graphdatenbank sind schon Knoten enthalten, die die WikidataId in der Property wikidataId enthalten. Mit dem folgenden Query werden alle Person-Knoten abgefragt und dann die oben aufgelisteten informationen aus Wikidata abgefragt und anschließend in der neo4j-DB gespeichert. Die erste Liste enthält Infos, die als Properties der Knoten angelegt werden.
+
+
+~~~cypher
+// Alle Persons mit WikidataId (Kein \n SPARQL Query !)
+WITH [
+// alles was hier steht wird als Property eines Knotens angelegt
+"http://www.wikidata.org/entity/P21", // sex or gender
+"http://www.wikidata.org/entity/P509", // cause of death
+"http://www.wikidata.org/entity/P569", // date of birth
+"http://www.wikidata.org/entity/P570", // date of death
+"https://www.wikidata.org/entity/P735", // given name
+"https://www.wikidata.org/entity/P734" // familiy name
+]
+as propertyEntities, [
+// alles was hier steht wird als Knoten angelegt und verknüpft
+"http://www.wikidata.org/entity/P361", // part of
+"http://www.wikidata.org/entity/P39", // position held
+"http://www.wikidata.org/entity/P106", // social classification
+"http://www.wikidata.org/entity/P53", // family
+"http://www.wikidata.org/entity/P3373", // sibling
+"http://www.wikidata.org/entity/P1038", // relative
+"http://www.wikidata.org/entity/P21", // sex or gender
+"http://www.wikidata.org/entity/P31", // is instance of
+"http://www.wikidata.org/entity/P463", // member of
+"http://www.wikidata.org/entity/P26", // spouse of
+"http://www.wikidata.org/entity/P40", // child of
+"http://www.wikidata.org/entity/P22", // father of
+"http://www.wikidata.org/entity/P25", // mother of
+"http://www.wikidata.org/entity/P6" // head of governmant
+]
+as relationshipResults
+MATCH (p:Person) WHERE p.wikidataId is not null
+WITH p.wikidataId AS wikidataId, propertyEntities, relationshipResults
+// SPARQL-Query darf keine Zeilenwechsel enthalten, da der Wikidata Query Service sonst einen Fehler meldet.
+WITH " SELECT ?wd ?wdLabel ?ps ?ps_Label ?wdpq ?wdpqLabel ?pq ?pq_Label { VALUES (?company) {(wd:" + wikidataId + ")} ?company ?p ?statement . ?statement ?ps ?ps_ .  ?wd wikibase:claim ?p. ?wd wikibase:statementProperty ?ps. OPTIONAL { ?statement ?pq ?pq_ . ?wdpq wikibase:qualifier ?pq . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" } } ORDER BY ?wd ?statement ?ps"
+  AS sparql, wikidataId, propertyEntities, relationshipResults
+CALL apoc.load.jsonParams(
+  "https://query.wikidata.org/sparql?query=" + sparql,
+  { Accept: "application/sparql-results+json"},
+  null
+)
+YIELD value
+WITH value.results.bindings AS all, wikidataId, propertyEntities, relationshipResults
+MERGE (subject:Person{wikidataId: wikidataId})
+SET subject += apoc.map.fromPairs([x in all WHERE x.wd.value in propertyEntities| [apoc.text.camelCase(x.wdLabel.value), x.ps_Label.value]])
+WITH subject, all, propertyEntities, relationshipResults
+UNWIND all AS rel
+WITH rel,subject WHERE rel.wd.value in relationshipResults  //NOT rel.wd.value IN propertyEntities
+CALL apoc.merge.node(["Wikidata"], {label:rel.ps_Label.value}, {pUrl:rel.ps.value, pLabel:rel.wdLabel.value}, {source:'wikidata'}) YIELD node as wikiNode
+CALL apoc.merge.relationship(subject, toUpper(rel.wdLabel.value), {}, apoc.map.fromLists([rel.wdpqLabel.value],[rel.pq_Label.value]), wikiNode) yield rel as rel2
+return subject, wikiNode, rel2;
+~~~
+
