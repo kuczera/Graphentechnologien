@@ -55,7 +55,7 @@ MATCH (n:IndexPerson)
 WHERE n.wikidataId IS NOT NULL
 AND n.wikidataId <> ""
 WITH collect(n.wikidataId) as wis
-call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+call apoc.bolt.load("bolt://neo4j:1234@wikidata.mni.thm.de:7687","
 MATCH (p:Entity)<-[rp:FATHER|MOTHER]-(n:Entity)
 WHERE n.id in $wis AND p.label IS NOT NULL
 RETURN p.label AS pLabel, p.id AS pId, n.id as nId;", {wis:wis}) yield row
@@ -77,7 +77,7 @@ MATCH (n:IndexPerson)
 WHERE n.wikidataId IS NOT NULL
 AND n.wikidataId <> ""
 WITH collect(n.wikidataId) as wis
-call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+call apoc.bolt.load("bolt://neo4j:1234@wikidata.mni.thm.de:7687","
 MATCH (p:Entity)<-[rp:SPOUSE]-(n:Entity)
 WHERE n.id in $wis AND p.label IS NOT NULL
 RETURN p.label AS pLabel, p.id AS pId, n.id as nId;", {wis:wis}) yield row
@@ -100,7 +100,7 @@ MATCH (n:IndexPerson)
 WHERE n.wikidataId IS NOT NULL
 AND n.wikidataId <> ""
 WITH collect(n.wikidataId) as wis
-call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+call apoc.bolt.load("bolt://neo4j:1234@wikidata.mni.thm.de:7687","
 MATCH (p:Entity)-[rp:FATHER|MOTHER]->(n:Entity)
 WHERE n.id in $wis AND p.label IS NOT NULL
 RETURN p.label AS pLabel, p.id AS pId, n.id as nId;", {wis:wis}) yield row
@@ -123,7 +123,7 @@ WHERE ip.source = 'wikidata'
 AND ip.label IS NULL
 OR ip.label = ""
 WITH collect(ip.wikidataId) as wis
-call apoc.bolt.load("bolt://neo4j:1234@jlu-buster.mni.thm.de:7687","
+call apoc.bolt.load("bolt://neo4j:1234@wikidata.mni.thm.de:7687","
 MATCH (p:Entity)
 WHERE p.id in $wis AND p.label IS NOT NULL
 RETURN p.label AS pLabel, p.id AS pId;", {wis:wis}) yield row
