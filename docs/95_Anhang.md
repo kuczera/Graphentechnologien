@@ -681,6 +681,7 @@ RETURN *
 Quelle: https://community.neo4j.com/t/import-nodes-from-recursively-structured-json/11704/2
 
 ~~~
+
 ## (neosemantics)
 
 (Dieser Abschnitt befindet sich gerade in Bearbeitung)
@@ -702,6 +703,49 @@ CALL semantics.importRDF(item.`@id`, "JSON-LD") YIELD triplesLoaded
 RETURN triplesLoaded;
 ~~~
 
+## (json in neo4j laden - der foreach-trick von Michael Hunger)
+
+(Dieser Abschnitt befindet sich gerade in Bearbeitung)
+
+Quelle: [lord of the Wiki Rings](https://towardsdatascience.com/lord-of-the-wiki-ring-importing-wikidata-into-neo4j-and-analyzing-family-trees-da27f64d675e).
+
+~~~cypher
+// Iterate over characters
+MATCH (r:Character)
+// Prepare a SparQL query
+WITH 'SELECT *
+      WHERE{
+        ?item rdfs:label ?name .
+        filter (?item = wd:' + r.id + ')
+        filter (lang(?name) = "en" ) .
+      OPTIONAL{
+        ?item wdt:P21 [rdfs:label ?gender] .
+        filter (lang(?gender)="en")
+      }
+      OPTIONAL{
+        ?item wdt:P27 [rdfs:label ?country] .
+        filter (lang(?country)="en")
+      }
+      OPTIONAL{
+        ?item wdt:P1196 [rdfs:label ?death] .
+        filter (lang(?death)="en")
+      }}' AS sparql, r
+// make a request to Wikidata
+CALL apoc.load.jsonParams(
+    "https://query.wikidata.org/sparql?query=" + 
+    apoc.text.urlencode(sparql),
+     { Accept: "application/sparql-results+json"}, null)
+YIELD value
+UNWIND value['results']['bindings'] as row
+SET r.gender = row['gender']['value'], 
+    r.manner_of_death = row['death']['value']
+// Execute FOREACH statement
+FOREACH(ignoreme in case when row['country'] is not null then [1] else [] end | 
+        MERGE (c:Country{name:row['country']['value']})
+        MERGE (r)-[:IN_COUNTRY]->(c))
+~~~
+
+Quelle von Michael Hunger: https://medium.com/neo4j/5-tips-tricks-for-fast-batched-updates-of-graph-structures-with-neo4j-and-cypher-73c7f693c8cc
 
 [^5cb9]: Vgl. https://guides.neo4j.com/apoc (zuletzt aufgerufen am 11.04.2018).
 
