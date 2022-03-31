@@ -42,13 +42,13 @@ RETURN *;
 
 ## Datenbank exportieren und importieren
 
-### Datenbank exportieren
+### Datenbank exportieren über dump
 
 ~~~
 neo4j-admin dump --to=/tmp/neo4j.dump
 ~~~
 
-### Datenbank importieren
+### Datenbank importieren über dump
 
 In neo4j.conf upgrade der DB erlauben:
 
@@ -61,6 +61,53 @@ dbms.allow_upgrade=true
 ~~~
 bin/neo4j-admin load --from import/neo4j.dump --force
 ~~~
+
+### Daten exportieren als cypher Statement ([Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/))
+
+In neo4j.conf Import und Export für apoc erlauben:
+
+~~~
+apoc.export.file.enabled=true
+apoc.import.file.enabled=true
+~~~
+
+Anschließend die gesamte Datenbank in cypher exportieren
+
+~~~
+// Export der gesamten Datenbank
+CALL apoc.export.cypher.all('export.cypher',{format:'cypher-shell'})
+
+// Export eine Subgraphen mit Knoten und Kanten inkl. Indexes als cypher Statements
+MATCH path = (p1:Person)-[r:KNOWS]->(p2:Person)
+WITH collect(p1)+collect(p2) as export_nodes, collect(r) as export_rels
+CALL apoc.export.cypher.data(export_nodes,export_rels,'export.cypher',{format:'cypher-shell'})
+YIELD file, source, format, nodes, relationships, properties, time
+RETURN nodes, relationships, time;
+
+// Export eines Subgraphen incl. Indexe
+...
+CALL apoc.graph.fromPaths([paths],'export_graph',{}) YIELD graph
+CALL apoc.export.cypher.graph(graph,'export.cypher',{format:'cypher-shell'}) YIELD time
+RETURN time;
+
+// Export von Knoten und Kanten eines gegebenen cypher Queries inkl. Indexe
+CALL apoc.export.cypher.query(
+'MATCH (p1:Person)-[r:KNOWS]->(p2:Person) RETURN *',
+'export.cypher',{format:'cypher-shell'});
+~~~
+
+Die Datei export.cypher befindet sich nach dem Export im Verzeichnis import der Datenbank
+
+### Datenbank importieren über cypher-shell
+
+~~~
+cat export.cypher | ./bin/cypher-shell -u neo4j -p password
+~~~
+
+~~~
+cypher-shell -u neo4j -p password < export.cypher
+~~~
+
 
 ## Indexe erstellen falls vorhanden
 
