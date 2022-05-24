@@ -192,7 +192,7 @@ CALL apoc.cypher.run("MATCH (:`"+label+"`)
 RETURN count(*) as count", null)
 YIELD value
 RETURN label, value.count as count
-ORDER BY label
+ORDER BY count DESC;
 ~~~
 
 
@@ -203,7 +203,7 @@ CALL apoc.cypher.run("MATCH ()-[:`" + relationshipType + "`]->()
 RETURN count(*) as count", null)
 YIELD value
 RETURN relationshipType, value.count AS count
-ORDER BY relationshipType
+ORDER BY count DESC;
 ~~~
 
 ### Welche Knoten haben keine Kanten
