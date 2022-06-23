@@ -361,6 +361,34 @@ RETURN p.normalizedGerman AS Name, p.normalizedGerman AS Address,
 r.identifier AS Description, p.longitude AS Longitude, p.latitude AS Latitude, r.isoStartDate AS Timestamp
 ~~~
 
+## Vorkommende Wörter in einer Textproperty zu einer Textkette machen
+
+~~~cypher
+MATCH (t:Text)
+WITH t.Value as sentence, t.Name as b
+WITH split(sentence," ") as words, b
+FOREACH ( idx IN range(0,size(words)-2) |
+MERGE (w1:Token {value:trim(words[idx])})
+MERGE (w2:Token {value:trim(words[idx+1])})
+CREATE (w1)-[r:NEXT {Briefnr:b}]->(w2));
+~~~
+
+In der folgenden Fassung werden die Briefnummern noch in den Kanten ergänzt
+
+~~~cypher
+// Property as Array with one Relation
+MATCH (t:Text)
+WITH t.Value as sentence, t.Name as b
+WITH split(sentence," ") as words, b
+FOREACH ( idx IN range(0,size(words)-2) |
+MERGE (w1:Token {value:trim(words[idx])})
+MERGE (w2:Token {value:trim(words[idx+1])})
+MERGE (w1)-[r:NEXT]->(w2)
+ON CREATE SET r.list = b
+ON MATCH SET r.list = r.list + ", " + b);
+~~~
+
+
 ## Vorkommende Wörter in einer Textproperty zählen
 
 Werden Texte in der Property source eines Knotens l gespeichert, kann man sich mit folgendem Query die Häufigkeit der einzelnen Wörter anzeigen lassen.
