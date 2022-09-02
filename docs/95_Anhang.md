@@ -60,7 +60,7 @@ dbms.connector.bolt.tls_level=REQUIRED
 
 ### Zugriff über cypher-shell
 
-Damit cypher-shell bei abgesicherter Datenbank funktioniert muss zunächst das Zertifikat importiert werden (Beispiel für macos):
+Damit cypher-shell bei abgesicherter Datenbank funktioniert muss zunächst das Zertifikat importiert werden (Beispiel für debian):
 
 ~~~
 sudo keytool -importcert -alias neo4jcert -cacerts -file /var/lib/neo4j/certificates/bolt/public.crt
