@@ -40,6 +40,43 @@ CALL apoc.schema.assert({},{},true) YIELD label, key
 RETURN *;
 ~~~
 
+## Absicherung der Datenbank
+
+Die offizielle Dokumentation findet sich hier:
+
+https://neo4j.com/docs/operations-manual/current/security/ssl-framework/
+
+### Einrichtung der Zertifikate
+
+Zunächst muss ein Zertifikat beantragt werden. Anschließend müssen im Ordner /var/lib/neo4j/certificates die Ordner bolt und https erstellt werden. Im Ordner bolt muss noch der Unterordner truted erstellt werden. Das Zertifikat muss unter der Bezeichnung public.crt in die Ordner bolt, https und trusted kopiert werden. Die Schlüsseldatei muss unter der Bezeichnung private.key in die Ordner bolt und https kopiert werden.
+
+In der Konfigurationsdatei /etc/neo4j/neo4j.conf muss die Verschlüsselung aktiviert werden. 
+
+Um nur noch verschlüsselte Verbindungen zuzulassen muss noch folgendes eingetragen werden:
+
+~~~
+dbms.connector.bolt.tls_level=REQUIRED
+
+
+### Zugriff über cypher-shell
+
+Damit cypher-shell bei abgesicherter Datenbank funktioniert muss zunächst das Zertifikat importiert werden:
+
+~~~
+keytool -importcert -alias neo4jcert -cacerts -file /var/lib/neo4j/certificates/bolt/public.crt
+~~~
+
+Das Passwort ist _changeit_
+
+Der Zugriff funktioniert dann mit:
+
+~~~
+cypher-shell -a sozinianer.mni.thm.de --encryption true
+~~~
+
+ACHTUNG: Als Serveradresse darf nicht die IP-Adresse angegeben werden sondern der beim Zertifikat hinterlegte Servername.
+
+
 ## Datenbank exportieren und importieren
 
 ### Datenbank exportieren über dump
