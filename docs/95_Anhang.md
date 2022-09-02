@@ -56,17 +56,17 @@ Um nur noch verschlüsselte Verbindungen zuzulassen muss noch folgendes eingetra
 
 ~~~
 dbms.connector.bolt.tls_level=REQUIRED
-
+~~~
 
 ### Zugriff über cypher-shell
 
-Damit cypher-shell bei abgesicherter Datenbank funktioniert muss zunächst das Zertifikat importiert werden:
+Damit cypher-shell bei abgesicherter Datenbank funktioniert muss zunächst das Zertifikat importiert werden (Beispiel für macos):
 
 ~~~
-keytool -importcert -alias neo4jcert -cacerts -file /var/lib/neo4j/certificates/bolt/public.crt
+sudo keytool -importcert -alias neo4jcert -cacerts -file /var/lib/neo4j/certificates/bolt/public.crt
 ~~~
 
-Das Passwort ist _changeit_
+Das Passwort ist *changeit*
 
 Der Zugriff funktioniert dann mit:
 
