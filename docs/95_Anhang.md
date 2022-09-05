@@ -95,8 +95,22 @@ Enable this to be able to upgrade a store from an older version.
 dbms.allow_upgrade=true
 ~~~
 
+Als Nutzer neo4j azusführen:
+
 ~~~
+// Community Edition
 bin/neo4j-admin load --from import/neo4j.dump --force
+~~~
+
+~~~
+// Enterprise Edition noch zusätzlich die Datenbank stoppen, importieren und anschließend wieder starten
+cypher-shell: :use system
+cypher-shell: stop database hildegard
+
+neo4j-admin load --from import/neo4j.dump --force --database hildegard
+
+cypher-shell: start database hildegard
+
 ~~~
 
 ### Daten exportieren als cypher Statement ([Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/))
