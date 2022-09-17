@@ -26,4 +26,17 @@ Hintergrund dieser Hinweise ist die Überlieferungsgeschichte der Urkunden. Im P
 
 Die o.a. Arbeitsweise führt dazu, dass es zu einem in einer Urkunde festgehaltenen Rechtsakt durchaus mehrere Regesten geben kann. Dient nun die Anzahl der Regesten eines Herrschers als Grundlage für statistische Überlegungen zu seinem Urkundenverhalten, kann dies die Zahlen und die daraus aufbauenden statistischen Aussagen verfälschen. 
 
+~~~cypher
+// SAME_AS-Kanten erstellen
+MATCH (reg:Regesta)
+WHERE reg.archivalHistory CONTAINS "link"
+AND reg.archivalHistory CONTAINS "ausführliches Regest"
+UNWIND apoc.text.regexGroups(reg.archivalHistory,
+"<link reg:(\\S*?)>(.*?)</link>") as link
+MATCH (r2:Regesta {regid:link[1]})
+CREATE (reg)-[:SAME_AS {type:'ein_ausführliches_Regest_bietet'}]->(r2);
+~~~
+
+
+
 ![Visualisierung von sameAs-Beziehungen](Bilder/sameAsRegesta/sameAs.png)
