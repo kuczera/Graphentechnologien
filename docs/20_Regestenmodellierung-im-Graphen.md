@@ -51,31 +51,56 @@ In den Abbildungen finden sich beispielhaft das Regest RI III,2,3 Nr. 1487, einm
 
 Die gelben Knoten sind die Regesten. Aus den Angaben des Regests werden mit dem o.a. Befehl noch ein Datumsknoten und ein Ortsknoten erstellt. Mit dem ersten `CREATE`-Befehl werden die Regesten erstellt. Die `MERGE`-Befehle erzeugen ergänzende Knoten für die Datumsangaben und die Ausstellungsorte. Nun ist es aber so, dass Ausstellungsort und Ausstellungsdatum mehrfach vorkommen können. Daher wird hier nicht der `CREATE`-Befehl sondern der `MERGE`-Befehl verwendet. Dieser funktioniert wie der `CREATE`-Befehl, prüft aber vorher, ob in der Datenbank ein solcher Knoten schon existiert. Falls es ihn noch nicht gibt, wird er erzeugt, wenn es ihn schon gibt, wird er der entsprechenden Variable zugeordnet. Anschließend werden die Kanten zwischen Regestenknoten und Ausstellungsortsknoten sowie Regestenknoten und Datumsknoten erstellt. In der folgenden Tabelle werden die einzelnen Befehle dargestellt und kommentiert.
 
+### Datenbank leeren (falls noch nicht geschehen)
+
+~~~cypher
+CALL apoc.periodic.iterate('MATCH (n) RETURN n', 'DETACH DELETE n', {batchSize:1000});
+CALL apoc.schema.assert({},{},true) YIELD label, key
+RETURN *;
+~~~
+
 ### Indexe Erstellen
 
 Bevor nun mit dem Import begonnen wird, ist es für die Beschleunigung des Importprozesses von Vorteil vorher Indexe für häufig genutzte Properties zu erstellen.
 
 ~~~cypher
 // vorab Index erzeugen -> Import wird schneller
-CREATE INDEX ON :Regesta(ident);
-CREATE INDEX ON :Regesta(regnum);
-CREATE INDEX ON :Regesta(persistentIdentifier);
-CREATE INDEX ON :Regesta(registerId);
-CREATE INDEX ON :Regesta(heftId);
-CREATE INDEX ON :Regesta(placeOfIssue);
-CREATE INDEX ON :Regesta(origPlaceOfIssue);
-CREATE INDEX ON :Date(startDate);
-CREATE INDEX ON :Place(original);
-CREATE INDEX ON :Place(normalizedGerman);
-CREATE INDEX ON :Action(action);
-CREATE INDEX ON :Literature(literatur);
-CREATE INDEX ON :Reference(reference);
-CREATE INDEX ON :IndexEntry(registerId);
-CREATE INDEX ON :IndexEntry(nodeId);
-CREATE INDEX ON :Regesta(latLong);
-CREATE INDEX ON :IndexPlace(registerId);
-CREATE INDEX ON :IndexEvent(registerId);
-CREATE INDEX ON :IndexPerson(registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.registerid);
+CREATE INDEX IF NOT EXISTS FOR (n:Date) ON (n.startDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Place) ON (n.original);
+CREATE INDEX IF NOT EXISTS FOR (n:Place) ON (n.normalizedGerman);
+CREATE INDEX IF NOT EXISTS FOR (n:Lemma) ON (n.lemma);
+CREATE INDEX IF NOT EXISTS FOR (n:Literature) ON (n.literatur);
+CREATE INDEX IF NOT EXISTS FOR (n:Reference) ON (n.reference);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.xmlId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.nodeId);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.latLong);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPlace) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEvent) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.wikidataId);
+CREATE INDEX IF NOT EXISTS FOR (n:ExternalResource) ON (n.url);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regid);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regestaNumber);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regestaVolume);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.origPlaceOfIssue);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.startDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.endDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.title);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.incipit);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.originalDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.externalLinks);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.exchangeIdentifier);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.urn);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.pid);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.uid);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.sorting);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.bandpk);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.laufendenummer);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regestennummernorm);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.identifier);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.date);
 ~~~
 
 ### Erstellen der Regestenknoten
@@ -83,16 +108,12 @@ CREATE INDEX ON :IndexPerson(registerId);
 Mit dem folgenden Cypher-Query werden die Regestenknoten in der Graphdatenbank erstellt:
 
 ~~~cypher
-// Regestenknoten erstellen
-LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegH4.csv" AS line
-CREATE (r:Regesta {regid:line.persistentIdentifier, text:line.summary,
-  archivalHistory:line.archival_history, date:line.date_string,  
-  ident:line.identifier,  regnum:line.regnum,
-  origPlaceOfIssue:line.locality_string, startDate:line.start_date,
-  endDate:line.end_date})
-MERGE (d:Date {startDate:line.start_date, endate:line.end_date})
-MERGE (r)-[:DATE]->(d)
-RETURN count(r);
+call apoc.periodic.iterate("LOAD CSV WITH HEADERS FROM 'https://gitlab.rlp.net/Andreas.Kuczera/ri-data/raw/master/data/regesta-csv/RI_alles.csv' AS line FIELDTERMINATOR '\t'
+WITH line
+WHERE line.identifier =~ 'RI III,2,3 .*'
+RETURN line",
+"CREATE (r:Regesta {regid:line.persistent_identifier, origPlaceOfIssue:line.`locality_string`, startDate:line.`start_date`, endDate:line.`end_date`, summary:line.`summary`, archivalHistory:line.`archival_history`, title:line.`title`, commentary:line.`commentary`, literature:line.`literature`, footnotes:line.`footnotes`, annotations:line.`annotations`, incipit:line.`incipit`, originalDate:line.`original_date`, versoNote:line.`verso_note`, seal:line.`seal`, recipient:line.`recipient`, witnesses:line.`witnesses`, clerk:line.`clerk`, chancellor:line.`chancellor`, signature:line.`signature`, signatureAddition:line.`signature_addition`, externalLinks:line.`external_links`, exchangeIdentifier:line.`exchange_identifier`, urn:line.`urn`, pid:line.`pid`, uid:line.`uid`, sorting:line.`sorting`, bandpk:line.`bandpk`, laufendenummer:line.`laufendenummer`, regestennummernorm:line.`regestennummernorm`, identifier:line.`identifier`, date:line.`date_string`, persistentIdentifier:line.persistent_identifier})",
+{batchSize:100,retries:10,failOnError:false});
 ~~~
 
 Im Folgenden werden die einzelnen Teile des Import-Befehls erläutert:
@@ -104,28 +125,39 @@ Im Folgenden werden die einzelnen Teile des Import-Befehls erläutert:
 |`MERGE` (d:Date {startDate:line.start_date, endate:line.end_date})|line.start_date und line.end_date|Es wird geprüft, ob ein Datumsknoten mit der Datumsangabe schon existiert, falls nicht, wird er erstellt. In jedem Fall steht anschließend der Datumsknoten unter der Variable d zur Verfügung.|
 |`MERGE` (r)-[:DATE]->(d)|`(r)` ist der Regestenknoten, `(d)` ist der Datumsknoten|Zwischen Regestenknoten und Datumsknoten wird eine `DATE`-Kante erstellt.|
 
+### Erstellen der RegisterIds
+
+Die RegisterIds werden später benötigt, um Kanten zwischen Regesten und Registereinträgen zu erstellen.
+
+~~~Cypher
+// registerId erstellen
+MATCH (reg:Regesta)
+UNWIND apoc.text.regexGroups(reg.identifier, "RI III,2,3 n. (\\S+)") as link
+SET reg.registerId = link[1];
+~~~
+
 ### Erstellen der Ausstellungsorte
 
 In den Kopfzeilen der Regesten ist, soweit bekannt, der Ausstellungsort der Urkunde vermerkt. Im Rahmen der Arbeiten an den Regesta Imperii Online wurden diese Angaben zusammengestellt und soweit möglich die Orte identifiziert, so dass diese Angabe nun beim Import der Regesten in den Graphen berücksichtigt werden kann. Insgesamt befinden sich in den Regesta Imperii über 12.000 verschiedene Angaben für Ausstellungsorte, wobei sie sich aber auch teilweise auf den gleichen Ort beziehen können (Wie z.B. Aachen, Aquisgrani, Aquisgradi, Aquisgranum, coram Aquisgrano etc.). Allein mit der Identifizierung der 1.000 häufigsten Ortsangaben konnte schon die überwiegende Mehrzahl der Ausstellungsorte georeferenziert werden. Die Daten zur Ortsidentifizierung liegen auch als CSV-Datei vor.
 
-Mit dem folgenden Cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert:
+Mit dem folgenden Cypher-Query werden die Ausstellungsorte in die Graphdatenbank importiert und mit den Regestenknoten verknüpft:
 
 ~~~cypher
 // RI-Ausstellungsorte-geo erstellen
-LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RI_Ortsdaten.csv"
+LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1Y_HoBKkRkwh4LxIFFzQJHZkB0W57dWoGfdeq00Fi6cg/export?format=csv&id=1Y_HoBKkRkwh4LxIFFzQJHZkB0W57dWoGfdeq00Fi6cg&gid=1929188235'
 AS line
 WITH line
-WHERE line.Lat IS NOT NULL
-AND line.normalisiertDeutsch IS NOT NULL
+WHERE line.normalisiertDeutsch IS NOT NULL
 MATCH (r:Regesta {origPlaceOfIssue:line.Original})
-MERGE (p:Place {normalizedGerman:line.normalisiertDeutsch,
-  longitude:line.Long, latitude:line.Lat})
+MERGE (p:Place {normalizedGerman:line.normalisiertDeutsch})
 WITH r, p, line
-MERGE (r)-[rel:PLACE_OF_ISSUE]->(p)
-SET p.wikidataId = line.wikidataId
-SET p.name = line.name
-SET p.gettyId = line.GettyId
-SET p.geonamesId = line.GeonamesId
+MERGE (r)-[:PLACE_OF_ISSUE]->(p);
+
+// PLACE_OF_ISSUE-Kanten mit zusätzlichen Informationen versehen
+LOAD CSV WITH HEADERS FROM 'https://docs.google.com/spreadsheets/d/1Y_HoBKkRkwh4LxIFFzQJHZkB0W57dWoGfdeq00Fi6cg/export?format=csv&id=1Y_HoBKkRkwh4LxIFFzQJHZkB0W57dWoGfdeq00Fi6cg&gid=1929188235'
+AS line
+WITH line
+MATCH (p:Place {normalizedGerman:line.normalisiertDeutsch})<-[rel:PLACE_OF_ISSUE]-(reg:Regesta {origPlaceOfIssue:line.Original})
 SET rel.original = line.Original
 SET rel.alternativeName = line.Alternativname
 SET rel.commentary = line.Kommentar
@@ -133,7 +165,9 @@ SET rel.allocation = line.Zuordnung
 SET rel.state = line.Lage
 SET rel.certainty = line.Sicherheit
 SET rel.institutionInCity = line.InstInDerStadt
-RETURN count(p);
+SET p.longitude = line.Long
+SET p.latitude = line.Lat
+;
 ~~~
 
 Da der Import-Query etwas komplexer ist, wird er im folgenden näher erläutert. Nach dem `LOAD CSV WITH HEADERS FROM`-Befehl wird zunächst überprüft, ob der jeweils eingelesene Eintrag in der Spalte `line.lat` und in der Spalte `line.normalisiertDeutsch` Einträge hat. Ist dies der Fall, wird überprüft, ob es einen Regestenknoten gibt, der einen Ausstellungsorteintrag hat, der der Angabe in der Spalte `Original` entspricht. Diese Auswahl ist notwendig, da in der Tabelle die Ausstellungsorte der gesamten Regesta Imperii enthalten sind. Für diesen Import sollen aber nur jene angelegt werden, die für die Regesten Kaiser Heinrichs IV. relevant sind. Mit dem `MERGE`-Befehl wird der `Place`-Knoten erstellt (falls es ihn nicht schon gibt) und anschließend mit dem Regestenknoten verknüpft. Schließlich werden noch weitere Details der Ortsangabe im `Place`-Knoten und in den `PLACE_OF_ISSUE`-Kanten ergänzt.
@@ -143,15 +177,17 @@ Da der Import-Query etwas komplexer ist, wird er im folgenden näher erläutert.
 Mit dem folgenden Query werden die Koordinatenangaben zu Höhen- und Breitengraden der Ausstellungsorte (`Place`-Knoten), die in den Propertys latitude und longitude abgespeichert sind, in der neuen Property LatLong zusammengefasst und in `point`-Werte umgewandelt. Seit Version 3 kann neo4j mit diesen Werten Abstandsberechnungen durchführen (Mehr dazu siehe unten bei den Auswertungen).
 
 ~~~cypher
-// Regesten und Ausstellungsorte mit Koordinaten der Ausstellungsorte versehen
+// Regesten und Ausstellungsorte mit neo4j-Koordinaten der Ausstellungsorte versehen
+MATCH (o:Place)
+WHERE o.latitude IS NOT NULL
+SET o.latLong = o.latitude + ',' + o.longitude ;
 MATCH (r:Regesta)-[:PLACE_OF_ISSUE]->(o:Place)
-SET r.latLong = point({latitude: tofloat(o.latitude),
-  longitude: tofloat(o.longitude)})
-SET o.latLong = point({latitude: tofloat(o.latitude),
-  longitude: tofloat(o.longitude)})
+SET r.nLatLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
+SET o.nLatLong = point({latitude: tofloat(o.latitude), longitude: tofloat(o.longitude)})
 SET r.placeOfIssue = o.normalizedGerman
 SET r.latitude = o.latitude
-SET r.longitude = o.longitude;
+SET r.longitude = o.longitude
+SET r.latLong = o.latLong;
 ~~~
 
 ### Ausstellungsdatum
@@ -171,6 +207,20 @@ SET d.isoEndDate = date(d.endDate);
 ~~~
 
 Zunächst werden mit dem `MATCH`-Befehl alle Regestenknoten aufgerufen. Anschließend wird für jeden Regestenknoten aus der String-Property `startDate` die Datumsproperty `isoStartDate` berechnet und im Regestenknoten abgespeichert. Mit Hilfe der Property können dann Datumsangaben und Zeiträume abgefragt werden (Beispiel hierzu unten in der Auswertung).
+
+### URLs bei Regesten ergänzen
+
+Mit der hier erstellen Property url lassen sich die Regesten aus dem neo4j-Browser heraus direkt aufrufen.
+
+~~~cypher
+// URLs für Regesten erstellen
+MATCH (reg:Regesta)
+WHERE reg.url IS NOT NULL
+SET reg.url = ("http://www.regesta-imperii.de/id/" + reg.urn);
+MATCH (reg:Regesta)
+WHERE reg.persistentIdentifier IS NOT NULL
+SET reg.url = ("http://www.regesta-imperii.de/id/" + reg.persistentIdentifier);
+~~~
 
 ## Exkurs 1: Herrscherhandeln in den Regesta Imperii
 
@@ -208,6 +258,22 @@ MERGE (reg)-[:REFERENCES]->(ref);
 
 Da dies mit dem `MERGE`-Befehl geschieht, wird in der Graphdatenbank jeder Literaturtitel nur einmal angelegt. Anschließend werden die `Reference`-Knoten mit den Regesten über `REFERENCES`-Kanten verbunden. Zu den Auswertungsmöglichkeiten vgl. unten den Abschnitt zu den [Auswertungsperspektiven](##Auswertungsperspektiven).
 
+## Regestentext, Überlieferung und Kommentar normalisieren
+
+Mit diesem Query werden neue Properties erstellt, in denen die html-Links entfernt sind.
+
+~~~cypher
+// <>-Tags entfernen und in plain speichern
+match (r:Regesta)
+with r,
+apoc.text.regreplace(r.summary, '<.*?>', '') as summary,
+apoc.text.regreplace(r.archivalHistory, '<.*?>', '') as archivalHistory,
+apoc.text.regreplace(r.commentary, '<.*?>', '') as commentary
+set r.plainSummary = summary
+set r.plainArchivalHistory = archivalHistory
+set r.plainCommentary = r.commentary;
+~~~
+
 
 ## Import der Registerdaten in die Graphdatenbank
 
@@ -231,48 +297,147 @@ In der anderen Tabelle werden die Verknüpfungen zwischen Registereinträgen und
 
 ### Import der Registerdaten in die Graphdatenbank
 
-Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Die digitalisierten Registerdaten können als [Excel](https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4.xlsx)- oder als  [ODS](https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4.ods)-Datei heruntergeladen werden. In dem Tabellendokument befinden sich insgesamt drei Tabellen. In der Tabelle `Personen` sind die Einträge des Personenregisters aufgelistet und in der Tabelle `Orte` befindet sich die Liste aller Einträge des Ortsregisters. Schließlich enthält die Tabelle `APPEARS_IN` Information dazu, welche Personen oder Orte in welchen Regesten genannt sind. Der folgende Cypher-Query importiert die Einträge der Personentabelle in die Graphdatenbank und erstellt für jeden Eintrag einen Knoten vom Typ `:IndexPerson`:
+Im Gegensatz zu den Regesten Kaiser Friedrichs III., bei denen Orte und Personen in einem Register zusammengefasst sind, haben die Regesten Kaiser Heinrich IV. getrennte Orts- und Personenregister. Die digitalisierten Registerdaten können als [Excel](https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4.xlsx)- oder als  [ODS](https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4.ods)-Datei heruntergeladen werden. In dem Tabellendokument befinden sich insgesamt drei Tabellen. In der Tabelle `Personen` sind die Einträge des Personenregisters aufgelistet und in der Tabelle `Orte` befindet sich die Liste aller Einträge des Ortsregisters. Schließlich enthält die Tabelle `APPEARS_IN` Information dazu, welche Personen oder Orte in welchen Regesten genannt sind. Der folgende Cypher-Query importiert die Registereinträge in die Graphdatenbank und erstellt für jeden Eintrag einen Knoten vom Typ `:IndexEntry`:
 
 ~~~cypher
-// Registereinträge Personen erstellen
-LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4-IndexPerson.csv"
-AS line
-CREATE (:IndexPerson {registerId:line.ID, name1:line.name1});
+// IndexEntries erstellen
+CALL apoc.load.xml('https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml','',{}, true) yield value as xmlFile
+UNWIND xmlFile._register AS wdata
+CREATE (e:IndexEntry {xmlId:wdata.id, type:wdata.typ, parentId:wdata.parent, latitude:wdata.lat, longitude:wdata.lon, wikidataId:wdata.wikidata, geonames:wdata.geonames})
+RETURN count(e);
 ~~~
 
-Mit dem folgenden Cypher-Query werden nach dem gleichen Muster aus der Tabelle `Orte` die Ortseinträge in die Graphdatenbank importiert.
+Mit dem folgenden Cypher-Query werden den IndexEntries noch zusätzlich die Label IndexPlace und IndexPerson zugewiesen.
 
 ~~~cypher
-// Registereinträge Orte erstellen
-LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4-IndexPlace.csv"
-AS line
-CREATE (:IndexPlace {registerId:line.ID, name1:line.name1});
+// Label bei den IndexEntries ergänzen
+CALL apoc.load.xml('https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml','',{}, true) yield value as xmlFile
+UNWIND xmlFile._register AS lemma
+WITH lemma.id AS xmlId,
+[x in lemma._lemma where x._type="label" | x._text][0] AS label,
+[y in [x in lemma._lemma where x._type ="numbers" | x._numbers][0] where y.type="nennung" | y._text] AS nennung,
+[y in [x in lemma._lemma where x._type ="numbers" | x._numbers][0] where y.type="empfaenger" | y._text] AS empfaenger
+MATCH (i:IndexEntry {xmlId:xmlId})
+SET i.label = label;
 ~~~
 
-Die beiden Befehle greifen also auf verschiedene Tabellenblätter des gleichen Google-Tabellendokuments zu, laden es als CSV-Daten und übergeben die Daten zeilenweise an die weiteren Befehle (Hier an den `MATCH`- und den `CREATE`-Befehl).
-Im nächsten Schritt werden nun mit den Daten der `APPEARS_IN`-Tabelle die Verknüpfungen zwischen den Registereinträgen und den Regesten erstellt.
+Im nächsten Schritt werden nun `APPEARS_IN`- und `REPIPIENT_IN`-Kanten zwischen den Registereinträgen und den Regesten erstellt.
 
 ~~~cypher
-// PLACE_IN-Kanten für Orte erstellen
-LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4-Place-APPEARS_IN.csv"
-AS line
-MATCH (from:IndexPlace {registerId:line.ID})
-MATCH (to:Regesta {regnum:line.regnum2})
-CREATE (from)-[:PLACE_IN {regnum:line.regnum,
-  name1:line.name1, name2:line.name2}]->(to);
+// APPEARS_IN erstellen
+CALL apoc.load.xml("https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml",'',{}, true) yield value as xmlFile
+UNWIND xmlFile._register AS wdata
+UNWIND wdata._lemma AS lemma
+UNWIND lemma._numbers AS number
+MATCH (e:IndexEntry {xmlId:wdata.id})
+MATCH (r:Regesta  {registerId:number._text})
+WITH wdata,e,r,number
+WHERE number.type = "nennung"
+MERGE (e)-[ai:APPEARS_IN {type:number.type}]->(r)
+RETURN count(ai);
 ~~~
 
-Mit zwei `MATCH`-Befehlen werden jeweils das Regest und der Registereintrag aufgerufen und mit dem `CREATE`-Befehl eine `PLACE_IN`-Kante zwischen den beiden Knoten angelegt, die als Attribute den Inhalt der Spalten `name1` und `name2` erhält.
-Analog werden die Verknüpfungen zwischen Regestenknoten und Personenknoten angelegt:
+~~~cypher
+// RECIPIENT IN erstellen
+CALL apoc.load.xml("https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml",'',{}, true) yield value as xmlFile
+UNWIND xmlFile._register AS wdata
+UNWIND wdata._lemma AS lemma
+UNWIND lemma._numbers AS number
+MATCH (e:IndexEntry {xmlId:wdata.id})
+MATCH (r:Regesta  {registerId:number._text})
+WITH wdata,e,r,number
+WHERE number.type = "empfaenger"
+MERGE (e)-[ri:RECIPIENT_IN]->(r)
+RETURN count(ri);
+~~~
+
+Mit zwei `MATCH`-Befehlen werden jeweils das Regest und der Registereintrag aufgerufen und mit dem `CREATE`-Befehl die Kanten zwischen den beiden Knoten angelegt.
+Analog werden die PLACE_OF_ISSUE-Verknüpfungen zwischen Regestenknoten und Ortsknoten angelegt:
 
 ~~~cypher
-// PERSON_IN-Kanten für Person erstellen
-LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/RegisterH4-Person-APPEARS_IN.csv"
-AS line
-MATCH (from:IndexPerson {registerId:line.ID}),
-(to:Regesta {regnum:line.regnum2})
-CREATE (from)-[:PERSON_IN {regnum:line.regnum, name1:line.name1,
-  name2:line.name2}]->(to);
+// PLACE_OF_ISSUE erstellen
+CALL apoc.load.xml("https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml",'',{}, true) yield value as xmlFile
+UNWIND xmlFile._register AS wdata
+UNWIND wdata._lemma AS lemma
+UNWIND lemma._numbers AS number
+MATCH (e:IndexEntry {xmlId:wdata.id})
+MATCH (r:Regesta  {registerId:number._text})
+WITH wdata,e,r,number
+WHERE number.type = "austOrt"
+MERGE (e)-[ri:PLACE_OF_ISSUE {source:'index'}]->(r)
+RETURN count(ri);
+~~~
+
+Im folgenden werden die Registerinformationen weiter aufbereitet.
+
+~~~cypher
+// Registerstufen anlegen
+MATCH (n1:IndexEntry)
+SET n1.pathLength = 'zero';
+MATCH (n1:IndexEntry)
+WHERE NOT (n1)-[:IS_SUB_OF]->(:IndexEntry)
+SET n1.pathLength = '0';
+MATCH p=(n1:IndexEntry{pathLength:'0'})<-[r:IS_SUB_OF*..8]-(n2)
+WHERE n2.pathLength = 'zero'
+SET n2.pathLength = toString(length(p));
+
+// Indexeinträge mit neo4j-Koordinaten der Ausstellungsorte versehen
+MATCH (e:IndexEntry)
+WHERE e.latitude IS NOT NULL
+SET e.nlatLong = point({latitude: tofloat(e.latitude), longitude: tofloat(e.longitude)})
+;
+
+// Indexeinträge mit kommagetrennten Koordinaten der Ausstellungsorte versehen
+MATCH (e:IndexEntry)
+WHERE e.latitude IS NOT NULL
+SET e.latLong = e.latitude + ',' + e.longitude ;
+
+// IndexEntry mit weiteren Labels ausstatten
+MATCH (e:IndexEntry)
+WHERE e.type = 'person'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexPerson']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'ereignis'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexEvent']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'sache'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexThing']) YIELD node
+RETURN node;
+
+MATCH (e:IndexEntry)
+WHERE e.type = 'ort'
+WITH e
+CALL apoc.create.addLabels(id(e), ['IndexPlace']) YIELD node
+RETURN node;
+
+// Registereintragspfade erstellen
+Match (e0:IndexEntry)<-[:IS_SUB_OF]-(e1:IndexEntry)
+SET e1.path = e0.label + ' // ' + e1.label;
+Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)
+SET e2.path = e0.label + ' // ' + e1.label + ' // ' + e2.label;
+Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)<-[:IS_SUB_OF]-(e3:IndexEntry)
+SET e3.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label;
+Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)<-[:IS_SUB_OF]-(e3:IndexEntry)<-[:IS_SUB_OF]-(e4:IndexEntry)
+SET e4.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label + ' // ' + e4.label;
+Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)<-[:IS_SUB_OF]-(e3:IndexEntry)<-[:IS_SUB_OF]-(e4:IndexEntry)<-[:IS_SUB_OF]-(e5:IndexEntry)
+SET e5.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label + ' // ' + e4.label + ' // ' + e5.label;
+Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)<-[:IS_SUB_OF]-(e3:IndexEntry)<-[:IS_SUB_OF]-(e4:IndexEntry)<-[:IS_SUB_OF]-(e5:IndexEntry)<-[:IS_SUB_OF]-(e6:IndexEntry)
+SET e6.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label + ' // ' + e4.label + ' // ' + e5.label + ' // ' + e6.label;
+
+// Rolle als Knoten erstellen
+match (e:IndexEntry)<-[:IS_SUB_OF]-(ro:IndexEntry {type:'rolle'})-[:APPEARS_IN]->(r:Regesta)
+// merge (c:Concept {label:ro.label, type:'role'})
+// merge (c)<-[:HAS_ROLE]-(e)
+merge (e)-[:APPEARS_IN {type:'role', label:ro.label}]->(r)
+with ro
+detach delete ro;
 ~~~
 
 ## Exkurs 2: Die Hierarchie des Registers der Regesten Kaiser Friedrichs III.
