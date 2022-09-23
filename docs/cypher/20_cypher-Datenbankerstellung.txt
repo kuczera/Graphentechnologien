@@ -1,53 +1,56 @@
-// cypher-import für die Regesten Heinrichs IV.
 // cypher-import für Heinrich IV. aus gitlab.rlp.net/ri-data
+// jetzt werden alle Verben importiert
+// Empfängerangaben werden aus google-docs importiert
+// alles löschen 
 
-// alles löschen
-MATCH(n) DETACH DELETE n;
+CALL apoc.periodic.iterate('MATCH (n) RETURN n', 'DETACH DELETE n', {batchSize:1000});
 CALL apoc.schema.assert({},{},true) YIELD label, key
 RETURN *;
 
-// vorab index erzeugen -> Import wird schneller
-CREATE INDEX ON :IndexPerson(registerid);
-CREATE INDEX ON :Date(startDate);
-CREATE INDEX ON :Place(original);
-CREATE INDEX ON :Place(normalizedGerman);
-CREATE INDEX ON :Lemma(lemma);
-CREATE INDEX ON :Literature(literatur);
-CREATE INDEX ON :Reference(reference);
-CREATE INDEX ON :IndexEntry(registerId);
-CREATE INDEX ON :IndexEntry(xmlId);
-CREATE INDEX ON :IndexEntry(nodeId);
-CREATE INDEX ON :Regesta(latLong);
-CREATE INDEX ON :IndexPlace(registerId);
-CREATE INDEX ON :IndexEvent(registerId);
-CREATE INDEX ON :IndexPerson(registerId);
-CREATE INDEX ON :IndexPerson(wikidataId);
-CREATE INDEX ON :ExternalResource(url);
-CREATE INDEX ON :Regesta(regid);
-CREATE INDEX ON :Regesta(regestaNumber);
-CREATE INDEX ON :Regesta(regestaVolume);
-CREATE INDEX ON :Regesta(origPlaceOfIssue);
-CREATE INDEX ON :Regesta(startDate);
-CREATE INDEX ON :Regesta(endDate);
-CREATE INDEX ON :Regesta(title);
-CREATE INDEX ON :Regesta(incipit);
-CREATE INDEX ON :Regesta(originalDate);
-CREATE INDEX ON :Regesta(externalLinks);
-CREATE INDEX ON :Regesta(exchangeIdentifier);
-CREATE INDEX ON :Regesta(urn);
-CREATE INDEX ON :Regesta(pid);
-CREATE INDEX ON :Regesta(uid);
-CREATE INDEX ON :Regesta(sorting);
-CREATE INDEX ON :Regesta(bandpk);
-CREATE INDEX ON :Regesta(laufendenummer);
-CREATE INDEX ON :Regesta(regestennummernorm);
-CREATE INDEX ON :Regesta(identifier);
-CREATE INDEX ON :Regesta(date);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.registerid);
+CREATE INDEX IF NOT EXISTS FOR (n:Date) ON (n.startDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Place) ON (n.original);
+CREATE INDEX IF NOT EXISTS FOR (n:Place) ON (n.normalizedGerman);
+CREATE INDEX IF NOT EXISTS FOR (n:Lemma) ON (n.lemma);
+CREATE INDEX IF NOT EXISTS FOR (n:Literature) ON (n.literatur);
+CREATE INDEX IF NOT EXISTS FOR (n:Reference) ON (n.reference);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.xmlId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.nodeId);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.latLong);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPlace) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEvent) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.wikidataId);
+CREATE INDEX IF NOT EXISTS FOR (n:ExternalResource) ON (n.url);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regid);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regestaNumber);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regestaVolume);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.origPlaceOfIssue);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.startDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.endDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.title);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.incipit);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.originalDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.externalLinks);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.exchangeIdentifier);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.urn);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.pid);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.uid);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.sorting);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.bandpk);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.laufendenummer);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regestennummernorm);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.identifier);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.date);
 
-LOAD CSV WITH HEADERS FROM "https://gitlab.rlp.net/Andreas.Kuczera/ri-data/raw/master/data/regesta-csv/RI_alles.csv" AS line FIELDTERMINATOR '\t' 
-WITH line 
+
+call apoc.periodic.iterate("LOAD CSV WITH HEADERS FROM 'https://gitlab.rlp.net/Andreas.Kuczera/ri-data/raw/master/data/regesta-csv/RI_alles.csv' AS line FIELDTERMINATOR '\t'
+WITH line
 WHERE line.identifier =~ 'RI III,2,3 .*'
-CREATE (r:Regesta {regid:line.persistent_identifier, origPlaceOfIssue:line.`locality_string`, startDate:line.`start_date`, endDate:line.`end_date`, summary:line.`summary`, archivalHistory:line.`archival_history`, title:line.`title`, commentary:line.`commentary`, literature:line.`literature`, footnotes:line.`footnotes`, annotations:line.`annotations`, incipit:line.`incipit`, originalDate:line.`original_date`, versoNote:line.`verso_note`, seal:line.`seal`, recipient:line.`recipient`, witnesses:line.`witnesses`, clerk:line.`clerk`, chancellor:line.`chancellor`, signature:line.`signature`, signatureAddition:line.`signature_addition`, externalLinks:line.`external_links`, exchangeIdentifier:line.`exchange_identifier`, urn:line.`urn`, pid:line.`pid`, uid:line.`uid`, sorting:line.`sorting`, bandpk:line.`bandpk`, laufendenummer:line.`laufendenummer`, regestennummernorm:line.`regestennummernorm`, identifier:line.`identifier`, date:line.`date_string`, persistentIdentifier:line.persistent_identifier});
+RETURN line",
+"CREATE (r:Regesta {regid:line.persistent_identifier, origPlaceOfIssue:line.`locality_string`, startDate:line.`start_date`, endDate:line.`end_date`, summary:line.`summary`, archivalHistory:line.`archival_history`, title:line.`title`, commentary:line.`commentary`, literature:line.`literature`, footnotes:line.`footnotes`, annotations:line.`annotations`, incipit:line.`incipit`, originalDate:line.`original_date`, versoNote:line.`verso_note`, seal:line.`seal`, recipient:line.`recipient`, witnesses:line.`witnesses`, clerk:line.`clerk`, chancellor:line.`chancellor`, signature:line.`signature`, signatureAddition:line.`signature_addition`, externalLinks:line.`external_links`, exchangeIdentifier:line.`exchange_identifier`, urn:line.`urn`, pid:line.`pid`, uid:line.`uid`, sorting:line.`sorting`, bandpk:line.`bandpk`, laufendenummer:line.`laufendenummer`, regestennummernorm:line.`regestennummernorm`, identifier:line.`identifier`, date:line.`date_string`, persistentIdentifier:line.persistent_identifier})",
+{batchSize:100,retries:10,failOnError:false});
 
 // registerId erstellen
 MATCH (reg:Regesta)
@@ -127,16 +130,27 @@ UNWIND apoc.text.regexGroups(reg.archivalHistory, "<link (\\S+)>(\\S+)</link>") 
 MERGE (ref:Reference {url:link[1]}) ON CREATE SET ref.title=link[2]
 MERGE (reg)-[:REFERENCES]->(ref);
 
+// <>-Tags entfernen und in plain speichern
+match (r:Regesta)
+with r,
+apoc.text.regreplace(r.summary, '<.*?>', '') as summary,
+apoc.text.regreplace(r.archivalHistory, '<.*?>', '') as archivalHistory,
+apoc.text.regreplace(r.commentary, '<.*?>', '') as commentary
+set r.plainSummary = summary
+set r.plainArchivalHistory = archivalHistory
+set r.plainCommentary = r.commentary;
+
 // ######################
 
+
 // IndexEntries erstellen
-CALL apoc.load.xml('https://exist.regesta-imperii.de/exist/rest/apps/rixqlib/xql/getRegister.xql?registerName=003-002','',{}, true) yield value as xmlFile
+CALL apoc.load.xml('https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml','',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS wdata
 CREATE (e:IndexEntry {xmlId:wdata.id, type:wdata.typ, parentId:wdata.parent, latitude:wdata.lat, longitude:wdata.lon, wikidataId:wdata.wikidata, geonames:wdata.geonames})
 RETURN count(e);
 
 // label bei den IndexEntries ergänzen
-CALL apoc.load.xml('https://exist.regesta-imperii.de/exist/rest/apps/rixqlib/xql/getRegister.xql?registerName=003-002','',{}, true) yield value as xmlFile
+CALL apoc.load.xml('https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml','',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS lemma
 WITH lemma.id AS xmlId,
 [x in lemma._lemma where x._type="label" | x._text][0] AS label,
@@ -146,7 +160,7 @@ MATCH (i:IndexEntry {xmlId:xmlId})
 SET i.label = label;
 
 // wikidataId ergänzen
-CALL apoc.load.xml('https://exist.regesta-imperii.de/exist/rest/apps/rixqlib/xql/getRegister.xql?registerName=003-002','',{}, true) yield value as xmlFile
+CALL apoc.load.xml('https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml','',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS lemma
 WITH lemma.id AS xmlId,
 [x in lemma._lemma WHERE x._type='idno' AND x.type='wikidata'| x._text][0] AS wikidataId
@@ -164,7 +178,7 @@ RETURN count(r);
 
 
 // APPEARS_IN erstellen
-CALL apoc.load.xml("https://exist.regesta-imperii.de/exist/rest/apps/rixqlib/xql/getRegister.xql?registerName=003-002",'',{}, true) yield value as xmlFile
+CALL apoc.load.xml("https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml",'',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS wdata
 UNWIND wdata._lemma AS lemma
 UNWIND lemma._numbers AS number
@@ -172,11 +186,11 @@ MATCH (e:IndexEntry {xmlId:wdata.id})
 MATCH (r:Regesta  {registerId:number._text})
 WITH wdata,e,r,number
 WHERE number.type = "nennung"
-MERGE (e)-[ai:APPEARS_IN]->(r)
+MERGE (e)-[ai:APPEARS_IN {type:number.type}]->(r)
 RETURN count(ai);
 
 // RECIPIENT IN erstellen
-CALL apoc.load.xml("https://exist.regesta-imperii.de/exist/rest/apps/rixqlib/xql/getRegister.xql?registerName=003-002",'',{}, true) yield value as xmlFile
+CALL apoc.load.xml("https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml",'',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS wdata
 UNWIND wdata._lemma AS lemma
 UNWIND lemma._numbers AS number
@@ -188,7 +202,7 @@ MERGE (e)-[ri:RECIPIENT_IN]->(r)
 RETURN count(ri);
 
 // PLACE_OF_ISSUE erstellen
-CALL apoc.load.xml("https://exist.regesta-imperii.de/exist/rest/apps/rixqlib/xql/getRegister.xql?registerName=003-002",'',{}, true) yield value as xmlFile
+CALL apoc.load.xml("https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml",'',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS wdata
 UNWIND wdata._lemma AS lemma
 UNWIND lemma._numbers AS number
@@ -215,7 +229,7 @@ WHERE e.latitude IS NOT NULL
 SET e.nlatLong = point({latitude: tofloat(e.latitude), longitude: tofloat(e.longitude)})
 ;
 
-// Indexeinträge mit kommegetrennten Koordinaten der Ausstellungsorte versehen
+// Indexeinträge mit kommagetrennten Koordinaten der Ausstellungsorte versehen
 MATCH (e:IndexEntry)
 WHERE e.latitude IS NOT NULL
 SET e.latLong = e.latitude + ',' + e.longitude ;
@@ -258,3 +272,19 @@ Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_O
 SET e5.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label + ' // ' + e4.label + ' // ' + e5.label;
 Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)<-[:IS_SUB_OF]-(e3:IndexEntry)<-[:IS_SUB_OF]-(e4:IndexEntry)<-[:IS_SUB_OF]-(e5:IndexEntry)<-[:IS_SUB_OF]-(e6:IndexEntry)
 SET e6.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label + ' // ' + e4.label + ' // ' + e5.label + ' // ' + e6.label;
+
+// Register aufarbeiten ###################################################
+
+// Rolle als Knoten erstellen
+match (e:IndexEntry)<-[:IS_SUB_OF]-(ro:IndexEntry {type:'rolle'})-[:APPEARS_IN]->(r:Regesta)
+// merge (c:Concept {label:ro.label, type:'role'})
+// merge (c)<-[:HAS_ROLE]-(e)
+merge (e)-[:APPEARS_IN {type:'role', label:ro.label}]->(r)
+with ro
+detach delete ro;
+
+match (a:Action)
+where a.action in ['canc','fidelibus','archicanc']
+detach delete a;
+
+
