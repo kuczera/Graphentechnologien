@@ -149,7 +149,7 @@ UNWIND xmlFile._register AS wdata
 CREATE (e:IndexEntry {xmlId:wdata.id, type:wdata.typ, parentId:wdata.parent, latitude:wdata.lat, longitude:wdata.lon, wikidataId:wdata.wikidata, geonames:wdata.geonames})
 RETURN count(e);
 
-// label bei den IndexEntries ergänzen
+// Label bei den IndexEntries ergänzen
 CALL apoc.load.xml('https://gitlab.rlp.net/adwmainz/regesta-imperii/lab/regesta-imperii-data/-/raw/main/data/indexes/RI_003-002.xml','',{}, true) yield value as xmlFile
 UNWIND xmlFile._register AS lemma
 WITH lemma.id AS xmlId,
@@ -273,8 +273,6 @@ SET e5.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.lab
 Match (e0:IndexEntry {pathLength:'0'})<-[:IS_SUB_OF]-(e1:IndexEntry)<-[:IS_SUB_OF]-(e2:IndexEntry)<-[:IS_SUB_OF]-(e3:IndexEntry)<-[:IS_SUB_OF]-(e4:IndexEntry)<-[:IS_SUB_OF]-(e5:IndexEntry)<-[:IS_SUB_OF]-(e6:IndexEntry)
 SET e6.path = e0.label + ' // ' + e1.label + ' // ' + e2.label + ' // ' + e3.label + ' // ' + e4.label + ' // ' + e5.label + ' // ' + e6.label;
 
-// Register aufarbeiten ###################################################
-
 // Rolle als Knoten erstellen
 match (e:IndexEntry)<-[:IS_SUB_OF]-(ro:IndexEntry {type:'rolle'})-[:APPEARS_IN]->(r:Regesta)
 // merge (c:Concept {label:ro.label, type:'role'})
@@ -286,5 +284,4 @@ detach delete ro;
 match (a:Action)
 where a.action in ['canc','fidelibus','archicanc']
 detach delete a;
-
 
