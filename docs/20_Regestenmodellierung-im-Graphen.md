@@ -229,13 +229,11 @@ Regesten sind in ihrer Struktur stark formalisiert. Meist wird mit dem ersten Ve
 
 ~~~cypher
 // ReggH4-Herrscherhandeln
-LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/15rCYYttK2HynYiZHVX_BKE1skGXM2LWc4pCUycQPm6M/export?format=csv&id=15rCYYttK2HynYiZHVX_BKE1skGXM2LWc4pCUycQPm6M&gid=71724782"
+LOAD CSV WITH HEADERS FROM "https://github.com/kuczera/Graphentechnologien/raw/master/data/ReggH4-Verben.csv"
 AS line FIELDTERMINATOR ','
-MATCH (r:Regesta{identifier:line.Identifier})
-FOREACH ( lem in split(line.Verbs, ", ") |
-MERGE (l:Action{action:lem})
-MERGE (r)-[:ACTION]->(l)
-);
+MATCH (r:Regesta{ident:line.regid})
+MERGE (l:Action{action:line.Lemma})
+MERGE (r)-[:ACTION]->(l);
 ~~~
 
 Dabei wird zunächst mit dem `MATCH`-Befehl das jeweilige Regest gesucht, anschließend mit dem `MERGE`-Befehl der `Action`-Knoten für das Herrscherhandeln angelegt (falls noch nicht vorhanden) und schließlich der `Regesta`-Knoten mit dem `Action`-Knoten über eine `ACTION`-Kante verbunden. In der folgenden Abbildung ist ein Ausschnitt mit Regesten und den verknüpften Actionknoten dargestellt.
