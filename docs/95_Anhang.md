@@ -412,6 +412,15 @@ RETURN p.normalizedGerman AS Name, p.normalizedGerman AS Address,
 r.identifier AS Description, p.longitude AS Longitude, p.latitude AS Latitude, r.isoStartDate AS Timestamp
 ~~~
 
+### Geokoordinaten für den [Dariah Geobrowser](https://geobrowser.de.dariah.eu/) exportieren
+
+~~~cypher
+// Geobrowser-Export
+MATCH (p:Place)--(l:Letter)
+RETURN p.label AS Name, p.label AS Address,
+p.label AS Description, p.longitude AS Longitude, p.latitude AS Latitude, l.dateNorm AS Timestamp;
+~~~
+
 ## Vorkommende Wörter in einer Textproperty zu einer Textkette machen
 
 ~~~cypher
