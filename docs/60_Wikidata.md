@@ -277,3 +277,29 @@ CALL apoc.merge.relationship(subject, toUpper(rel.wdLabel.value), {}, apoc.map.f
 return subject, wikiNode, rel2;
 ~~~
 
+### Ergänzung der WikidataId aus vorhandener gndId
+
+~~~
+// mit GND Wikidata ergänzen
+MATCH (p:Entity) WHERE p.gndId IS NOT NULL
+AND p.wikidataId IS NULL
+WITH p.gndId AS gndId
+WITH 'SELECT ?item ?itemLabel
+WHERE
+{
+?item wdt:P227 "' + gndId + '" .
+SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+}'
+AS sparql, gndId
+CALL apoc.load.jsonParams("https://query.wikidata.org/sparql?query=" + apoc.text.urlencode(sparql),
+{ Accept: "application/sparql-results+json"},
+null
+)
+YIELD value
+with value.results.bindings as a, gndId
+unwind a as item
+match (p:Entity {gndId:gndId})
+set p.wikidataId = substring(item.item.value, 31)
+set p.wikidataUrl = item.item.value
+return substring(item.item.value, 31), gndId, p.label;
+~~~
