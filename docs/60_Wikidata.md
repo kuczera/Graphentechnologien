@@ -258,7 +258,7 @@ as relationshipResults
 MATCH (p:Person) WHERE p.wikidataId is not null
 WITH p.wikidataId AS wikidataId, propertyEntities, relationshipResults
 // SPARQL-Query darf keine Zeilenwechsel enthalten, da der Wikidata Query Service sonst einen Fehler meldet.
-WITH " SELECT ?wd ?wdLabel ?ps ?ps_Label ?wdpq ?wdpqLabel ?pq ?pq_Label { VALUES (?company) {(wd:" + wikidataId + ")} ?company ?p ?statement . ?statement ?ps ?ps_ .  ?wd wikibase:claim ?p. ?wd wikibase:statementProperty ?ps. OPTIONAL { ?statement ?pq ?pq_ . ?wdpq wikibase:qualifier ?pq . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" } } ORDER BY ?wd ?statement ?ps"
+WITH " SELECT ?wd ?wdLabel ?ps ?ps_Label ?ps_ ?wdpq ?wdpqLabel ?pq ?pq_Label { VALUES (?company) {(wd:" + wikidataId + ")} ?company ?p ?statement . ?statement ?ps ?ps_ .  ?wd wikibase:claim ?p. ?wd wikibase:statementProperty ?ps. OPTIONAL { ?statement ?pq ?pq_ . ?wdpq wikibase:qualifier ?pq . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" } } ORDER BY ?wd ?statement ?ps"
   AS sparql, wikidataId, propertyEntities, relationshipResults
 CALL apoc.load.jsonParams(
   "https://query.wikidata.org/sparql?query=" + sparql,
@@ -272,7 +272,7 @@ SET subject += apoc.map.fromPairs([x in all WHERE x.wd.value in propertyEntities
 WITH subject, all, propertyEntities, relationshipResults
 UNWIND all AS rel
 WITH rel,subject WHERE rel.wd.value in relationshipResults  //NOT rel.wd.value IN propertyEntities
-CALL apoc.merge.node(["Wikidata"], {label:rel.ps_Label.value}, {pUrl:rel.ps.value, pLabel:rel.wdLabel.value}, {source:'wikidata'}) YIELD node as wikiNode
+CALL apoc.merge.node(["Wikidata"], {wikidataId:rel.ps_.value}, {label:rel.ps_Label.value, pUrl:rel.ps.value, pLabel:rel.wdLabel.value}, {source:'wikidata'}) YIELD node as wikiNode
 CALL apoc.merge.relationship(subject, toUpper(rel.wdLabel.value), {}, apoc.map.fromLists([rel.wdpqLabel.value],[rel.pq_Label.value]), wikiNode) yield rel as rel2
 return subject, wikiNode, rel2;
 ~~~
