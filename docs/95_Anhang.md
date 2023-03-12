@@ -105,11 +105,11 @@ bin/neo4j-admin load --from import/neo4j.dump --force
 ~~~
 // Enterprise Edition noch zusätzlich die Datenbank stoppen, importieren und anschließend wieder starten
 cypher-shell: :use system
-cypher-shell: stop database hildegard
+cypher-shell: stop database hildegard;
 
 neo4j-admin load --from import/neo4j.dump --force --database hildegard
 
-cypher-shell: start database hildegard
+cypher-shell: start database hildegard;
 
 ~~~
 
