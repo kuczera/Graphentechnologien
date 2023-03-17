@@ -99,7 +99,7 @@ Als Nutzer neo4j azusführen:
 
 ~~~
 // Community Edition
-linux-shell: bin/neo4j-admin load --from import/neo4j.dump --force
+linux-shell: neo4j-admin load --from import/neo4j.dump --force
 ~~~
 
 ~~~
