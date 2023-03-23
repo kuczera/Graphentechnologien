@@ -258,7 +258,7 @@ as relationshipResults
 MATCH (p:Person) WHERE p.wikidataId is not null
 WITH p.wikidataId AS wikidataId, propertyEntities, relationshipResults
 // SPARQL-Query darf keine Zeilenwechsel enthalten, da der Wikidata Query Service sonst einen Fehler meldet.
-WITH " SELECT ?wd ?wdLabel ?ps ?ps_Label ?ps_ ?wdpq ?wdpqLabel ?pq ?pq_Label { VALUES (?company) {(wd:" + wikidataId + ")} ?company ?p ?statement . ?statement ?ps ?ps_ .  ?wd wikibase:claim ?p. ?wd wikibase:statementProperty ?ps. OPTIONAL { ?statement ?pq ?pq_ . ?wdpq wikibase:qualifier ?pq . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" } } ORDER BY ?wd ?statement ?ps"
+WITH apoc.text.urlencode(" SELECT ?wd ?wdLabel ?ps ?ps_Label ?ps_ ?wdpq ?wdpqLabel ?pq ?pq_Label { VALUES (?company) {(wd:" + wikidataId + ")} ?company ?p ?statement . ?statement ?ps ?ps_ .  ?wd wikibase:claim ?p. ?wd wikibase:statementProperty ?ps. OPTIONAL { ?statement ?pq ?pq_ . ?wdpq wikibase:qualifier ?pq . } SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" } } ORDER BY ?wd ?statement ?ps")
   AS sparql, wikidataId, propertyEntities, relationshipResults
 CALL apoc.load.jsonParams(
   "https://query.wikidata.org/sparql?query=" + sparql,
