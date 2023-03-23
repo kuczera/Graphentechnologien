@@ -271,7 +271,9 @@ MERGE (subject:Person{wikidataId: wikidataId})
 SET subject += apoc.map.fromPairs([x in all WHERE x.wd.value in propertyEntities| [apoc.text.camelCase(x.wdLabel.value), x.ps_Label.value]])
 WITH subject, all, propertyEntities, relationshipResults
 UNWIND all AS rel
-WITH rel,subject WHERE rel.wd.value in relationshipResults  //NOT rel.wd.value IN propertyEntities
+WITH rel,subject 
+WHERE rel.wd.value in relationshipResults 
+AND rel.wdpqLabel.value IS NOT NULL
 CALL apoc.merge.node(["Wikidata"], {wikidataId:rel.ps_.value}, {label:rel.ps_Label.value, pUrl:rel.ps.value, pLabel:rel.wdLabel.value}, {source:'wikidata'}) YIELD node as wikiNode
 CALL apoc.merge.relationship(subject, toUpper(rel.wdLabel.value), {}, apoc.map.fromLists([rel.wdpqLabel.value],[rel.pq_Label.value]), wikiNode) yield rel as rel2
 return subject, wikiNode, rel2;
