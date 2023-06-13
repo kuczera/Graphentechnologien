@@ -40,6 +40,19 @@ CALL apoc.schema.assert({},{},true) YIELD label, key
 RETURN *;
 ~~~
 
+oder ohne apoc:
+
+~~~
+:auto
+MATCH (n)
+WITH n
+CALL {
+WITH n
+DETACH DELETE n}
+IN TRANSACTIONS OF 1000 ROWS
+RETURN count(*);
+~~~
+
 ## Absicherung der Datenbank
 
 Die offizielle Dokumentation findet sich hier:
@@ -76,6 +89,39 @@ cypher-shell -a sozinianer.mni.thm.de --encryption true
 
 ACHTUNG: Als Serveradresse darf nicht die IP-Adresse angegeben werden sondern der beim Zertifikat hinterlegte Servername.
 
+#### Passwort zurücksetzen oder ändern
+
+Zunächst muss in neo4j.conf die Authentifizierung abgeschaltet werden. Die Stelle lautet:
+
+~~~
+# Whether requests to Neo4j are authenticated.
+# To disable authentication, uncomment this line
+dbms.security.auth_enabled=true
+~~~
+
+ändern zu 
+
+~~~
+# Whether requests to Neo4j are authenticated.
+# To disable authentication, uncomment this line
+dbms.security.auth_enabled=false
+~~~
+
+Dann die DB neu starten und ohne Passwort einloggen.
+
+Anschließend in die system-DB wechseln:
+
+~~~
+:use system
+~~~
+
+und das Passwort ändern:
+
+~~~
+ALTER USER neo4j SET PASSWORD 'mynewpassword'
+~~~
+
+Anschließend die Authentifizierung wieder einschalten und die DB neu starten.
 
 ## Datenbank exportieren und importieren
 
