@@ -123,7 +123,7 @@ ALTER USER neo4j SET PASSWORD 'mynewpassword'
 
 Anschließend die Authentifizierung wieder einschalten und die DB neu starten.
 
-## Datenbank exportieren und importieren
+## Datenbank exportieren, importieren und migrieren
 
 ### Datenbank exportieren über dump
 
@@ -131,7 +131,7 @@ Anschließend die Authentifizierung wieder einschalten und die DB neu starten.
 neo4j-admin dump --to=/tmp/neo4j.dump
 ~~~
 
-### Datenbank importieren über dump
+### Datenbank importieren über dump für neo4j 4.4
 
 In neo4j.conf upgrade der DB erlauben:
 
@@ -141,7 +141,7 @@ Enable this to be able to upgrade a store from an older version.
 dbms.allow_upgrade=true
 ~~~
 
-Als Nutzer neo4j azusführen:
+Als Nutzer neo4j ausführen:
 
 ~~~
 // Community Edition
@@ -156,6 +156,14 @@ cypher-shell: stop database hildegard;
 linux-shell: neo4j-admin load --from import/neo4j.dump --force --database hildegard
 
 cypher-shell: start database hildegard;
+~~~
+
+### Datenbank von neo4j 4.4 auf neo4j 5.9 migrieren
+
+Die Migration von neo4j 4.4 auf die Version 5.9 kann über neo4j Desktop erfolgen. Zunächst muss ein Dump der neo4j 4.4 Datenbank erstellt werden. Anschließend wir in neo4j Desktop eine Datebank neo4j 5.9 erstellt. Im Datenbankverzeichnis wird ein Order data/dumps erstellt, in den die Datei neo4j.dump hineinkopiert wird. Der Befehl für die Migration lautet dann:
+
+~~~
+bin/neo4j-admin database migrate neo4j
 ~~~
 
 ### Daten exportieren als cypher Statement ([Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/))
