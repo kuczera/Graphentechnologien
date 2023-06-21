@@ -166,7 +166,7 @@ Die Migration von neo4j 4.4 auf die Version 5.9 kann über neo4j Desktop erfolge
 bin/neo4j-admin database migrate neo4j
 ~~~
 
-Siehe auch https://neo4j.com/docs/upgrade-migration-guide/current/version-5/migration/migrate-databases/
+Siehe auch [https://neo4j.com/docs/upgrade-migration-guide/current/version-5/migration/migrate-databases/](https://neo4j.com/docs/upgrade-migration-guide/current/version-5/migration/migrate-databases/)
 
 ### Daten exportieren als cypher Statement ([Quelle](https://neo4j.com/developer/kb/export-sub-graph-to-cypher-and-import/))
 
