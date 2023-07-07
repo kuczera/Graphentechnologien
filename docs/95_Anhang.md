@@ -158,6 +158,14 @@ linux-shell: neo4j-admin load --from import/neo4j.dump --force --database hildeg
 cypher-shell: start database hildegard;
 ~~~
 
+### Datenbank importieren über dump für neo4j 
+
+Die Datei neo4j.dump muss im Verzeichnis data/dumps/ abgelegt werden. Anschließend: 
+
+~~~
+bin/neo4j-admin database load --overwrite-destination=true neo4j
+~~~
+
 ### Datenbank von neo4j 4.4 auf neo4j 5.9 migrieren
 
 Die Migration von neo4j 4.4 auf die Version 5.9 kann über neo4j Desktop erfolgen. Zunächst muss ein Dump der neo4j 4.4 Datenbank erstellt werden. Anschließend wir in neo4j Desktop eine Datebank neo4j 5.9 erstellt. Im Datenbankverzeichnis wird ein Order data/dumps erstellt, in den die Datei neo4j.dump hineinkopiert wird. Der Befehl für die Migration lautet dann:
