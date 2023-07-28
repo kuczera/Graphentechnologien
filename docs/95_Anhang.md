@@ -24,13 +24,13 @@ Die Dokumentation von Cypher findet sich auf den Seiten von neo4j:
 
 Vorab hier der Befehl, mit dem eine neo4j-Datenbank geleert werden kann.
 
-## Kleine Datenbanken
+### Kleine Datenbanken
 
 ~~~cypher
 MATCH (n) DETACH DELETE n;
 ~~~
 
-## Große Datenbanken
+### Große Datenbanken
 
 Bei großen Datenbanken funktioniert der o.a. Befehl meist nicht. Daher kann dieser Befehl genutzt werden, für den aber die APOC-Bibliothek installiert sein muss.
 
