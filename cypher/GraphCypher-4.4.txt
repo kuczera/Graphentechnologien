@@ -1,3 +1,4 @@
+// cypher-Importskript läuft auf Neo4j 4.4
 // Datenbank leeren
 MATCH (n) DETACH DELETE n;
 
