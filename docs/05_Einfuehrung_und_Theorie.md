@@ -133,8 +133,8 @@ apt-get install neo4j=1:3.5.14  cypher-shell=1.1.12
 
 In diesem Kapitel wurde kurz auf die Ursprünge von Graphen eingegangen und verschiedene Typen von Graphen vorgestellt. Festzuhalten ist, dass es sich in den Digitalen Geisteswissenschaften in der Regel um Mischformen der vorgestellen Graphtypen handelt. Je nach Domäne werden Graphen hoher Dichte, mit vielen Knotentypen oder auch hierarchischen Strukturen benötigt. Modelle in den Digitalen Geisteswissenschaften haben meist mehrere Knotentypen und viele Kantentypen. Dies macht wiederum die direkte Anwendung von Graph-Algorithmen schwierig, so dass Graph-Transformationen notwendig werden können.
 
-[^b72e]: Dieser Abschnitt beruht in Teilen auf den Kapiteln "Introduction" und "Graph Theory and Concepts" des Buches Graph Algorithms: Practical Examples in Apache Spark and Neo4j von Mark Needham und Amy E. Hodler, O'Reilly Media 2019 (https://www.oreilly.com/library/view/graph-algorithms/9781492047674/), S. xiii-xv und S. 1-26.
+[^b72e]: Dieser Abschnitt beruht in Teilen auf den Kapiteln "Introduction" und "Graph Theory and Concepts" des Buches Graph Algorithms: Practical Examples in Apache Spark and Neo4j von Mark Needham und Amy E. Hodler, O'Reilly Media 2019 ([https://www.oreilly.com/library/view/graph-algorithms/9781492047674/](https://www.oreilly.com/library/view/graph-algorithms/9781492047674/)), S. xiii-xv und S. 1-26.
 
-[^caa8]: Vgl. https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem.
+[^caa8]: Vgl. [https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem](https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem).
 
-[^bfe5]: Vgl. https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem.
+[^bfe5]: Vgl. [https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem](https://de.wikipedia.org/wiki/K%C3%B6nigsberger_Br%C3%BCckenproblem).

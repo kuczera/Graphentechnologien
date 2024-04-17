@@ -57,25 +57,26 @@ Bevor nun mit dem Import begonnen wird, ist es für die Beschleunigung des Impor
 
 ~~~cypher
 // vorab Index erzeugen -> Import wird schneller
-CREATE INDEX ON :Regesta(ident);
-CREATE INDEX ON :Regesta(regnum);
-CREATE INDEX ON :Regesta(persistentIdentifier);
-CREATE INDEX ON :Regesta(registerId);
-CREATE INDEX ON :Regesta(heftId);
-CREATE INDEX ON :Regesta(placeOfIssue);
-CREATE INDEX ON :Regesta(origPlaceOfIssue);
-CREATE INDEX ON :Date(startDate);
-CREATE INDEX ON :Place(original);
-CREATE INDEX ON :Place(normalizedGerman);
-CREATE INDEX ON :Action(action);
-CREATE INDEX ON :Literature(literatur);
-CREATE INDEX ON :Reference(reference);
-CREATE INDEX ON :IndexEntry(registerId);
-CREATE INDEX ON :IndexEntry(nodeId);
-CREATE INDEX ON :Regesta(latLong);
-CREATE INDEX ON :IndexPlace(registerId);
-CREATE INDEX ON :IndexEvent(registerId);
-CREATE INDEX ON :IndexPerson(registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.name);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.ident);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.regnum);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.persistentIdentifier);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.heftId);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.placeOfIssue);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.origPlaceOfIssue);
+CREATE INDEX IF NOT EXISTS FOR (n:Date) ON (n.startDate);
+CREATE INDEX IF NOT EXISTS FOR (n:Place) ON (n.original);
+CREATE INDEX IF NOT EXISTS FOR (n:Place) ON (n.normalizedGerman);
+CREATE INDEX IF NOT EXISTS FOR (n:Action) ON (n.action);
+CREATE INDEX IF NOT EXISTS FOR (n:Literature) ON (n.literatur);
+CREATE INDEX IF NOT EXISTS FOR (n:Reference) ON (n.reference);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEntry) ON (n.nodeId);
+CREATE INDEX IF NOT EXISTS FOR (n:Regesta) ON (n.latLong);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPlace) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexEvent) ON (n.registerId);
+CREATE INDEX IF NOT EXISTS FOR (n:IndexPerson) ON (n.registerId);
 ~~~
 
 ### Erstellen der Regestenknoten
