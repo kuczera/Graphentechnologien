@@ -559,6 +559,12 @@ LOAD CSV WITH HEADERS FROM "file:///import.csv" AS line
 CREATE (p:Person {pid:line.ID_Person, name:line.Name, herkunft:line.Herkunft});
 ~~~
 
+Hinweise: Wenn der Import fehlschlägt kann das an der Formatierung der CSV-Datei liegen. Wenn die Daten aus Libreoffice exportiert wurden kann dies helfen:
+
+~~~
+sed -e 's/\\""/\\"/g' SBW-Register-Briefe.csv > SBW-Register-Briefe-fixed.csv
+~~~
+
 Im zweiten Schritt wird nun der `LOAD CSV`-Befehl nochmals ausgeführt und über die `WHERE`-Clause nur jene Fälle weiter bearbeitet, in denen die Property Herkunft nicht NULL ist. Nach der `WHERE`-Clause wird über den `MATCH`-Befehl zunächst der passende Personenknoten aufgerufen, anschließend per `MERGE`-Befehl der Ortsknoten erstellt (falls noch nicht vorhanden) und schließlich mit `MERGE` beide verknüpft.
 
 ~~~cypher
