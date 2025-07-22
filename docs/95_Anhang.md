@@ -57,7 +57,7 @@ RETURN count(*);
 
 Die offizielle Dokumentation findet sich hier:
 
-https://neo4j.com/docs/operations-manual/current/security/ssl-framework/
+[https://neo4j.com/docs/operations-manual/current/security/ssl-framework/](https://neo4j.com/docs/operations-manual/current/security/ssl-framework/)
 
 ### Einrichtung der Zertifikate
 
@@ -87,7 +87,7 @@ Der Zugriff funktioniert dann mit:
 cypher-shell -a sozinianer.mni.thm.de --encryption true
 ~~~
 
-ACHTUNG: Als Serveradresse darf nicht die IP-Adresse angegeben werden sondern der beim Zertifikat hinterlegte Servername.
+ACHTUNG: Als Serveradresse darf nicht die IP-Adresse angegeben werden sondern die beim Zertifikat hinterlegte Servername.
 
 #### Passwort zurücksetzen oder ändern
 
@@ -125,13 +125,31 @@ Anschließend die Authentifizierung wieder einschalten und die DB neu starten.
 
 ## Datenbank exportieren, importieren und migrieren
 
+Aktuelle Informationen zu Import und Export finden sich unter [https://neo4j.com/docs/operations-manual/current/backup-restore/](https://neo4j.com/docs/operations-manual/current/backup-restore/)
+
 ### Datenbank exportieren über dump
 
+Bei der Community Edition muss zunächst Neo4j gestoppt werden. Unter Debian lautet das entsprechende Kommando:
+
 ~~~
-neo4j-admin dump --to=/tmp/neo4j.dump
+service neo4j stop
 ~~~
 
-### Datenbank importieren über dump für neo4j 4.4
+Anschließend kann der Datenbankdump erstellt werden:
+
+~~~
+neo4j-admin database dump
+~~~
+
+Das Dumpfile neo4j.dump findet sich dann im Ordner import.
+Nun kann die Datenbank wieder gestartet werden:
+
+
+~~~
+service neo4j start
+~~~
+
+### Datenbank importieren
 
 In neo4j.conf upgrade der DB erlauben:
 
@@ -145,7 +163,7 @@ Als Nutzer neo4j ausführen:
 
 ~~~
 // Community Edition
-linux-shell: neo4j-admin load --from import/neo4j.dump --force
+linux-shell: neo4j-admin database load --from-path=/full-path/data/dumps neo4j --overwrite-destination=true
 ~~~
 
 ~~~
@@ -166,9 +184,13 @@ Die Datei neo4j.dump muss im Verzeichnis data/dumps/ abgelegt werden. Anschließ
 bin/neo4j-admin database load --overwrite-destination=true neo4j
 ~~~
 
-### Datenbank von neo4j 4.4 auf neo4j 5.9 migrieren
+### Datenbankimport mit Neo4j auf docker
 
-Die Migration von neo4j 4.4 auf die Version 5.9 kann über neo4j Desktop erfolgen. Zunächst muss ein Dump der neo4j 4.4 Datenbank erstellt werden. Anschließend wir in neo4j Desktop eine Datebank neo4j 5.9 erstellt. Im Datenbankverzeichnis wird ein Order data/dumps erstellt, in den die Datei neo4j.dump hineinkopiert wird. Der Befehl für die Migration lautet dann:
+Weitere Hinweise zum Import von Datenbanken für Neo4j auf docker finden sich unter [https://github.com/THM-Graphs/knowledgebase/blob/main/cypher%20gems/using%20neo4j-admin%20dump%20and%20load.md](https://github.com/THM-Graphs/knowledgebase/blob/main/cypher%20gems/using%20neo4j-admin%20dump%20and%20load.md)
+
+### Datenbank von neo4j 4.4 auf neo4j 5.x migrieren
+
+Die Migration von neo4j 4.4 auf die Version 5.x kann über neo4j Desktop erfolgen. Zunächst muss ein Dump der neo4j 4.4 Datenbank erstellt werden. Anschließend wir in neo4j Desktop eine Datebank neo4j 5.x erstellt. Im Datenbankverzeichnis wird ein Order data/dumps erstellt, in den die Datei neo4j.dump hineinkopiert wird. Der Befehl für die Migration lautet dann:
 
 ~~~
 bin/neo4j-admin database migrate neo4j
