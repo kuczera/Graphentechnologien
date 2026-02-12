@@ -390,6 +390,21 @@ CALL apoc.create.addLabels(id(e), ['IndexPlace']) YIELD node
 RETURN node;
 ~~~
 
+## Aus Property weitere Kanten erstellen
+
+Gegeben sind Kanten vom Typ APPEARS_IN wobei die Rolle der Entität in der Kanten-Property Role steht.
+Mit dem folgenden Query wird der Wert der Role-Property type als zusätzliches Kante angelegt.
+
+~~~cypher
+MATCH (s:Regesta<-[r:APPEARS_IN]-(e:Entity) 
+WHERE r.role IS NOT NULL
+CALL (s,r,e) {
+  CALL apoc.create.relationship(s, toUpper(r.role), {}, e) YIELD rel
+  DELETE r
+} IN TRANSACTIONS OF 1000 ROWS;
+~~~
+
+
 
 ## CSV-Feld enthält mehrere Werte
 
